@@ -1,0 +1,155 @@
+<?php
+// Include file koneksi ke database
+include "koneksi.php";
+
+// Deklarasi variabel pesan
+$pesan = '';
+
+// Jika tombol "Buat akun" diklik
+if (isset($_POST['submit'])) {
+  // Ambil nilai dari form
+  $namaLengkap = $_POST['Namalengkap'];
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+  $phoneNumber = $_POST['phoneNumber'];
+  $angkatan = $_POST['angkatan']; // Tambahkan ini untuk mengambil nilai angkatan
+
+  // Validasi form (pastikan semua field terisi)
+  if (empty($namaLengkap) || empty($email) || empty($password) || empty($phoneNumber) || empty($angkatan)) {
+    $pesan = "Harap isi semua kolom";
+  } else {
+    // Query untuk memeriksa apakah email sudah ada di database
+    $checkQuery = "SELECT * FROM users WHERE email='$email'";
+    $checkResult = mysqli_query($koneksi, $checkQuery);
+
+    if (mysqli_num_rows($checkResult) > 0) {
+      // Jika email sudah ada, tampilkan pesan kesalahan
+      $pesan = "Email sudah digunakan, gunakan email lain";
+    } else {
+      // Jika email belum ada, lakukan penyimpanan data
+      // Set default role to "user"
+      $role = "user";
+
+      // Query untuk menyimpan data ke dalam database, termasuk role
+      $query = "INSERT INTO users (Namalengkap, email, password, phoneNumber, angkatan, role) VALUES ('$namaLengkap', '$email', '$password', '$phoneNumber', '$angkatan', '$role')";
+
+      // Jalankan query
+      if (mysqli_query($koneksi, $query)) {
+        // Redirect ke halaman login.php
+        header("Location: login.php");
+        exit(); // Penting untuk menghentikan eksekusi script setelah redirect
+      } else {
+        echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
+      }
+    }
+  }
+
+  // Tutup koneksi ke database
+  mysqli_close($koneksi);
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Daftar Akun</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.css" rel="stylesheet" />
+</head>
+
+<body class="bg-gradient-primary">
+  <div class="container">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+          <div class="col-lg-7">
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Daftar</h1>
+              </div>
+              <?php if (!empty($pesan)) : ?>
+                <div class="alert alert-danger"><?php echo $pesan; ?></div>
+              <?php endif; ?>
+              <form class="user" method="post" action="" onsubmit="return validatePassword()">
+                <div class="form-group">
+                  <input type="text" class="form-control form-control-user" name="Namalengkap" placeholder="Nama Lengkap" />
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control form-control-user" name="email" placeholder="Email" />
+                </div>
+                <div class="form-group">
+                  <input type="password" class="form-control form-control-user" name="password" id="password" placeholder="Password" pattern="(?=.*\d).{8,}" title="Password harus terdiri dari minimal 8 karakter dan mengandung angka" required />
+                </div>
+                <div class="form-group">
+                  <input type="password" class="form-control form-control-user" name="confirmPassword" id="confirmPassword" placeholder="Konfirmasi Password" pattern="(?=.*\d).{8,}" title="Password harus terdiri dari minimal 8 karakter dan mengandung angka" required />
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control form-control-user" name="phoneNumber" placeholder="Nomor HP" pattern="[0-9]{10,}" title="Nomor HP harus terdiri dari minimal 10 angka" required />
+                </div>
+                <div class="form-group">
+                  <select class="form-control" name="angkatan">
+                    <option value="" selected disabled hidden>Pilih Angkatan</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                  </select>
+                </div>
+                <input type="submit" name="submit" value="Buat akun" class="btn btn-primary btn-user btn-block">
+              </form>
+              <hr />
+              <!-- <div class="text-center">
+                  <a class="small" href="forgot-password.html"
+                    >Lupa password?</a
+                  >
+                </div> -->
+              <div class="text-center">
+                <a class="small" href="login.php">Sudah punya akun? Masuk</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <script>
+    // Fungsi untuk memeriksa apakah kolom password dan konfirmasi password sama
+    function validatePassword() {
+      var password = document.getElementById("password").value;
+      var confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (password != confirmPassword) {
+        alert("Password dan konfirmasi password harus sama.");
+        return false;
+      }
+      return true;
+    }
+  </script>
+</body>
+
+</html>
