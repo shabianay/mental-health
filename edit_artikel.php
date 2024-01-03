@@ -1,4 +1,13 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+        session_start(); // Start the session if it's not already started
+    }
+ // Check if the user is not logged in
+    if (!isset($_SESSION['user_id'])) {
+        // Redirect to the login page
+        header("Location: login.php");
+        exit(); // Stop further execution
+    }
 // Include the database connection file
 include_once "koneksi.php";
 
@@ -86,44 +95,37 @@ mysqli_close($koneksi);
     <link href="css/sb-admin-2.css" rel="stylesheet" />
 </head>
 
-<body>
-    <!-- Include navbar and other shared components here -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-                <h1 class="h3 mb-4 text-gray-800">Edit Artikel</h1>
-                <!-- Form untuk mengedit artikel -->
-                <form method="post" action="edit_artikel.php?id=<?php echo $article_id; ?>" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="title">Judul</label>
-                        <input type="text" class="form-control" id="title" name="title" value="<?php echo $article['title']; ?>" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="content">Isi</label>
-                        <textarea class="form-control" id="content" name="content" rows="5" required><?php echo $article['content']; ?></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="image">Gambar (maksimal 2MB)</label>
-                        <input type="file" class="form-control-file" id="image" name="image" accept="image/*" maxlength="2097152" />
-                    </div>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                    <a href="artikel.php" class="btn btn-secondary">Kembali</a>
-                </form>
+<body id="page-top">
+    <div id="wrapper">
+        <?php include('navbar_admin.php') ?>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <?php include('topbar_admin.php') ?>
+                <div class="container-fluid">
+                    <h1 class="h3 mb-4 text-gray-800">Edit Artikel</h1>
+                    <form method="post" action="edit_artikel.php?id=<?php echo $article_id; ?>" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="title">Judul</label>
+                            <input type="text" class="form-control" id="title" name="title" value="<?php echo $article['title']; ?>" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="content">Isi</label>
+                            <textarea class="form-control" id="content" name="content" rows="5" required><?php echo $article['content']; ?></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Gambar (maksimal 2MB)</label>
+                            <input type="file" class="form-control-file" id="image" name="image" accept="image/*" maxlength="2097152" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        <a href="artikel.php" class="btn btn-secondary">Kembali</a>
+                    </form>
+                </div>
             </div>
         </div>
-        <!-- End of Main Content -->
-
-        <!-- Include footer and other shared components here -->
     </div>
-    <!-- End of Content Wrapper -->
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Include scripts and other shared components here -->
+    <!-- Footer -->
+    <?php include('footer.php') ?>
+    <!-- End of Footer -->
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

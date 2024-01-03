@@ -1,14 +1,14 @@
 <?php
-session_start();
-
-// Periksa apakah user sudah login
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start(); // Start the session if it's not already started
+    }
+    // Check if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
-  // Jika tidak, redirect ke halaman login
-  header("Location: login.php");
-  exit();
+    // Redirect to the login page
+    header("Location: login.php");
+    exit(); // Stop further execution
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,7 +45,7 @@ if (!isset($_SESSION['user_id'])) {
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">Halo, selamat datang <?php echo $namaLengkap; ?></h1>
+          <h1 class="h3 mb-4 text-gray-800">Halo, selamat datang</h1>
         </div>
         <!-- /.container-fluid -->
       </div>

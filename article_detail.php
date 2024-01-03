@@ -1,13 +1,9 @@
 <?php
-// Include file koneksi ke database
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Start the session if it's not already started
+} // Include file koneksi ke database
 include_once "koneksi.php";
-session_start();
-// Periksa apakah user sudah login
-if (!isset($_SESSION['user_id'])) {
-    // Jika tidak, redirect ke halaman login
-    header("Location: login.php");
-    exit();
-}
+
 // Periksa apakah parameter id artikel telah diberikan
 if (isset($_GET['id'])) {
     // Sanitasi inputan id artikel

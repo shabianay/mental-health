@@ -1,11 +1,12 @@
 <?php
-session_start();
-
-// Periksa apakah user sudah login
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start(); // Start the session if it's not already started
+    }
+// Check if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
-  // Jika tidak, redirect ke halaman login
-  header("Location: login.php");
-  exit();
+    // Redirect to the login page
+    header("Location: login.php");
+    exit(); // Stop further execution
 }
 ?>
 
@@ -67,6 +68,7 @@ if (!isset($_SESSION['user_id'])) {
             echo "<th>Email</th>";
             echo "<th>Phone Number</th>";
             echo "<th>Angkatan</th>";
+            echo "<th>Jenis Kelamin</th>";
             echo "<th>Created At</th>";
             echo "<th>Updated At</th>";
             echo "</tr>";
@@ -80,6 +82,7 @@ if (!isset($_SESSION['user_id'])) {
               echo "<td>" . $row['email'] . "</td>";
               echo "<td>" . $row['phoneNumber'] . "</td>";
               echo "<td>" . $row['angkatan'] . "</td>";
+              echo "<td>" . $row['gender'] . "</td>";
               echo "<td>" . $row['created_at'] . "</td>";
               echo "<td>" . $row['updated_at'] . "</td>";
               echo "</tr>";

@@ -1,4 +1,13 @@
 <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start(); // Start the session if it's not already started
+    }
+    // Check if the user is not logged in
+    if (!isset($_SESSION['user_id'])) {
+        // Redirect to the login page
+        header("Location: login.php");
+        exit(); // Stop further execution
+    }
 include "koneksi.php";
 
 // Inisialisasi variabel
@@ -65,10 +74,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body id="page-top">
+    <!-- Page Wrapper -->
     <div id="wrapper">
+        <?php include('navbar_admin.php') ?>
+        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
             <div id="content">
+                <?php include('topbar_admin.php') ?>
+                <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">Tambah Rumah Sakit</h1>
                     <form method="post" enctype="multipart/form-data">
                         <div class="form-group">
@@ -101,9 +117,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </form>
                 </div>
+                <!-- /.container-fluid -->
             </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <?php include('footer.php') ?>
+            <!-- End of Footer -->
         </div>
+        <!-- End of Content Wrapper -->
     </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <?php include('logout.php') ?>
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

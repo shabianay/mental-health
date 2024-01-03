@@ -1,14 +1,15 @@
 <?php
-session_start();
-
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start(); // Start the session if it's not already started
+    }
+    // Check if the user is not logged in
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to the login page
+    header("Location: login.php");
+    exit(); // Stop further execution
+}
 // Include file koneksi ke database
 include_once "koneksi.php";
-
-// Periksa apakah pengguna sudah login
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
 
 // Ambil informasi pengguna dari database
 $user_id = $_SESSION['user_id'];

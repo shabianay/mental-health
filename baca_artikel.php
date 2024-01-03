@@ -1,14 +1,21 @@
 <?php
-session_start();
-// Periksa apakah user sudah login
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start(); // Start the session if it's not already started
+    }
+    // Check if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
-    // Jika tidak, redirect ke halaman login
+    // Redirect to the login page
     header("Location: login.php");
-    exit();
+    exit(); // Stop further execution
 }
 
-// Ambil informasi user dari database berdasarkan $_SESSION['user_id']
-// Lakukan halaman dashboard Anda di sini
+    // Check if the full name is set in the session
+    if(isset($_SESSION['namaLengkap'])) {
+        $namaLengkap = $_SESSION['namaLengkap'];
+    } else {
+        // Handle if the full name is not set in the session
+        $namaLengkap = "Nama Lengkap Tidak Tersedia";
+    }
 ?>
 
 <!DOCTYPE html>

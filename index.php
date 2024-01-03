@@ -22,7 +22,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f8f9fc;
+            background-color: #2b52c5;
             /* Set background color */
         }
 
@@ -36,7 +36,8 @@
 
     <div class="container">
         <div>
-            <h1 class="h4 text-gray-900 mb-4">Selamat datang!</h1>
+            <h1 class="h2 text-white">Selamat datang,</h1>
+            <p class="h4 text-white mb-4">di website skrining kesehatan mental</p>
             <a href="login.php" class="btn btn-primary btn-user">Login</a>
             <a href="register.php" class="btn btn-success btn-user">Register</a>
         </div>

@@ -1,10 +1,12 @@
 <?php
-session_start();
-// Periksa apakah user sudah login
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Start the session if it's not already started
+}
+// Check if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
-    // Jika tidak, redirect ke halaman login
+    // Redirect to the login page
     header("Location: login.php");
-    exit();
+    exit(); // Stop further execution
 }
 ?>
 

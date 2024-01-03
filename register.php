@@ -12,10 +12,11 @@ if (isset($_POST['submit'])) {
   $email = $_POST['email'];
   $password = $_POST['password'];
   $phoneNumber = $_POST['phoneNumber'];
-  $angkatan = $_POST['angkatan']; // Tambahkan ini untuk mengambil nilai angkatan
+  $angkatan = $_POST['angkatan'];
+  $gender = $_POST['gender'];
 
   // Validasi form (pastikan semua field terisi)
-  if (empty($namaLengkap) || empty($email) || empty($password) || empty($phoneNumber) || empty($angkatan)) {
+  if (empty($namaLengkap) || empty($email) || empty($password) || empty($phoneNumber) || empty($angkatan) || empty($gender)) {
     $pesan = "Harap isi semua kolom";
   } else {
     // Query untuk memeriksa apakah email sudah ada di database
@@ -30,8 +31,9 @@ if (isset($_POST['submit'])) {
       // Set default role to "user"
       $role = "user";
 
-      // Query untuk menyimpan data ke dalam database, termasuk role
-      $query = "INSERT INTO users (Namalengkap, email, password, phoneNumber, angkatan, role) VALUES ('$namaLengkap', '$email', '$password', '$phoneNumber', '$angkatan', '$role')";
+      // Query untuk menyimpan data ke dalam database, termasuk role dan gender
+      $query = "INSERT INTO users (Namalengkap, email, password, phoneNumber, angkatan, role, gender) VALUES ('$namaLengkap', '$email', '$password', '$phoneNumber', '$angkatan', '$role', '$gender')";
+
 
       // Jalankan query
       if (mysqli_query($koneksi, $query)) {
@@ -67,6 +69,13 @@ if (isset($_POST['submit'])) {
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.css" rel="stylesheet" />
+  <style>
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+  </style>
 </head>
 
 <body class="bg-gradient-primary">
@@ -109,6 +118,14 @@ if (isset($_POST['submit'])) {
                     <option value="2023">2023</option>
                   </select>
                 </div>
+                <div class="form-group">
+                  <!-- <label for="gender">Jenis Kelamin</label> -->
+                  <select class="form-control" id="gender" name="gender" required>
+                    <option value="" selected disabled hidden>Pilih Jenis Kelamin</option>
+                    <option value="Laki-Laki">Laki-Laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                  </select>
+                </div>
                 <input type="submit" name="submit" value="Buat akun" class="btn btn-primary btn-user btn-block">
               </form>
               <hr />
@@ -120,6 +137,9 @@ if (isset($_POST['submit'])) {
               <div class="text-center">
                 <a class="small" href="login.php">Sudah punya akun? Masuk</a>
               </div>
+                  <div class="text-center">
+                    <a class="small"  style="color:black" href="index.php">Balik halaman utama</a>
+                  </div>
             </div>
           </div>
         </div>

@@ -1,4 +1,13 @@
 <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start(); // Start the session if it's not already started
+    }
+    // Check if the user is not logged in
+    if (!isset($_SESSION['user_id'])) {
+        // Redirect to the login page
+        header("Location: login.php");
+        exit(); // Stop further execution
+    }
 // Include the database connection file
 include_once "koneksi.php";
 
@@ -88,57 +97,69 @@ mysqli_close($koneksi);
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.css" rel="stylesheet" />
 </head>
-
-<body>
-    <!-- Include navbar and other shared components here -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-                <h1 class="h3 mb-4 text-gray-800">Edit Rumah Sakit</h1>
-                <!-- Form untuk mengedit rumah sakit -->
-                <form method="post" action="edit_rs.php?id=<?php echo $hospital_id; ?>" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="name">Nama</label>
-                        <input type="text" class="form-control" id="name" name="name" value="<?php echo $hospital['name']; ?>" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Alamat</label>
-                        <input type="text" class="form-control" id="address" name="address" value="<?php echo $hospital['address']; ?>" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Telepon</label>
-                        <input type="text" class="form-control" id="phone" name="phone" value="<?php echo $hospital['phone']; ?>" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" value="<?php echo $hospital['email']; ?>" />
-                    </div>
-                    <div class="form-group">
-                        <label for="website">Website</label>
-                        <input type="text" class="form-control" id="website" name="website" value="<?php echo $hospital['website']; ?>" />
-                    </div>
-                    <div class="form-group">
-                        <label for="image">Gambar (maksimal 2MB)</label>
-                        <input type="file" class="form-control-file" id="image" name="image" accept="image/*" maxlength="2097152" />
-                    </div>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                    <a href="rumahsakit.php" class="btn btn-secondary">Kembali</a>
-                </form>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <?php include('navbar_admin.php') ?>
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <?php include('topbar_admin.php') ?>
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800">Edit Rumah Sakit</h1>
+                    <!-- Form untuk mengedit rumah sakit -->
+                    <form method="post" action="edit_rs.php?id=<?php echo $hospital_id; ?>" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="name">Nama</label>
+                            <input type="text" class="form-control" id="name" name="name" value="<?php echo $hospital['name']; ?>" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Alamat</label>
+                            <input type="text" class="form-control" id="address" name="address" value="<?php echo $hospital['address']; ?>" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Telepon</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value="<?php echo $hospital['phone']; ?>" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="<?php echo $hospital['email']; ?>" />
+                        </div>
+                        <div class="form-group">
+                            <label for="website">Website</label>
+                            <input type="text" class="form-control" id="website" name="website" value="<?php echo $hospital['website']; ?>" />
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Gambar (maksimal 2MB)</label>
+                            <input type="file" class="form-control-file" id="image" name="image" accept="image/*" maxlength="2097152" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        <a href="rumahsakit.php" class="btn btn-secondary">Kembali</a>
+                    </form>
+                </div>
+                <!-- /.container-fluid -->
             </div>
-        </div>
-        <!-- End of Main Content -->
+            <!-- End of Main Content -->
 
-        <!-- Include footer and other shared components here -->
-    </div>
-    <!-- End of Content Wrapper -->
+            <!-- Footer -->
+            <?php include('footer.php') ?>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
 
-    <!-- Include scripts and other shared components here -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <?php include('logout.php') ?>
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -148,13 +169,5 @@ mysqli_close($koneksi);
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
 </body>
-
 </html>

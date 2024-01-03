@@ -51,6 +51,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.css" rel="stylesheet" />
+  <style>
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+  </style>
 </head>
 
 <body class="bg-gradient-primary">
@@ -87,6 +94,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div> -->
                   <div class="text-center">
                     <a class="small" href="register.php">Buat akunmu</a>
+                  </div>
+                  <div class="text-center">
+                    <a class="small"  style="color:black" href="index.php">Balik halaman utama</a>
                   </div>
                 </div>
               </div>

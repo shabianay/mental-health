@@ -12,29 +12,35 @@
     <hr class="sidebar-divider my-0" />
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
-        <a class="nav-link" href="admin_dashboard.php">
+    <li class="nav-item">
+        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'admin_dashboard.php' ? 'active' : ''; ?>" href="admin_dashboard.php">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider" />
-
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="soal.php">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Bank Soal</span></a>
+        <a class="nav-link collapsed <?php echo basename($_SERVER['PHP_SELF']) === 'soal.php' || basename($_SERVER['PHP_SELF']) === 'soal_group.php' ? 'active' : ''; ?>" href="#" data-toggle="collapse" data-target="#collapseSoal" aria-expanded="true" aria-controls="collapseSoal">
+        <i class="fas fa-fw fa-cog"></i>
+        <span>Soal</span>
+        </a>
+        <div id="collapseSoal" class="collapse" aria-labelledby="headingSoal" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="soal.php">Crud Soal</a>
+                <a class="collapse-item" href="soal_group.php">Crud Kategori Soal</a>
+            </div>
+        </div>
     </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Master Data</span>
+        <a class="nav-link collapsed <?php echo basename($_SERVER['PHP_SELF']) === 'artikel.php' || basename($_SERVER['PHP_SELF']) === 'rumahsakit.php' ? 'active' : ''; ?>" href="#" data-toggle="collapse" data-target="#collapseMasterData" aria-expanded="true" aria-controls="collapseMasterData">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Master Data</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+        <div id="collapseMasterData" class="collapse" aria-labelledby="headingMasterData" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="artikel.php">Crud Artikel</a>
                 <a class="collapse-item" href="rumahsakit.php">Crud Rumah Sakit</a>
@@ -65,3 +71,22 @@
     </div>
 </ul>
 <!-- End of Sidebar -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get all the navigation links
+        var navLinks = document.querySelectorAll('.nav-link');
+
+        // Add click event listeners to each link
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                // Remove the "active" class from all links
+                navLinks.forEach(function(navLink) {
+                    navLink.classList.remove('active');
+                });
+
+                // Add the "active" class to the clicked link
+                this.classList.add('active');
+            });
+        });
+    });
+</script>

@@ -8,8 +8,10 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit(); // Stop further execution
 }
+// Include database connection
 include "koneksi.php";
-$retrieveQuery = "SELECT * FROM `questions`";
+// Retrieve data from the database
+$retrieveQuery = "SELECT * FROM `soal_group`";
 $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
 ?>
 
@@ -22,10 +24,13 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Soal</title>
+
+    <title>Buat Soal Group</title>
+
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.css" rel="stylesheet" />
 </head>
@@ -41,10 +46,10 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
                 <?php include('topbar_admin.php') ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <h1 class="h3 mb-4 text-gray-800">Daftar Soal</h1>
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800">Buat Soal Grup</h1>
                     <!-- Tombol untuk membuat artikel baru -->
-                    <a href="buat_soal.php" class="btn btn-primary mb-3">Buat Soal</a>
-                    <!-- Display existing questions -->
+                    <a href="buat_soal_group.php" class="btn btn-primary mb-3">Buat Soal Grup</a>
                     <?php
                     // Include the database connection file
                     include "koneksi.php";
@@ -53,7 +58,7 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
                         // Check the value of the 'success' parameter
                         if ($_GET['success'] === 'delete') {
                             // If the value is 'delete', display a success message
-                            echo '<div class="alert alert-success" role="alert">Soal berhasil dihapus.</div>';
+                            echo '<div class="alert alert-success" role="alert">Grup soal berhasil dihapus.</div>';
                         }
                     }
                     // Check if the 'success' parameter exists in the URL
@@ -61,38 +66,37 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
                         // Check the value of the 'success' parameter
                         if ($_GET['success'] === 'update') {
                             // If the value is 'update', display a success message
-                            echo '<div class="alert alert-success" role="alert">Soal berhasil diperbarui.</div>';
+                            echo '<div class="alert alert-success" role="alert">Soal Group berhasil diperbarui.</div>';
                         }
                     }
                     ?>
                     <table class="table">
-                        <!-- Table headers -->
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Soal</th>
-                                <th>Grup Soal</th>
-                                <th>Dibuat</th>
-                                <th>Diperbarui</th>
+                                <th>Nama</th>
+                                <th>Normal Weight</th>
+                                <th>Perbatasan Weight</th>
+                                <th>Abnormal Weight</th>
                                 <th>Edit</th>
-                                <th>Delete</th>
+                                <th>Hapus</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             // Query to retrieve articles from the database
-                            $query = "SELECT * FROM questions";
+                            $query = "SELECT * FROM soal_group";
                             $result = mysqli_query($koneksi, $query);
                             // Loop through the retrieved data and display it in a table
-                            while ($row = mysqli_fetch_assoc($result)) {
+                            while ($row = mysqli_fetch_assoc($retrieveResult)) {
                                 echo "<tr>";
-                                echo "<td>" . $row['id_soal'] . "</td>";
-                                echo "<td>" . $row['question_text'] . "</td>";
-                                echo "<td>" . $row['question_group_id'] . "</td>";
-                                echo "<td>" . $row['created_at'] . "</td>";
-                                echo "<td>" . $row['updated_at'] . "</td>";
-                                echo "<td><a href='edit_soal.php?id=" . $row['id_soal'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
-                                echo "<td><a href='hapus_soal.php?id=" . $row['id_soal'] . "' class='btn btn-danger btn-sm'>Hapus</a></td>";
+                                echo "<td>" . $row['id'] . "</td>";
+                                echo "<td>" . $row['name'] . "</td>";
+                                echo "<td>" . $row['normal_weight'] . "</td>";
+                                echo "<td>" . $row['perbatasan_weight'] . "</td>";
+                                echo "<td>" . $row['abnormal_weight'] . "</td>";
+                                echo "<td><a href='edit_soal_group.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
+                                echo "<td><a href='hapus_soal_group.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Hapus</a></td>";
                                 echo "</tr>";
                             }
                             ?>
@@ -102,6 +106,7 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
                 <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
+
             <!-- Footer -->
             <?php include('footer.php') ?>
             <!-- End of Footer -->
@@ -109,24 +114,24 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
         <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
+
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
     <!-- Logout Modal-->
     <?php include('logout.php') ?>
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
 </body>
 
 </html>
