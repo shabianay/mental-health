@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Start the session if it's not already started
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Include file koneksi ke database
@@ -44,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -63,6 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .alert-danger {
             text-align: center;
         }
+
         body {
             height: 100vh;
             display: flex;
@@ -73,16 +77,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     </style>
 </head>
-        <form class="user" method="post" action="login_process.php">
-            <!-- ... (rest of your form elements) ... -->
-            <!-- Display error message if exists -->
-            <?php if (isset($error_message)) : ?>
-                <div class="alert alert-danger error-message" role="alert">
-                    <?php echo $error_message; ?>
-                    <br>
-                    <a href="login.php" class="btn btn-primary">Kembali ke Halaman Login</a>
-                </div>
-            <?php endif; ?>
-            <!-- ... (rest of your form elements) ... -->
-        </form>
+<form class="user" method="post" action="login_process.php">
+    <!-- ... (rest of your form elements) ... -->
+    <!-- Display error message if exists -->
+    <?php if (isset($error_message)) : ?>
+        <div class="alert alert-danger error-message" role="alert">
+            <?php echo $error_message; ?>
+            <br>
+            <a href="login.php" class="btn btn-primary">Kembali ke Halaman Login</a>
+        </div>
+    <?php endif; ?>
+    <!-- ... (rest of your form elements) ... -->
+</form>
+
 </html>

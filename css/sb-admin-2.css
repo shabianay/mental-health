@@ -11347,3 +11347,54 @@ body.sidebar-toggled footer.sticky-footer {
 .artikel-card:hover img {
   transform: scale(1.05);
 }
+
+/* Floating Chatbot Button */
+.chatbot-button {
+  position: fixed;
+  bottom: 100px; /* Lebih ke atas dari sebelumnya */
+  right: 40px; /* Lebih ke atas dari sebelumnya */
+}
+
+.chatbot-button button {
+  padding: 10px; /* Mengurangi padding agar tombol lebih kecil */
+  width: 60px; /* Mengatur lebar tombol */
+  height: 60px; /* Mengatur tinggi tombol */
+  line-height: 20px; /* Mengatur garis bawah tombol */
+  border-radius: 50%; /* Membuat tombol menjadi bulat */
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Animasi transisi untuk efek hover */
+}
+
+.chatbot-button button:hover {
+  background-color: #0056b3; /* Warna tombol saat dihover */
+}
+
+/* CSS untuk tombol chatbot */
+.chatbot-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  transition: transform 0.3s ease; /* Efek transisi untuk animasi */
+}
+
+.chatbot-button button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Efek bayangan untuk tampilan lebih menonjol */
+}
+
+/* CSS untuk responsif */
+@media (max-width: 767px) {
+  .chatbot-button {
+    bottom: 10px;
+    right: 10px;
+  }
+}

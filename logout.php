@@ -7,6 +7,5 @@ if (session_status() === PHP_SESSION_NONE) {
 // Perform logout logic here, such as unsetting session variables and destroying the session
 
 // Redirect to the login page after logout
-header("Location: login.php");
+// header("Location: login.php");
 exit();
-?>
