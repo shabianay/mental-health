@@ -1,17 +1,3 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start(); // Start the session if it's not already started
-}
-// Check if the user is not logged in
-if (!isset($_SESSION['user_id'])) {
-    // Redirect to the login page
-    header("Location: login.php");
-    exit(); // Stop further execution
-}
-
-// Lakukan koneksi ke database
-require_once 'koneksi.php';
-?>
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
@@ -34,19 +20,6 @@ require_once 'koneksi.php';
     <!-- Divider -->
     <hr class="sidebar-divider" />
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <!-- <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Tambahan</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="baca_artikel.php">Artikel</a>
-                <a class="collapse-item" href="baca_rs.php">Daftar Rumah Sakit</a>
-            </div>
-        </div>
-</li> -->
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'skrining.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="skrining.php">
             <i class="fas fa-fw fa-heart"></i>
