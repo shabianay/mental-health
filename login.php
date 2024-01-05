@@ -5,12 +5,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   require_once "koneksi.php";
 
   // Ambil nilai dari form
-  $email = $_POST['email'];
-  $password = $_POST['password'];
+  $email = mysqli_real_escape_string($koneksi, $_POST['email']);
+  $password = mysqli_real_escape_string($koneksi, $_POST['password']);
 
   // Query untuk mencari user berdasarkan email
-  $query = "SELECT * FROM users WHERE email = '$email'";
-  $result = mysqli_query($koneksi, $query);
+  $query = "SELECT * FROM users WHERE email = ?";
+  $stmt = mysqli_prepare($koneksi, $query);
+  mysqli_stmt_bind_param($stmt, "s", $email);
+  mysqli_stmt_execute($stmt);
+  $result = mysqli_stmt_get_result($stmt);
 
   // Periksa apakah query berhasil dijalankan dan data ditemukan
   if ($result && mysqli_num_rows($result) > 0) {
@@ -38,7 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Data tidak ditemukan, set pesan error
     $error_message = "Akun tidak terdaftar. Silakan coba lagi.";
   }
-  // Tutup koneksi ke database
+
+  // Tutup statement dan koneksi ke database
+  mysqli_stmt_close($stmt);
   mysqli_close($koneksi);
 }
 ?>

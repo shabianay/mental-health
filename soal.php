@@ -24,8 +24,11 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.css" rel="stylesheet" />
+    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -61,7 +64,7 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
                     </ul>
                 </nav> <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <h1 class="h3 mb-4 text-gray-800">Daftar Soal</h1>
+                    <h1 class="h3 mb-4 text-gray-800">Halaman Daftar Soal</h1>
                     <!-- Tombol untuk membuat artikel baru -->
                     <a href="buat_soal.php" class="btn btn-primary mb-3">Buat Soal</a>
                     <!-- Display existing questions -->
@@ -83,46 +86,78 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
                             echo '<div class="alert alert-success" role="alert">Soal berhasil diperbarui.</div>';
                         }
                     }
+                    // Query to retrieve articles from the database
+                    $query = "SELECT * FROM questions";
+                    $result = mysqli_query($koneksi, $query);
+                    // Check if the query was successful
+                    if ($result) {
+                        // Display the table headers
+                        echo "<div class='card shadow mb-4'>";
+                        echo "<div class='card-header py-3'>";
+                        echo "<h6 class='m-0 font-weight-bold text-primary'>";
+                        echo "Data Soal";
+                        echo "</h6>";
+                        echo "</div>";
+                        echo "<div class='card-body'>";
+                        echo "<div class='table-responsive'>";
+                        echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
+                        echo "<thead>";
+                        echo "<tr>";
+                        echo "<th>Soal</th>";
+                        echo "<th>Grup Soal</th>";
+                        echo "<th>Nilai A</th>";
+                        echo "<th>Nilai B</th>";
+                        echo "<th>Nilai C</th>";
+                        echo "<th>Opsi A</th>";
+                        echo "<th>Opsi B</th>";
+                        echo "<th>Opsi C</th>";
+                        echo "<th>Dibuat</th>";
+                        echo "<th>Diperbarui</th>";
+                        echo "<th>Edit</th>";
+                        echo "<th>Hapus</th>";
+                        echo "</tr>";
+                        echo "</thead>";
+                        echo "<tbody>";
+                        // Loop through the result set and display the articles
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            echo "<tr>";
+                            echo "<td>" . $row['question_text'] . "</td>";
+                            echo "<td>" . $row['question_group_id'] . "</td>";
+                            echo "<td>" . $row['nilai_a'] . "</td>";
+                            echo "<td>" . $row['nilai_b'] . "</td>";
+                            echo "<td>" . $row['nilai_c'] . "</td>";
+                            echo "<td>" . $row['opsi_a'] . "</td>";
+                            echo "<td>" . $row['opsi_b'] . "</td>";
+                            echo "<td>" . $row['opsi_c'] . "</td>";
+                            echo "<td>" . $row['created_at'] . "</td>";
+                            echo "<td>" . $row['updated_at'] . "</td>";
+                            echo "<td><a href='edit_soal.php?id=" . $row['id_soal'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
+                            echo "<td><a href='hapus_soal.php?id=" . $row['id_soal'] . "' class='btn btn-danger btn-sm'>Hapus</a></td>";
+                            echo "</tr>";
+                        }
+                        echo "</tbody>";
+                        echo "</table>";
+                        echo "</div>";
+                        echo "</div>";
+                        echo "</div>";
+                        echo "</div>"; // This closes the div for the DataTables Example
+
+                        // Free the result set
+                        mysqli_free_result($result);
+                    } else {
+                        // If the query was not successful, display an error message
+                        echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
+                    }
+                    // Close the database connection
+                    mysqli_close($koneksi);
                     ?>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Soal</th>
-                                <th>Grup Soal</th>
-                                <th>Dibuat</th>
-                                <th>Diperbarui</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            // Query to retrieve articles from the database
-                            $query = "SELECT * FROM questions";
-                            $result = mysqli_query($koneksi, $query);
-                            // Loop through the retrieved data and display it in a table
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                echo "<tr>";
-                                echo "<td>" . $row['id_soal'] . "</td>";
-                                echo "<td>" . $row['question_text'] . "</td>";
-                                echo "<td>" . $row['question_group_id'] . "</td>";
-                                echo "<td>" . $row['created_at'] . "</td>";
-                                echo "<td>" . $row['updated_at'] . "</td>";
-                                echo "<td><a href='edit_soal.php?id=" . $row['id_soal'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
-                                echo "<td><a href='hapus_soal.php?id=" . $row['id_soal'] . "' class='btn btn-danger btn-sm'>Hapus</a></td>";
-                                echo "</tr>";
-                            }
-                            ?>
-                        </tbody>
-                    </table>
                 </div>
                 <!-- /.container-fluid -->
+                <!-- Footer -->
+                <?php require_once('footer.php') ?>
+                <!-- End of Footer -->
             </div>
             <!-- End of Main Content -->
-            <!-- Footer -->
-            <?php require_once('footer.php') ?>
-            <!-- End of Footer -->
         </div>
         <!-- End of Content Wrapper -->
     </div>
@@ -131,16 +166,21 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
     <!-- Page level plugins -->
     <script src="vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script>
 </body>

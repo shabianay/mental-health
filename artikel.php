@@ -25,7 +25,9 @@ if (!isset($_SESSION['user_id'])) {
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.css" rel="stylesheet" />
+    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
 </head>
 
 <body id="page-top">
@@ -133,7 +135,7 @@ if (!isset($_SESSION['user_id'])) {
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Buat Artikel</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Halaman Artikel</h1>
                     <!-- Tombol untuk membuat artikel baru -->
                     <a href="buat_artikel.php" class="btn btn-primary mb-3">Buat Artikel Baru</a>
                     <?php
@@ -160,6 +162,14 @@ if (!isset($_SESSION['user_id'])) {
                     // Check if the query was successful
                     if ($result) {
                         // Display the table headers
+                        echo "<div class='card shadow mb-4'>";
+                        echo "<div class='card-header py-3'>";
+                        echo "<h6 class='m-0 font-weight-bold text-primary'>";
+                        echo "Data Artikel";
+                        echo "</h6>";
+                        echo "</div>";
+                        echo "<div class='card-body'>";
+                        echo "<div class='table-responsive'>";
                         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
                         echo "<thead>";
                         echo "<tr>";
@@ -187,6 +197,11 @@ if (!isset($_SESSION['user_id'])) {
                         }
                         echo "</tbody>";
                         echo "</table>";
+                        echo "</div>";
+                        echo "</div>";
+                        echo "</div>";
+                        echo "</div>"; // This closes the div for the DataTables Example
+
                         // Free the result set
                         mysqli_free_result($result);
                     } else {
@@ -198,18 +213,14 @@ if (!isset($_SESSION['user_id'])) {
                     ?>
                 </div>
                 <!-- /.container-fluid -->
+                <!-- Footer -->
+                <?php
+                require_once('footer.php')
+                ?>
+                <!-- End of Footer -->
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2023</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
         </div>
         <!-- End of Content Wrapper -->
     </div>
