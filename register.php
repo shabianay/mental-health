@@ -1,6 +1,5 @@
 <?php
-// Include file koneksi ke database
-include "koneksi.php";
+require_once "koneksi.php";
 
 // Deklarasi variabel pesan
 $pesan = '';
@@ -13,7 +12,7 @@ if (isset($_POST['submit'])) {
   $password = $_POST['password'];
   $phoneNumber = $_POST['phoneNumber'];
   $angkatan = $_POST['angkatan'];
-  $gender = $_POST['gender'];
+  $gender = $_POST['gender']; // Added line to capture gender from the form
 
   // Validasi form (pastikan semua field terisi)
   if (empty($namaLengkap) || empty($email) || empty($password) || empty($phoneNumber) || empty($angkatan) || empty($gender)) {
@@ -31,9 +30,11 @@ if (isset($_POST['submit'])) {
       // Set default role to "user"
       $role = "user";
 
-      // Query untuk menyimpan data ke dalam database, termasuk role dan gender
-      $query = "INSERT INTO users (Namalengkap, email, password, phoneNumber, angkatan, role, gender) VALUES ('$namaLengkap', '$email', '$password', '$phoneNumber', '$angkatan', '$role', '$gender')";
+      // Hash the password
+      $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
+      // Query untuk menyimpan data ke dalam database, termasuk role dan gender
+      $query = "INSERT INTO users (Namalengkap, email, password, phoneNumber, angkatan, role, gender) VALUES ('$namaLengkap', '$email', '$hashedPassword', '$phoneNumber', '$angkatan', '$role', '$gender')";
 
       // Jalankan query
       if (mysqli_query($koneksi, $query)) {
@@ -50,7 +51,6 @@ if (isset($_POST['submit'])) {
   mysqli_close($koneksi);
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -137,9 +137,9 @@ if (isset($_POST['submit'])) {
               <div class="text-center">
                 <a class="small" href="login.php">Sudah punya akun? Masuk</a>
               </div>
-                  <div class="text-center">
-                    <a class="small"  style="color:black" href="index.php">Balik halaman utama</a>
-                  </div>
+              <div class="text-center">
+                <a class="small" style="color:black" href="index.php">Balik halaman utama</a>
+              </div>
             </div>
           </div>
         </div>

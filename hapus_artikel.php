@@ -1,6 +1,5 @@
 <?php
-// Include file koneksi ke database
-include_once "koneksi.php";
+require_once "koneksi.php";
 
 // Periksa apakah ada parameter ID artikel yang dikirimkan melalui URL
 if (isset($_GET['id']) && !empty($_GET['id'])) {

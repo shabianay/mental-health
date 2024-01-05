@@ -1,5 +1,5 @@
 <?php
-include "koneksi.php";
+require_once "koneksi.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     $id_soal = $_GET['id'];

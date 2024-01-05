@@ -34,20 +34,6 @@
         </div>
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <!-- <li class="nav-item">
-        <a class="nav-link collapsed <?php echo basename($_SERVER['PHP_SELF']) === 'artikel.php' || basename($_SERVER['PHP_SELF']) === 'rumahsakit.php' ? 'active' : ''; ?>" href="#" data-toggle="collapse" data-target="#collapseMasterData" aria-expanded="true" aria-controls="collapseMasterData">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Master Data</span>
-        </a>
-        <div id="collapseMasterData" class="collapse" aria-labelledby="headingMasterData" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="artikel.php">Artikel</a>
-                <a class="collapse-item" href="rumahsakit.php">Rumah Sakit</a>
-            </div>
-        </div>
-    </li> -->
-
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'artikel.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="artikel.php">
             <i class="fas fa-fw fa-newspaper"></i>

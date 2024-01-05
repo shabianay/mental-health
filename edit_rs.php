@@ -1,15 +1,13 @@
 <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start(); // Start the session if it's not already started
-    }
-    // Check if the user is not logged in
-    if (!isset($_SESSION['user_id'])) {
-        // Redirect to the login page
-        header("Location: login.php");
-        exit(); // Stop further execution
-    }
-// Include the database connection file
-include_once "koneksi.php";
+session_start();
+
+// Check if the user is not logged in
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to the login page
+    header("Location: login.php");
+    exit(); // Stop further execution
+}
+require_once "koneksi.php";
 
 // Periksa apakah parameter id telah diterima dari URL
 if (isset($_GET['id'])) {
@@ -97,16 +95,39 @@ mysqli_close($koneksi);
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.css" rel="stylesheet" />
 </head>
+
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php include('navbar_admin.php') ?>
+        <?php require_once('navbar_admin.php') ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <?php include('topbar_admin.php') ?>
-                <!-- Begin Page Content -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600"></span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="logout.php">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav> <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">Edit Rumah Sakit</h1>
@@ -145,7 +166,7 @@ mysqli_close($koneksi);
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include('footer.php') ?>
+            <?php require_once('footer.php') ?>
             <!-- End of Footer -->
         </div>
         <!-- End of Content Wrapper -->
@@ -157,9 +178,6 @@ mysqli_close($koneksi);
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
-    <?php include('logout.php') ?>
-
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -170,4 +188,5 @@ mysqli_close($koneksi);
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 </body>
+
 </html>

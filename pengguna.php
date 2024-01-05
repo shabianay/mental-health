@@ -1,15 +1,13 @@
 <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start(); // Start the session if it's not already started
-    }
+session_start();
+
 // Check if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
-    // Redirect to the login page
-    header("Location: login.php");
-    exit(); // Stop further execution
+  // Redirect to the login page
+  header("Location: login.php");
+  exit(); // Stop further execution
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,16 +32,35 @@ if (!isset($_SESSION['user_id'])) {
   <!-- Page Wrapper -->
   <div id="wrapper">
     <?php
-    include('navbar_admin.php')
+    require_once('navbar_admin.php')
     ?>
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
       <!-- Main Content -->
       <div id="content">
-        <?php
-        include('topbar_admin.php')
-        ?>
-
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+          <!-- Sidebar Toggle (Topbar) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600"></span>
+                <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="logout.php">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
@@ -51,8 +68,7 @@ if (!isset($_SESSION['user_id'])) {
 
           <!-- DataTales Example -->
           <?php
-          // Include file koneksi ke database
-          include "koneksi.php";
+          require_once "koneksi.php";
 
           // Query untuk mengambil data pengguna dari database
           $query = "SELECT * FROM users";
@@ -106,7 +122,7 @@ if (!isset($_SESSION['user_id'])) {
 
       <!-- Footer -->
       <?php
-      include('footer.php')
+      require_once('footer.php')
       ?>
       <!-- End of Footer -->
     </div>
@@ -118,12 +134,6 @@ if (!isset($_SESSION['user_id'])) {
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
-  <!-- Logout Modal-->
-  <?php
-  include('logout.php')
-  ?>
-
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -1,8 +1,15 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start(); // Start the session if it's not already started
-} // Include file koneksi ke database
-include_once "koneksi.php";
+session_start();
+
+
+// Check if the user is not logged in
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to the login page
+    header("Location: login.php");
+    exit(); // Stop further execution
+}
+
+require_once "koneksi.php";
 
 // Periksa apakah parameter id artikel telah diberikan
 if (isset($_GET['id'])) {
@@ -27,7 +34,6 @@ if (isset($_GET['id'])) {
 // Tutup koneksi ke database
 mysqli_close($koneksi);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 

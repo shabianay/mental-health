@@ -2,37 +2,46 @@
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Include file koneksi ke database
-  include "koneksi.php";
+  require_once "koneksi.php";
 
   // Ambil nilai dari form
   $email = $_POST['email'];
   $password = $_POST['password'];
 
-  // Query untuk mencari user berdasarkan email dan password
-  $query = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
+  // Query untuk mencari user berdasarkan email
+  $query = "SELECT * FROM users WHERE email = '$email'";
   $result = mysqli_query($koneksi, $query);
 
   // Periksa apakah query berhasil dijalankan dan data ditemukan
   if ($result && mysqli_num_rows($result) > 0) {
-    // Data ditemukan, buat session untuk user
+    // Data ditemukan, ambil data user
     $user = mysqli_fetch_assoc($result);
-    $_SESSION['user_id'] = $user['id'];
-    $_SESSION['email'] = $user['email'];
 
-    // Redirect ke halaman user_dashboard.php setelah login berhasil
-    header("Location: user_dashboard.php");
-    exit();
+    // Verifikasi password
+    if (password_verify($password, $user['password'])) {
+      // Set session variables
+      $_SESSION['user_id'] = $user['id'];
+      $_SESSION['email'] = $user['email'];
+
+      // Redirect based on user role
+      if ($user['role'] == 'admin') {
+        header("Location: admin_dashboard.php");
+      } else {
+        header("Location: user_dashboard.php");
+      }
+      exit();
+    } else {
+      // Password tidak cocok, set pesan error
+      $error_message = "Email atau password salah. Silakan coba lagi.";
+    }
   } else {
-    // Data tidak ditemukan, beri pesan error
-    $error_message = "Email atau password salah. Silakan coba lagi.";
+    // Data tidak ditemukan, set pesan error
+    $error_message = "Akun tidak terdaftar. Silakan coba lagi.";
   }
-
   // Tutup koneksi ke database
   mysqli_close($koneksi);
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -75,7 +84,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Hai, Silakan Masuk!</h1>
                   </div>
-                  <form class="user" method="post" action="login_process.php">
+                  <?php
+                  // Check if error message is set and not empty
+                  if (isset($error_message) && !empty($error_message)) {
+                    echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
+                  }
+                  ?>
+                  <form class="user" method="post" action="">
                     <div class="form-group">
                       <input type="email" class="form-control form-control-user" name="email" id="email" placeholder="Email" required />
                     </div>
@@ -87,16 +102,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </button>
                   </form>
                   <hr />
-                  <!-- <div class="text-center">
-                      <a class="small" href="forgot-password.html"
-                        >Lupa password?</a
-                      >
-                    </div> -->
                   <div class="text-center">
                     <a class="small" href="register.php">Buat akunmu</a>
                   </div>
                   <div class="text-center">
-                    <a class="small"  style="color:black" href="index.php">Balik halaman utama</a>
+                    <a class="small" style="color:black" href="index.php">Balik halaman utama</a>
                   </div>
                 </div>
               </div>

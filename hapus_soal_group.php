@@ -11,8 +11,7 @@ if (!isset($_SESSION['user_id'])) {
     exit(); // Stop further execution
 }
 
-// Include database connection
-include "koneksi.php";
+require_once "koneksi.php";
 
 // Check if the ID parameter is provided in the URL
 if (isset($_GET['id'])) {

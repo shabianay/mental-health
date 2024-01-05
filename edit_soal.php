@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit(); // Stop further execution
 }
-include "koneksi.php";
+require_once "koneksi.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     $id_soal = $_GET['id'];
@@ -55,11 +55,33 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
 
 <body>
     <div id="wrapper">
-        <?php include('navbar_admin.php') ?>
+        <?php require_once('navbar_admin.php') ?>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <?php include('topbar_admin.php') ?>
-                <!-- Begin Page Content -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600"></span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="logout.php">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav> <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <h1 class="h3 mb-4 text-gray-800">Edit Soal</h1>
                     <form method="post" action="update_soal.php">
@@ -97,11 +119,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
                     </form>
                 </div>
             </div>
+            <?php require_once('footer.php') ?>
         </div>
     </div>
-    <?php include('footer.php') ?>
-    <!-- Logout Modal-->
-    <?php include('logout.php') ?>
+
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>

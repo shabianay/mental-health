@@ -1,5 +1,5 @@
 <?php
-include "koneksi.php";
+require_once "koneksi.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Check if the 'isi_pesan' key exists in the $_POST array

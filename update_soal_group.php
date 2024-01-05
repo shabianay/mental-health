@@ -1,6 +1,5 @@
 <?php
-// Include database connection
-include "koneksi.php";
+require_once "koneksi.php";
 
 // Check if the HTTP POST request method is used
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
