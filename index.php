@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
+    <title>Selamat Datang</title>
+    <script src="https://kit.fontawesome.com/f3eccbebbf.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-eFJ5Z2IE5LlSVqf3+LyS/xA2T3cQj6zF3yZ5P7VfBmVfSrxcs6h3K9u7f8Z7f8wG" crossorigin="anonymous">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,9 +30,8 @@
         }
 
         .cta-button {
-            display: inline-block;
             padding: 10px 20px;
-            background-color: #000;
+            background-color: #3057c8;
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
@@ -37,11 +39,11 @@
         }
 
         .cta-button:hover {
-            background-color: #2c2727;
+            background-color: #396bff;
         }
 
         .hero {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 400'%3E%3Cdefs%3E%3CradialGradient id='a' cx='396' cy='281' r='514' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%230E2ADD'/%3E%3Cstop offset='1' stop-color='%23253333'/%3E%3C/radialGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='400' y1='148' x2='400' y2='333'%3E%3Cstop offset='0' stop-color='%2338FFEA' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%2338FFEA' stop-opacity='0.5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23a)' width='800' height='400'/%3E%3Cg fill-opacity='0.4'%3E%3Ccircle fill='url(%23b)' cx='267.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='532.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='400' cy='30' r='300'/%3E%3C/g%3E%3C/svg%3E");
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 10)), url("./img/24720446_6907178.svg");
             background-attachment: fixed;
             background-size: cover;
             background-position: center;
@@ -52,7 +54,7 @@
             align-items: center;
             text-align: center;
             color: #fff;
-            /* padding: 100px 20px; */
+            padding: 0px 0px;
             /* Updated padding for vertical and horizontal spacing */
         }
 
@@ -63,7 +65,7 @@
         }
 
         .hero p {
-            font-size: 1.5em;
+            font-size: 1.5m;
             margin-bottom: 35px;
             /* Added margin bottom for spacing */
         }
@@ -73,7 +75,7 @@
             font-size: 1.2em;
         }
 
-        .features {
+        /* .features {
             background-color: #f9f9f9;
             padding: 50px 0;
             text-align: center;
@@ -97,17 +99,20 @@
 
         .feature p {
             font-size: 1.1em;
-        }
+        } */
     </style>
 </head>
 
 <body>
     <section class="hero">
-        <h1>Your Catchy Headline Here</h1>
-        <p>A compelling description of your product or service.</p>
-        <a href="register.php" class="cta-button">Get Started</a>
+        <h1>Perhatikan Kesehatan Mental Anda</h1>
+        <p>Temukan dukungan kesehatan mental melalui platform ini dengan alat penilaian yang ramah pengguna</p>
+        <a href="register.php" class="cta-button">
+            Mulai Tes
+            <i class="fas fa-arrow-right" style="margin-left: 5px;"></i>
+        </a>
     </section>
-    <section class="features">
+    <!-- <section class="features">
         <div class="feature">
             <img src="./uploads/msib.png" alt="Feature 1">
             <h3>Feature 1</h3>
@@ -118,8 +123,7 @@
             <h3>Feature 2</h3>
             <p>Description of feature 2.</p>
         </div>
-        <!-- Add more features as needed -->
-    </section>
+    </section> -->
 </body>
 
 </html>
