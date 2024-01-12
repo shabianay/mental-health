@@ -92,16 +92,16 @@ if (isset($_GET['id'])) {
                             <input class="form-control" type="text" id="name" name="name" value="<?php echo $row['name']; ?>" required>
                         </div>
                         <div class="form-group">
-                            <label for="normal_weight">Normal Weight: (desimal)</label>
-                            <input class="form-control" type="number" id="normal_weight" name="normal_weight" step="0.01" min="0" value="<?php echo $row['normal_weight']; ?>" required>
+                            <label for="sehat">Sehat: (desimal)</label>
+                            <input class="form-control" type="number" id="sehat" name="sehat" step="0.01" min="0" value="<?php echo $row['sehat']; ?>" required>
                         </div>
                         <div class="form-group">
-                            <label for="perbatasan_weight">Perbatasan Weight: (desimal)</label>
-                            <input class="form-control" type="number" id="perbatasan_weight" name="perbatasan_weight" step="0.01" min="0" value="<?php echo $row['perbatasan_weight']; ?>" required>
+                            <label for="perlu_perhatian">Perlu Perhatian: (desimal)</label>
+                            <input class="form-control" type="number" id="perlu_perhatian" name="perlu_perhatian" step="0.01" min="0" value="<?php echo $row['perlu_perhatian']; ?>" required>
                         </div>
                         <div class="form-group">
-                            <label for="abnormal_weight">Abnormal Weight: (desimal)</label>
-                            <input class="form-control" type="number" id="abnormal_weight" name="abnormal_weight" step="0.01" min="0" value="<?php echo $row['abnormal_weight']; ?>" required>
+                            <label for="butuh_penanganan">Butuh Penanganan: (desimal)</label>
+                            <input class="form-control" type="number" id="butuh_penanganan" name="butuh_penanganan" step="0.01" min="0" value="<?php echo $row['butuh_penanganan']; ?>" required>
                         </div>
                         <button type="submit" class="btn btn-primary" name="create_group">Update soal grup</button>
                         <a href="soal_group.php" class="btn btn-secondary">Kembali</a>

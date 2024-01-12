@@ -12,12 +12,12 @@ require_once "koneksi.php";
 // Create
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create_group"])) {
     $name = $_POST["name"];
-    $normalWeight = $_POST["normal_weight"];
-    $perbatasanWeight = $_POST["perbatasan_weight"];
-    $abnormalWeight = $_POST["abnormal_weight"];
+    $sehat = $_POST["sehat"];
+    $perlu_perhatian = $_POST["perlu_perhatian"];
+    $butuh_penanganan = $_POST["butuh_penanganan"];
 
-    $query = "INSERT INTO `soal_group` (`name`, `normal_weight`, `perbatasan_weight`, `abnormal_weight`) 
-                  VALUES ('$name', '$normalWeight', '$perbatasanWeight', '$abnormalWeight')";
+    $query = "INSERT INTO `soal_group` (`name`, `sehat`, `perlu_perhatian`, `butuh_penanganan`) 
+                  VALUES ('$name', '$sehat', '$perlu_perhatian', '$abnormalWeight')";
     $result = mysqli_query($koneksi, $query);
 
     if ($result) {
@@ -87,16 +87,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create_group"])) {
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="form-group">
-                            <label for="normla_weight">Normal Weight: (desimal)</label>
-                            <input type="number" class="form-control" id="normal_weight" name="normal_weight" step="0.01" min="0" value="1.0" required>
+                            <label for="sehat">Sehat: (desimal)</label>
+                            <input type="number" class="form-control" id="sehat" name="sehat" step="0.01" min="0" value="1.0" required>
                         </div>
                         <div class="form-group">
-                            <label for="perbatasan_weight">Perbatasan Weight: (desimal)</label>
-                            <input type="number" class="form-control" id="perbatasan_weight" name="perbatasan_weight" step="0.01" min="0" value="1.0" required>
+                            <label for="perlu_perhatian">Perlu Perhatian: (desimal)</label>
+                            <input type="number" class="form-control" id="perlu_perhatian" name="perlu_perhatian" step="0.01" min="0" value="1.0" required>
                         </div>
                         <div class="form-group">
-                            <label for="abnormal_weight">Abnormal Weight: (desimal)</label>
-                            <input type="number" class="form-control" id="abnormal_weight" name="abnormal_weight" step="0.01" min="0" value="1.0" required>
+                            <label for="butuh_penanganan">Butuh Penanganan: (desimal)</label>
+                            <input type="number" class="form-control" id="butuh_penanganan" name="butuh_penanganan" step="0.01" min="0" value="1.0" required>
                         </div>
                         <button type="submit" class="btn btn-primary" name="create_group">Buat Soal Grup</button>
                         <a href="soal_group.php" class="btn btn-secondary">Kembali</a>

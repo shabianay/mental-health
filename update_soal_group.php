@@ -6,19 +6,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve the form data
     $id = $_POST['id'];
     $name = $_POST['name'];
-    $normalWeight = $_POST['normal_weight'];
-    $perbatasanWeight = $_POST['perbatasan_weight'];
-    $abnormalWeight = $_POST['abnormal_weight'];
+    $sehat = $_POST['sehat'];
+    $perlu_perhatian = $_POST['perlu_perhatian'];
+    $butuh_penanganan = $_POST['butuh_penanganan'];
 
     // Update the Soal Group in the database
-    $query = "UPDATE `soal_group` SET name = ?, normal_weight = ?, perbatasan_weight = ?, abnormal_weight = ? WHERE id = ?";
+    $query = "UPDATE `soal_group` SET name = ?, sehat = ?, perlu_perhatian = ?, butuh_penanganan = ? WHERE id = ?";
 
     // Prepare the statement
     $stmt = mysqli_prepare($koneksi, $query);
 
     if ($stmt) {
         // Bind the parameters
-        mysqli_stmt_bind_param($stmt, "sdddi", $name, $normlaWeight, $perbatasanWeight, $abnormalWeight, $id);
+        mysqli_stmt_bind_param($stmt, "sdddi", $name, $sehat, $perlu_perhatian, $butuh_penanganan, $id);
 
         // Execute the statement
         if (mysqli_stmt_execute($stmt)) {
