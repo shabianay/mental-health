@@ -74,6 +74,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="admin_profile.php">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profil
+                                </a>
                                 <a class="dropdown-item" href="logout.php">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
@@ -115,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
                             <input type="text" class="form-control" id="opsiC" name="opsiC" value="<?php echo $row['opsi_c']; ?>" required>
                         </div>
                         <button type="submit" class="btn btn-primary" name="create_group">Update soal grup</button>
-                        <a href="soal_group.php" class="btn btn-secondary">Kembali</a>
+                        <a href="soal.php" class="btn btn-secondary">Kembali</a>
                     </form>
                 </div>
             </div>

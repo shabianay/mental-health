@@ -6,6 +6,43 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit(); // Stop further execution
 }
+require_once "koneksi.php";
+
+// Inisialisasi variabel
+$title = "";
+$content = "";
+$image_path = "";
+
+// Jika tombol "Submit" diklik
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Ambil data dari formulir
+    $title = $_POST["title"];
+    $content = $_POST["content"];
+
+    // Ambil informasi file gambar
+    $image_name = $_FILES["image"]["name"];
+    $image_tmp = $_FILES["image"]["tmp_name"];
+    $image_path = "uploads/" . $image_name;
+
+    // Periksa ukuran file gambar (maksimal 2MB)
+    if ($_FILES["image"]["size"] > 2 * 1024 * 1024) {
+        echo "<script>alert('Ukuran file gambar melebihi batas maksimal (2MB).');</script>";
+    } else {
+        // Pindahkan file gambar ke folder uploads
+        move_uploaded_file($image_tmp, $image_path);
+
+        // Query untuk menyimpan artikel ke database
+        $query = "INSERT INTO articles (title, content, image_path) VALUES ('$title', '$content', '$image_path')";
+        $result = mysqli_query($koneksi, $query);
+
+        // Jika query berhasil dijalankan
+        if ($result) {
+            echo "<script>alert('Artikel berhasil ditambahkan');</script>";
+        } else {
+            echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -21,6 +58,7 @@ if (!isset($_SESSION['user_id'])) {
     <title>Dashboard Admin</title>
 
     <!-- Custom fonts for this template-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
@@ -108,36 +146,53 @@ if (!isset($_SESSION['user_id'])) {
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600"></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="logout.php">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
+                <?php
+                require_once('topbar_admin.php')
+                ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Halaman Artikel</h1>
                     <!-- Tombol untuk membuat artikel baru -->
-                    <a href="buat_artikel.php" class="btn btn-primary mb-3">Buat Artikel Baru</a>
+                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addArticleModal">
+                        Tambah Artikel Baru
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="addArticleModal" tabindex="-1" role="dialog" aria-labelledby="addArticleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addArticleModalLabel">Tambah Artikel Baru</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Isi formulir untuk menambahkan artikel -->
+                                    <form method="post" action="artikel.php" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <label for="title">Judul</label>
+                                            <input type="text" class="form-control" id="title" name="title" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="content">Isi</label>
+                                            <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="image">Gambar (maksimal 2MB)</label>
+                                            <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required maxlength="2097152">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <a href="buat_artikel.php" class="btn btn-primary mb-3">Buat Artikel Baru</a> -->
                     <?php
                     require_once "koneksi.php";
                     // Check if the 'success' parameter exists in the URL
@@ -173,27 +228,33 @@ if (!isset($_SESSION['user_id'])) {
                         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
                         echo "<thead>";
                         echo "<tr>";
+                        echo "<th>No</th>";
                         echo "<th>Judul</th>";
                         echo "<th>Isi</th>";
                         echo "<th>Gambar</th>";
                         echo "<th>Dibuat</th>";
                         echo "<th>Diperbarui</th>";
-                        echo "<th>Edit</th>";
-                        echo "<th>Hapus</th>";
+                        echo "<th>Aksi</th>";
                         echo "</tr>";
                         echo "</thead>";
                         echo "<tbody>";
+                        $counter = 1; // Inisialisasi counter
                         // Loop through the result set and display the articles
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>";
+                            echo "<td>" . $counter . "</td>";
                             echo "<td>" . $row['title'] . "</td>";
                             echo "<td>" . $row['content'] . "</td>";
                             echo "<td><img src='" . $row['image_path'] . "' alt='Article Image' style='max-width: 100px; max-height: 100px;'></td>";
                             echo "<td>" . $row['created_at'] . "</td>";
                             echo "<td>" . $row['updated_at'] . "</td>";
-                            echo "<td><a href='edit_artikel.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>"; // Tombol edit dengan link ke halaman edit_artikel.php dengan parameter id artikel
-                            echo "<td><a href='hapus_artikel.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Hapus</a></td>"; // Tombol hapus dengan link ke halaman hapus_artikel.php dengan parameter id artikel
+                            echo "<td style='text-align: center'>";
+                            echo "<a href='edit_artikel.php?id=" . $row['id'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
+                            echo "&nbsp;";
+                            echo "<a href='hapus_artikel.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Hapus<i class='ml-2 fa-regular fa-trash-can'></i></a>";
+                            echo "</td>";
                             echo "</tr>";
+                            $counter++; // Tingkatkan counter setelah setiap baris
                         }
                         echo "</tbody>";
                         echo "</table>";

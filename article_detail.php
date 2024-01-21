@@ -46,7 +46,8 @@ mysqli_close($koneksi);
 
     <title>Detail Artikel</title>
 
-    <!-- Custom fonts for this template-->
+    <!-- Custom fonts for thi s template-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
@@ -54,7 +55,7 @@ mysqli_close($koneksi);
     <link href="css/sb-admin-2.css" rel="stylesheet" />
     <style>
         .card-img-top {
-            width: 100px;
+            width: 100%;
             object-fit: cover;
         }
 
@@ -72,10 +73,16 @@ mysqli_close($koneksi);
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
+        <?php
+        require_once('navbar_user.php')
+        ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
+                <?php
+                require_once('topbar_user.php')
+                ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="row-artikel-detail">
@@ -85,7 +92,9 @@ mysqli_close($koneksi);
                                     <img class="card-img-top" src="<?php echo $article['image_path']; ?>" alt="">
                                     <h2 class="article-title font-weight-bold text-primary"><?php echo $article['title']; ?></h2>
                                     <p><?php echo $article['content']; ?></p>
-                                    <a href="baca_artikel.php" class="btn btn-primary mb-3">Kembali</a>
+                                    <a href="baca_artikel.php" class="btn btn-primary mb-3">
+                                        <i class="fa-solid fa-angle-left"></i> Kembali
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -94,6 +103,9 @@ mysqli_close($koneksi);
                 <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
+            <?php
+            require_once('footer.php')
+            ?>
         </div>
         <!-- End of Content Wrapper -->
     </div>

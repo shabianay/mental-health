@@ -66,6 +66,15 @@ if ($result) {
   $total_rs = 0;
   echo "Error: " . mysqli_error($koneksi);
 }
+// Ambil informasi pengguna dari database
+$user_id = $_SESSION['user_id'];
+$query = "SELECT * FROM users WHERE id = $user_id";
+$result = mysqli_query($koneksi, $query);
+if (!$result) {
+  // Error saat mengambil data dari database
+  die("Query error: " . mysqli_error($koneksi));
+}
+$user = mysqli_fetch_assoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,33 +106,12 @@ if ($result) {
     <div id="content-wrapper" class="d-flex flex-column">
       <!-- Main Content -->
       <div id="content">
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-          <!-- Sidebar Toggle (Topbar) -->
-          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-            <i class="fa fa-bars"></i>
-          </button>
-          <!-- Topbar Navbar -->
-          <ul class="navbar-nav ml-auto">
-            <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600"></span>
-                <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
-              </a>
-              <!-- Dropdown - User Information -->
-              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="logout.php">
-                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Logout
-                </a>
-              </div>
-            </li>
-          </ul>
-        </nav>
+        <?php
+        require_once('topbar_admin.php')
+        ?>
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">Halo, Selamat Datang Admin</h1>
           <div class="row">
             <!-- Pengguna -->
             <div class="col-xl-3 col-md-6 mb-4">
@@ -216,6 +204,10 @@ if ($result) {
                 Informasi
               </h6>
             </div>
+            <h1 class="mt-4 mb-1 h4 text-gray-800 font-weight-bold" style="text-align:center">Selamat Datang</h1>
+            <h1 class="h5 mb-4 text-gray-800" style="text-align:center">
+              <?php echo $user['Namalengkap']; ?>
+            </h1>
             <div class="card-body">
               <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/undraw_posting_photo.svg" alt="...">
               <p>

@@ -42,13 +42,13 @@
     </li>
     <!-- Nav Item - Charts -->
     <!-- Divider -->
-    <hr class="sidebar-divider my-0" />
+    <!-- <hr class="sidebar-divider my-0" />
 
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'chatbot.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="chatbot.php">
             <i class="fas fa-fw fa-robot"></i>
             <span>Chatbot</span></a>
-    </li>
+    </li> -->
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block" />
 

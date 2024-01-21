@@ -12,7 +12,7 @@ if (isset($_POST['submit'])) {
   $password = $_POST['password'];
   $phoneNumber = $_POST['phoneNumber'];
   $angkatan = $_POST['angkatan'];
-  $gender = $_POST['gender']; // Added line to capture gender from the form
+  $gender = $_POST['gender'];
 
   // Validasi form (pastikan semua field terisi)
   if (empty($namaLengkap) || empty($email) || empty($password) || empty($phoneNumber) || empty($angkatan) || empty($gender)) {
@@ -69,13 +69,6 @@ if (isset($_POST['submit'])) {
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.css" rel="stylesheet" />
-  <style>
-    body {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-    }
-  </style>
 </head>
 
 <body class="bg-gradient-primary">
@@ -95,22 +88,28 @@ if (isset($_POST['submit'])) {
               <?php endif; ?>
               <form class="user" method="post" action="" onsubmit="return validatePassword()">
                 <div class="form-group">
-                  <input type="text" class="form-control form-control-user" name="Namalengkap" placeholder="Nama Lengkap" />
+                  <label for="Namalengkap">Nama Lengkap</label>
+                  <input type="text" class="form-control" id="Namalengkap" name="Namalengkap" placeholder="Nama Lengkap" />
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" name="email" placeholder="Email" />
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" />
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control form-control-user" name="password" id="password" placeholder="Password" pattern="(?=.*\d).{8,}" title="Password harus terdiri dari minimal 8 karakter dan mengandung angka" required />
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password" pattern="(?=.*\d).{8,}" title="Password harus terdiri dari minimal 8 karakter dan mengandung angka" required />
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control form-control-user" name="confirmPassword" id="confirmPassword" placeholder="Konfirmasi Password" pattern="(?=.*\d).{8,}" title="Password harus terdiri dari minimal 8 karakter dan mengandung angka" required />
+                  <label for="confirmPassword">Konfirmasi Password</label>
+                  <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Konfirmasi Password" pattern="(?=.*\d).{8,}" title="Password harus terdiri dari minimal 8 karakter dan mengandung angka" required />
                 </div>
                 <div class="form-group">
-                  <input type="text" class="form-control form-control-user" name="phoneNumber" placeholder="Nomor HP" pattern="[0-9]{10,}" title="Nomor HP harus terdiri dari minimal 10 angka" required />
+                  <label for="phoneNumber">Nomor HP</label>
+                  <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Nomor HP" pattern="[0-9]{10,}" title="Nomor HP harus terdiri dari minimal 10 angka" required />
                 </div>
                 <div class="form-group">
-                  <select class="form-control" name="angkatan">
+                  <label for="angkatan">Angkatan</label>
+                  <select class="form-control" id="angkatan" name="angkatan">
                     <option value="" selected disabled hidden>Pilih Angkatan</option>
                     <option value="2020">2020</option>
                     <option value="2021">2021</option>
@@ -119,7 +118,7 @@ if (isset($_POST['submit'])) {
                   </select>
                 </div>
                 <div class="form-group">
-                  <!-- <label for="gender">Jenis Kelamin</label> -->
+                  <label for="gender">Jenis Kelamin</label>
                   <select class="form-control" id="gender" name="gender" required>
                     <option value="" selected disabled hidden>Pilih Jenis Kelamin</option>
                     <option value="Laki-Laki">Laki-Laki</option>
@@ -128,6 +127,7 @@ if (isset($_POST['submit'])) {
                 </div>
                 <input type="submit" name="submit" value="Buat akun" class="btn btn-primary btn-user btn-block">
               </form>
+
               <hr />
               <!-- <div class="text-center">
                   <a class="small" href="forgot-password.html"

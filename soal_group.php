@@ -10,6 +10,25 @@ if (!isset($_SESSION['user_id'])) {
 require_once "koneksi.php";
 $retrieveQuery = "SELECT * FROM `soal_group`";
 $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
+
+// Create
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create_group"])) {
+    $name = $_POST["name"];
+    $sehat = $_POST["sehat"];
+    $perlu_perhatian = $_POST["perlu_perhatian"];
+    $butuh_penanganan = $_POST["butuh_penanganan"];
+
+    $query = "INSERT INTO `soal_group` (`name`, `sehat`, `perlu_perhatian`, `butuh_penanganan`) 
+              VALUES ('$name', '$sehat', '$perlu_perhatian', '$butuh_penanganan')";
+
+    $result = mysqli_query($koneksi, $query);
+
+    if ($result) {
+        echo "<script>alert('Soal group created successfully');</script>";
+    } else {
+        echo "Error creating soal group: " . mysqli_error($koneksi);
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +43,7 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
     <title>Buat Soal Group</title>
 
     <!-- Custom fonts for this template-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
@@ -41,102 +61,113 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600"></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="logout.php">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav> <!-- Begin Page Content -->
+                <?php require_once('topbar_admin.php') ?>
+                <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Halaman Soal Grup</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Halaman Soal Grup</h1>
                     <!-- Tombol untuk membuat artikel baru -->
-                    <a href="buat_soal_group.php" class="btn btn-primary mb-3">Buat Soal Grup</a>
-                    <?php
-                    require_once "koneksi.php";
-                    // Check if the 'success' parameter exists in the URL
-                    if (isset($_GET['success'])) {
-                        // Check the value of the 'success' parameter
-                        if ($_GET['success'] === 'delete') {
-                            // If the value is 'delete', display a success message
-                            echo '<div class="alert alert-success" role="alert">Grup soal berhasil dihapus.</div>';
-                        }
-                    }
-                    // Check if the 'success' parameter exists in the URL
-                    if (isset($_GET['success'])) {
-                        // Check the value of the 'success' parameter
-                        if ($_GET['success'] === 'update') {
-                            // If the value is 'update', display a success message
-                            echo '<div class="alert alert-success" role="alert">Soal Group berhasil diperbarui.</div>';
-                        }
-                    }
-                    /// Query to retrieve articles from the database
-                    $query = "SELECT * FROM soal_group";
-                    $result = mysqli_query($koneksi, $query);
-                    // Check if the query was successful
-                    if ($result) {
-                        // Display the table headers
-                        echo "<div class='card shadow mb-4'>";
-                        echo "<div class='card-header py-3'>";
-                        echo "<h6 class='m-0 font-weight-bold text-primary'>";
-                        echo "Data Soal Grup";
-                        echo "</h6>";
-                        echo "</div>";
-                        echo "<div class='card-body'>";
-                        echo "<div class='table-responsive'>";
-                        echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
-                        echo "<thead>";
-                        echo "<tr>";
-                        echo "<th>Nama</th>";
-                        echo "<th>Sehat</th>";
-                        echo "<th>Perlu Perhatian</th>";
-                        echo "<th>Butuh Penanganan</th>";
-                        echo "<th>Edit</th>";
-                        echo "<th>Hapus</th>";
-                        echo "</tr>";
-                        echo "</thead>";
-                        echo "<tbody>";
-                        // Loop through the result set and display the articles
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<tr>";
-                            echo "<td>" . $row['name'] . "</td>";
-                            echo "<td>" . $row['sehat'] . "</td>";
-                            echo "<td>" . $row['perlu_perhatian'] . "</td>";
-                            echo "<td>" . $row['butuh_penanganan'] . "</td>";
-                            echo "<td><a href='edit_soal_group.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
-                            echo "<td><a href='hapus_soal_group.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Hapus</a></td>";
-                            echo "</tr>";
-                        }
-                        echo "</tbody>";
-                        echo "</table>";
-                        echo "</div>";
-                        echo "</div>";
-                        echo "</div>";
-                        echo "</div>"; // This closes the div for the DataTables Example
+                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addSoalGroupModal">
+                        Tambah Soal Grup
+                    </button>
+                    <div class="modal fade" id="addSoalGroupModal" tabindex="-1" role="dialog" aria-labelledby="addSoalGroupModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addSoalGroupModalLabel">Tambah Soal Grup</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Add your form for adding Soal Group here -->
+                                    <form method="post" action="soal_group.php" enctype="multipart/form-data">
+                                        <!-- Your form fields for adding Soal Group -->
+                                        <div class="form-group">
+                                            <label for="name">Keterangan: </label>
+                                            <input type="text" class="form-control" id="name" name="name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sehat">Sehat: (desimal)</label>
+                                            <input type="number" class="form-control" id="sehat" name="sehat" step="0.01" min="0" value="1.0" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="perlu_perhatian">Perlu Perhatian: (desimal)</label>
+                                            <input type="number" class="form-control" id="perlu_perhatian" name="perlu_perhatian" step="0.01" min="0" value="1.0" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="butuh_penanganan">Butuh Penanganan: (desimal)</label>
+                                            <input type="number" class="form-control" id="butuh_penanganan" name="butuh_penanganan" step="0.01" min="0" value="1.0" required>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary" name="create_group">Tambah Soal Grup</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <?php
+                    // Check if the query was successful
+                    if ($retrieveResult) {
+                        // Display the table headers
+                    ?>
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">
+                                    Data Soal Grup
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Keterangan</th>
+                                                <th>Sehat</th>
+                                                <th>Perlu Perhatian</th>
+                                                <th>Butuh Penanganan</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $counter = 1; // Inisialisasi counter
+                                            // Loop through the result set and display the articles
+                                            while ($row = mysqli_fetch_assoc($retrieveResult)) {
+                                                echo "<tr>";
+                                                echo "<td>" . $counter . "</td>";
+                                                echo "<td>" . $row['name'] . "</td>";
+                                                echo "<td>" . $row['sehat'] . "</td>";
+                                                echo "<td>" . $row['perlu_perhatian'] . "</td>";
+                                                echo "<td>" . $row['butuh_penanganan'] . "</td>";
+                                                echo "<td style='text-align: center'>";
+                                                echo "<a href='edit_soal_group.php?id=" . $row['id'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
+                                                echo "&nbsp;";
+                                                echo "<a href='hapus_soal_group.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Hapus<i class='ml-2 fa-regular fa-trash-can'></i></a>";
+                                                echo "</td>";
+                                                echo "</tr>";
+                                                $counter++;
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.container-fluid -->
+                        <!-- Footer -->
+                        <?php require_once('footer.php') ?>
+                        <!-- End of Footer -->
+                    <?php
                         // Free the result set
-                        mysqli_free_result($result);
+                        mysqli_free_result($retrieveResult);
                     } else {
                         // If the query was not successful, display an error message
-                        echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
+                        echo "Error: " . $retrieveQuery . "<br>" . mysqli_error($koneksi);
                     }
                     // Close the database connection
                     mysqli_close($koneksi);

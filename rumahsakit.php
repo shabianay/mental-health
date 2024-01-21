@@ -7,6 +7,50 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit(); // Stop further execution
 }
+
+require_once "koneksi.php";
+
+// Inisialisasi variabel
+$name = "";
+$address = "";
+$phone = "";
+$email = "";
+$website = "";
+$image_path = "";
+
+// Jika tombol "Submit" diklik
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Ambil data dari formulir
+    $name = $_POST["name"];
+    $address = $_POST["address"];
+    $phone = $_POST["phone"];
+    $email = $_POST["email"];
+    $website = $_POST["website"];
+
+    // Ambil informasi file gambar
+    $image_name = $_FILES["image"]["name"];
+    $image_tmp = $_FILES["image"]["tmp_name"];
+    $image_path = "uploads/" . $image_name;
+
+    // Periksa ukuran file gambar (maksimal 2MB)
+    if ($_FILES["image"]["size"] > 2 * 1024 * 1024) {
+        echo "<script>alert('Ukuran file gambar melebihi batas maksimal (2MB).');</script>";
+    } else {
+        // Pindahkan file gambar ke folder uploads
+        move_uploaded_file($image_tmp, $image_path);
+
+        // Query untuk menyimpan rumah sakit ke database
+        $query = "INSERT INTO hospitals (name, address, phone, email, website, image_path) VALUES ('$name', '$address', '$phone', '$email', '$website', '$image_path')";
+        $result = mysqli_query($koneksi, $query);
+
+        // Jika query berhasil dijalankan
+        if ($result) {
+            echo "<script>alert('Rumah Sakit berhasil ditambahkan');</script>";
+        } else {
+            echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +65,7 @@ if (!isset($_SESSION['user_id'])) {
     <title>Rumah Sakit</title>
 
     <!-- Custom fonts for this template-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
@@ -40,36 +85,65 @@ if (!isset($_SESSION['user_id'])) {
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600"></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="logout.php">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
+                <?php
+                require_once('topbar_admin.php')
+                ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Halaman Daftar Rumah Sakit</h1>
                     <!-- Tombol untuk membuat rs baru -->
-                    <a href="buat_rs.php" class="btn btn-primary mb-3">Tambah Data Baru</a>
+                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#tambahRumahSakitModal">
+                        Tambah Rumah Sakit
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="tambahRumahSakitModal" tabindex="-1" role="dialog" aria-labelledby="tambahRumahSakitModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="tambahRumahSakitModalLabel">Tambah Rumah Sakit</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Add your form here -->
+                                    <form method="post" action="rumahsakit.php" enctype="multipart/form-data" id="tambahRumahSakitForm">
+                                        <!-- Your form fields here -->
+                                        <div class="form-group">
+                                            <label for="name">Nama Rumah Sakit</label>
+                                            <input type="text" class="form-control" id="name" name="name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Alamat</label>
+                                            <input type="text" class="form-control" id="address" name="address" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Telepon</label>
+                                            <input type="text" class="form-control" id="phone" name="phone" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="website">Website</label>
+                                            <input type="text" class="form-control" id="website" name="website">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="image">Gambar (maksimal 2MB)</label>
+                                            <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required maxlength="2097152">
+                                        </div>
+                                        <!-- Other form fields -->
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" form="tambahRumahSakitForm" class="btn btn-primary">Submit</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <?php
                     require_once "koneksi.php";
                     if (isset($_GET['success'])) {
@@ -97,6 +171,7 @@ if (!isset($_SESSION['user_id'])) {
                         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
                         echo "<thead>";
                         echo "<tr>";
+                        echo "<th>No</th>";
                         echo "<th>Nama</th>";
                         echo "<th>Alamat</th>";
                         echo "<th>Telepon</th>";
@@ -105,14 +180,14 @@ if (!isset($_SESSION['user_id'])) {
                         echo "<th>Gambar</th>";
                         echo "<th>Dibuat</th>";
                         echo "<th>Diperbarui</th>";
-                        echo "<th>Edit</th>";
-                        echo "<th>Hapus</th>";
+                        echo "<th>Aksi</th>";
                         echo "</tr>";
                         echo "</thead>";
                         echo "<tbody>";
-
+                        $counter = 1; // Inisialisasi counter
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>";
+                            echo "<td>" . $counter . "</td>";
                             echo "<td>" . $row['name'] . "</td>";
                             echo "<td>" . $row['address'] . "</td>";
                             echo "<td>" . $row['phone'] . "</td>";
@@ -121,9 +196,13 @@ if (!isset($_SESSION['user_id'])) {
                             echo "<td><img src='" . $row['image_path'] . "' alt='Rumah Sakit Image' style='max-width: 100px; max-height: 100px;'></td>";
                             echo "<td>" . $row['created_at'] . "</td>";
                             echo "<td>" . $row['updated_at'] . "</td>";
-                            echo "<td><a href='edit_rs.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
-                            echo "<td><a href='hapus_rs.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Hapus</a></td>";
+                            echo "<td style='text-align:center'>";
+                            echo "<a href='edit_rs.php?id=" . $row['id'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
+                            echo "&nbsp;"; // Add a non-breaking space here for spacing
+                            echo "<a href='hapus_rs.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Hapus<i class='ml-2 fa-regular fa-trash-can'></i></a>";
+                            echo "</td>";
                             echo "</tr>";
+                            $counter++;
                         }
 
                         echo "</tbody>";
@@ -137,7 +216,6 @@ if (!isset($_SESSION['user_id'])) {
                     } else {
                         echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
                     }
-
                     mysqli_close($koneksi);
                     ?>
                 </div>

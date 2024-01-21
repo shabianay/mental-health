@@ -10,6 +10,39 @@ if (!isset($_SESSION['user_id'])) {
 require_once "koneksi.php";
 $retrieveQuery = "SELECT * FROM `questions`";
 $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
+
+// Retrieve question groups from the database
+$retrieveQuery = "SELECT id, name FROM soal_group";
+$retrieveResult = mysqli_query($koneksi, $retrieveQuery);
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Retrieve form data
+    $questionText = $_POST['questionText'];
+    $questionGroupId = $_POST['questionGroup'];
+    $nilaiA = $_POST['nilaiA'];
+    $nilaiB = $_POST['nilaiB'];
+    $nilaiC = $_POST['nilaiC'];
+    $opsiA = $_POST['opsiA'];
+    $opsiB = $_POST['opsiB'];
+    $opsiC = $_POST['opsiC'];
+
+    // Insert data into the database
+    $insertQuery = "INSERT INTO questions (question_group_id, nilai_a, nilai_b, nilai_c, opsi_a, opsi_b, opsi_c, question_text) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($koneksi, $insertQuery);
+    mysqli_stmt_bind_param($stmt, "iiisssss", $questionGroupId, $nilaiA, $nilaiB, $nilaiC, $opsiA, $opsiB, $opsiC, $questionText);
+
+    // Execute the statement
+    if (mysqli_stmt_execute($stmt)) {
+        echo '<script>alert("Data berhasil ditambahkan.");</script>';
+    } else {
+        echo "Error creating soal: " . mysqli_error($koneksi);
+    }
+
+    // Close the statement
+    mysqli_stmt_close($stmt);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +55,7 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
     <meta name="author" content="" />
     <title>Soal</title>
     <!-- Custom fonts for this template-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
@@ -39,34 +73,77 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600"></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="logout.php">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav> <!-- Begin Page Content -->
+                <?php
+                require_once('topbar_admin.php')
+                ?>
+                <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <h1 class="h3 mb-4 text-gray-800">Halaman Daftar Soal</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Halaman Daftar Soal</h1>
                     <!-- Tombol untuk membuat artikel baru -->
-                    <a href="buat_soal.php" class="btn btn-primary mb-3">Buat Soal</a>
+                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addQuestionModal">
+                        Tambah Soal
+                    </button>
+                    <div class="modal fade" id="addQuestionModal" tabindex="-1" role="dialog" aria-labelledby="addQuestionModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addQuestionModalLabel">Tambah Soal Baru</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Form to add new question -->
+                                    <form method="post" action="soal.php">
+                                        <div class="form-group">
+                                            <label for="questionText">Soal</label>
+                                            <textarea class="form-control" id="questionText" name="questionText" rows="3" required></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="questionGroup">Soal Grup</label>
+                                            <select class="form-control" id="questionGroup" name="questionGroup" required>
+                                                <option value="">Pilih Soal Grup</option>
+                                                <?php
+                                                // Use the $retrieveResult variable to populate the options
+                                                while ($row = mysqli_fetch_assoc($retrieveResult)) {
+                                                    echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nilaiA">Nilai A</label>
+                                            <input type="number" class="form-control" id="nilaiA" name="nilaiA" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nilaiB">Nilai B</label>
+                                            <input type="number" class="form-control" id="nilaiB" name="nilaiB" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nilaiC">Nilai C</label>
+                                            <input type="number" class="form-control" id="nilaiC" name="nilaiC" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="opsiA">Opsi A</label>
+                                            <input type="text" class="form-control" id="opsiA" name="opsiA" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="opsiB">Opsi B</label>
+                                            <input type="text" class="form-control" id="opsiB" name="opsiB" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="opsiC">Opsi C</label>
+                                            <input type="text" class="form-control" id="opsiC" name="opsiC" required>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Tambah Soal</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Display existing questions -->
                     <?php
                     require_once "koneksi.php";
@@ -103,6 +180,7 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
                         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
                         echo "<thead>";
                         echo "<tr>";
+                        echo "<th>No</th>";
                         echo "<th>Soal</th>";
                         echo "<th>Grup Soal</th>";
                         echo "<th>Nilai A</th>";
@@ -111,16 +189,15 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
                         echo "<th>Opsi A</th>";
                         echo "<th>Opsi B</th>";
                         echo "<th>Opsi C</th>";
-                        echo "<th>Dibuat</th>";
-                        echo "<th>Diperbarui</th>";
-                        echo "<th>Edit</th>";
-                        echo "<th>Hapus</th>";
+                        echo "<th>Aksi</th>";
                         echo "</tr>";
                         echo "</thead>";
                         echo "<tbody>";
+                        $counter = 1; // Inisialisasi counter
                         // Loop through the result set and display the articles
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>";
+                            echo "<td>" . $counter . "</td>";
                             echo "<td>" . $row['question_text'] . "</td>";
                             echo "<td>" . $row['question_group_id'] . "</td>";
                             echo "<td>" . $row['nilai_a'] . "</td>";
@@ -129,11 +206,13 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
                             echo "<td>" . $row['opsi_a'] . "</td>";
                             echo "<td>" . $row['opsi_b'] . "</td>";
                             echo "<td>" . $row['opsi_c'] . "</td>";
-                            echo "<td>" . $row['created_at'] . "</td>";
-                            echo "<td>" . $row['updated_at'] . "</td>";
-                            echo "<td><a href='edit_soal.php?id=" . $row['id_soal'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
-                            echo "<td><a href='hapus_soal.php?id=" . $row['id_soal'] . "' class='btn btn-danger btn-sm'>Hapus</a></td>";
+                            echo "<td style='text-align: center'>";
+                            echo "<a href='edit_soal.php?id=" . $row['id_soal'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
+                            echo "&nbsp;";
+                            echo "<a href='hapus_soal.php?id=" . $row['id_soal'] . "' class='btn btn-danger btn-sm'>Hapus<i class='ml-2 fa-regular fa-trash-can'></i></a>";
+                            echo "</td>";
                             echo "</tr>";
+                            $counter++; // Tingkatkan counter setelah setiap baris
                         }
                         echo "</tbody>";
                         echo "</table>";

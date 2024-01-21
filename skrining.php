@@ -42,43 +42,16 @@ require_once 'koneksi.php';
             <!-- Main Content -->
             <div id="content">
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600"></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="profile.php">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="logout.php">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
+                <?php
+                require_once('topbar_user.php')
+                ?>
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <!-- Page Heading -->
                     <h1 style="text-align: left" class="h2 mb-2 text-gray-800">Skrining</h1>
                     <p style="text-align: left" class="h5 mb-3 text-gray-800">Mulai Tes Yuk</p>
                     <h1 style="text-align: center" class="h2 text-gray-800">MASIH DALAM DEVELOP</h1>
                 </div>
-                <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
 
