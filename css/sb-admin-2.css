@@ -11335,11 +11335,14 @@ body.sidebar-toggled footer.sticky-footer {
 
 .artikel-card h5 {
   margin-bottom: 10px;
+  text-decoration: none; /* Menghilangkan garis bawah pada judul */
 }
 
 .artikel-card p {
   margin-bottom: 5px;
+  text-decoration: none; /* Menghilangkan garis bawah pada konten */
 }
+
 /* CSS untuk efek animasi pada gambar */
 .artikel-card img {
   transition: transform 0.3s ease-in-out;

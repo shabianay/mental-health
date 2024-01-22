@@ -11,20 +11,6 @@ if (!isset($_SESSION['user_id'])) {
 // Lakukan koneksi ke database
 require_once 'koneksi.php';
 
-// Query untuk mengambil jumlah pengguna dari database (misalnya dari tabel 'users')
-$query = "SELECT COUNT(*) AS total_pengguna FROM users";
-$result = mysqli_query($koneksi, $query);
-
-if ($result) {
-  // Jika query berhasil, ambil hasilnya
-  $row = mysqli_fetch_assoc($result);
-  $total_pengguna = $row['total_pengguna'];
-} else {
-  // Jika query gagal, atur jumlah pengguna menjadi 0 atau tampilkan pesan kesalahan
-  $total_pengguna = 0;
-  echo "Error: " . mysqli_error($koneksi);
-}
-
 // Query untuk mengambil jumlah soal dari database 
 $query = "SELECT COUNT(*) AS total_soal FROM questions";
 $result = mysqli_query($koneksi, $query);
@@ -116,29 +102,8 @@ $user = mysqli_fetch_assoc($result);
         <div class="container-fluid">
           <!-- Page Heading -->
           <div class="row">
-            <!-- Pengguna -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        Jumlah Pengguna
-                      </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <?php echo number_format($total_pengguna); ?> <!-- Tampilkan jumlah pengguna dengan format ribuan -->
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-users fa-2x text-gray-300"></i> <!-- Ganti ikon dengan ikon pengguna -->
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <!-- Soal -->
-            <div class="col-xl-3 col-md-6 mb-4">
+            <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -159,7 +124,7 @@ $user = mysqli_fetch_assoc($result);
             </div>
 
             <!-- Artikel -->
-            <div class="col-xl-3 col-md-6 mb-4">
+            <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -180,7 +145,7 @@ $user = mysqli_fetch_assoc($result);
             </div>
 
             <!-- Rumah Sakit -->
-            <div class="col-xl-3 col-md-6 mb-4">
+            <div class="col-xl-4 col-md-6 mb-4">
               <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -207,10 +172,12 @@ $user = mysqli_fetch_assoc($result);
                 Informasi
               </h6>
             </div>
-            <h1 class="mt-4 mb-1 h4 text-gray-800 font-weight-bold" style="text-align:center">Selamat Datang</h1>
-            <h1 class="h5 mb-4 text-gray-800" style="text-align:center">
-              <?php echo $user['Namalengkap']; ?>
-            </h1>
+            <div class="information" style="text-align:center">
+              <h1 class="mt-4 h4 text-gray-800 font-weight-bold">Selamat Datang</h1>
+              <h1 class="h5 mb-4 text-white badge bg-success">
+                <?php echo $user['Namalengkap']; ?>
+              </h1>
+            </div>
             <div class="card-body">
               <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/undraw_posting_photo.svg" alt="...">
               <p>

@@ -65,83 +65,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.css" rel="stylesheet">
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
 </head>
 
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="admin_dashboard.php">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">Mental Health</div>
-            </a>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0" />
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_dashboard.php' ? 'active' : ''; ?>">
-                <a class="nav-link" href="admin_dashboard.php">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider" />
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item collapsed <?php echo basename($_SERVER['PHP_SELF']) === 'soal.php' || basename($_SERVER['PHP_SELF']) === 'soal_group.php' ? 'active' : ''; ?>">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSoal" aria-expanded="true" aria-controls="collapseSoal">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Soal</span>
-                </a>
-                <div id="collapseSoal" class="collapse" aria-labelledby="headingSoal" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="soal.php">Soal</a>
-                        <a class="collapse-item" href="soal_group.php">Kategori Soal</a>
-                    </div>
-                </div>
-            </li>
-
-            <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'artikel.php' ? 'active' : ''; ?>">
-                <a class="nav-link" href="artikel.php">
-                    <i class="fas fa-fw fa-newspaper"></i>
-                    <span>Artikel</span></a>
-            </li>
-
-            <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'rumahsakit.php' ? 'active' : ''; ?>">
-                <a class="nav-link" href="rumahsakit.php">
-                    <i class="fas fa-fw fa-hospital"></i>
-                    <span>Rumah Sakit</span></a>
-            </li>
-
-            <!-- Nav Item - Data Pengguna -->
-            <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'pengguna.php' ? 'active' : ''; ?>">
-                <a class="nav-link" href="pengguna.php">
-                    <i class="fas fa-fw fa-users"></i>
-                    <span>Data Pengguna</span></a>
-            </li>
-
-            <!-- Nav Item - Laporan -->
-            <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'laporan.php' ? 'active' : ''; ?>">
-                <a class="nav-link" href="laporan.php">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Laporan</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block" />
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-        </ul>
-        <!-- End of Sidebar -->
+        <?php
+        require_once('navbar_admin.php')
+        ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
@@ -176,15 +107,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         </div>
                                         <div class="form-group">
                                             <label for="content">Isi</label>
-                                            <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+                                            <textarea class="form-control" id="isiberita" name="content" rows="5" required></textarea>
                                         </div>
                                         <div class="form-group">
                                             <label for="image">Gambar (maksimal 2MB)</label>
                                             <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required maxlength="2097152">
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Tambah Artikel</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                                         </div>
                                     </form>
                                 </div>
@@ -244,7 +175,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             echo "<tr>";
                             echo "<td>" . $counter . "</td>";
                             echo "<td>" . $row['title'] . "</td>";
-                            echo "<td>" . $row['content'] . "</td>";
+                            echo "<td>" . substr($row['content'], 0, 100) . "</td>";
                             echo "<td><img src='" . $row['image_path'] . "' alt='Article Image' style='max-width: 100px; max-height: 100px;'></td>";
                             echo "<td>" . $row['created_at'] . "</td>";
                             echo "<td>" . $row['updated_at'] . "</td>";
@@ -252,6 +183,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             echo "<a href='edit_artikel.php?id=" . $row['id'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
                             echo "&nbsp;";
                             echo "<a href='hapus_artikel.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Hapus<i class='ml-2 fa-regular fa-trash-can'></i></a>";
+                            echo "&nbsp;";
+                            echo "<a href='lihat_artikel.php?id=" . $row['id'] . "' class='btn btn-success btn-sm'>Lihat<i class='ml-2 fa-regular fa-eye'></i></a>";
                             echo "</td>";
                             echo "</tr>";
                             $counter++; // Tingkatkan counter setelah setiap baris
@@ -309,6 +242,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script>
 
+    <!-- Load CKEditor -->
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script>
+        // Inisialisasi CKEditor pada textarea dengan id "content"
+        CKEDITOR.replace('isiberita');
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Get all the navigation links

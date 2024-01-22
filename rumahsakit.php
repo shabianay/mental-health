@@ -138,8 +138,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" form="tambahRumahSakitForm" class="btn btn-primary">Submit</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" form="tambahRumahSakitForm" class="btn btn-primary">Tambah Rumah Sakit</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                                 </div>
                             </div>
                         </div>

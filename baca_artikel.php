@@ -60,21 +60,24 @@ if (isset($_SESSION['namaLengkap'])) {
                     <div class="row" id="artikelList">
                         <?php
                         require_once "koneksi.php";
-                        // Query untuk mengambil semua data rumah sakit
+                        // Query untuk mengambil semua data artikel
                         $query = "SELECT * FROM articles";
                         $result = mysqli_query($koneksi, $query);
                         // Periksa apakah query berhasil
                         if ($result) {
-                            // Tampilkan data rumah sakit dalam bentuk card
+                            // Tampilkan data artikel dalam bentuk card
                             while ($row = mysqli_fetch_assoc($result)) {
-                                echo "<div class='col-md-4'>";
-                                echo "<a href='article_detail.php?id=" . $row['id'] . "' class='card artikel-card'>";
+                                echo "<div class='col-xl-4 col-md-6 mb-
+                                4'>";
+                                echo "<div class='card card artikel-card'>";
                                 echo "<img src='" . $row['image_path'] . "' class='card-img-top' alt='Gambar artikel'>";
                                 echo "<div class='card-body'>";
-                                echo "<h5 class='card-title'>" . $row['title'] . "</h5>";
-                                echo "<p class='card-text'>" . $row['content'] . "</p>";
+                                echo "<small class='card-text'><i class='fas fa-clock mr-2 mb-3'></i>" . date('d M Y', strtotime($row['updated_at'])) . "</small>";
+                                echo "<h5 class='card-title mb-2 text-primary font-weight-bold'>" . substr($row['title'], 0, 50) . "</h5>";
+                                echo "<p class='card-text'>" . substr($row['content'], 0, 180) . "....." . "</p>";
+                                echo "<a href='article_detail.php?id=" . $row['id'] . "'>Baca Selengkapnya</a>";
                                 echo "</div>";
-                                echo "</a>";
+                                echo "</div>";
                                 echo "</div>";
                             }
                         } else {
@@ -89,7 +92,6 @@ if (isset($_SESSION['namaLengkap'])) {
                 <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
-
             <!-- Footer -->
             <?php
             require_once('footer.php')

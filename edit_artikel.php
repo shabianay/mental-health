@@ -85,6 +85,7 @@ mysqli_close($koneksi);
     <title>Dashboard Admin</title>
 
     <!-- Custom fonts for this template-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
@@ -133,14 +134,21 @@ mysqli_close($koneksi);
                         </div>
                         <div class="form-group">
                             <label for="content">Isi</label>
-                            <textarea class="form-control" id="content" name="content" rows="5" required><?php echo $article['content']; ?></textarea>
+                            <textarea class="form-control" id="isiberita" name="content" rows="5" required><?php echo $article['content']; ?></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="image">Gambar (maksimal 2MB)</label>
-                            <input type="file" class="form-control-file" id="image" name="image" accept="image/*" maxlength="2097152" />
+                        <div>
+                            <label for="content">Tampilan gambar: </label>
+                            <br>
+                            <?php if (!empty($article['image_path'])) : ?>
+                                <img src="<?php echo $article['image_path']; ?>" alt="Article Image" style="max-width: 300px;">
+                            <?php endif; ?>
                         </div>
-                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                        <a href="artikel.php" class="btn btn-secondary">Kembali</a>
+                        <div class="form-group mt-3">
+                            <label style="cursor: pointer;" for="image">Perbarui gambar (maksimal 2MB)</label>
+                            <input style="cursor: pointer;" type="file" class="form-control-file mb-3" id="image" name="image" accept="image/*" maxlength="2097152" />
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-rotate mr-2"></i>Simpan Perubahan</button>
+                        <a href="artikel.php" class="btn btn-secondary"><i class="fa-solid fa-angle-left mr-2"></i>Kembali</a>
                     </form>
                 </div>
             </div>
@@ -166,6 +174,12 @@ mysqli_close($koneksi);
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+    <!-- Load CKEditor -->
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script>
+        // Inisialisasi CKEditor pada textarea dengan id "content"
+        CKEDITOR.replace('isiberita');
+    </script>
 </body>
 
 </html>

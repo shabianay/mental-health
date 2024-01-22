@@ -89,6 +89,7 @@ $user = mysqli_fetch_assoc($result);
   <title>Dashboard Admin</title>
 
   <!-- Custom fonts for this template-->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
@@ -204,10 +205,12 @@ $user = mysqli_fetch_assoc($result);
                 Informasi
               </h6>
             </div>
-            <h1 class="mt-4 mb-1 h4 text-gray-800 font-weight-bold" style="text-align:center">Selamat Datang</h1>
-            <h1 class="h5 mb-4 text-gray-800" style="text-align:center">
-              <?php echo $user['Namalengkap']; ?>
-            </h1>
+            <div class="information" style="text-align:center">
+              <h1 class="mt-4 h4 text-gray-800 font-weight-bold">Selamat Datang</h1>
+              <h1 class="h5 mb-4 text-white badge bg-primary">
+                <?php echo $user['Namalengkap']; ?>
+              </h1>
+            </div>
             <div class="card-body">
               <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/undraw_posting_photo.svg" alt="...">
               <p>

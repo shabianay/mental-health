@@ -75,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Dashboard User</title>
 
     <!-- Custom fonts for this template-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
@@ -122,8 +123,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10,}" value="<?php echo $user['phoneNumber']; ?>" required />
                             <span class="text-muted">Nomor HP harus terdiri dari minimal 10 angka.</span>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3 mb-4">Perbarui Profil</button>
-                        <a href="user_dashboard.php" class="btn btn-secondary mt-3 mb-4">Balik ke Dashboard</a>
+                        <button type="submit" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-rotate mr-2"></i>Perbarui Profil</button>
+                        <a href="user_dashboard.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
                     </form>
                     <!-- Button to go back to user_dashboard.php -->
                 </div>
