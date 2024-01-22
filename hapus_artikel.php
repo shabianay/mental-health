@@ -1,5 +1,5 @@
 <?php
-require_once "koneksi.php";
+require_once "./include/koneksi.php";
 
 // Periksa apakah ada parameter ID artikel yang dikirimkan melalui URL
 if (isset($_GET['id']) && !empty($_GET['id'])) {
@@ -12,7 +12,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
     if ($deleteResult) {
         // Jika penghapusan berhasil, redirect ke halaman artikel dengan pesan sukses
-        header("Location: artikel.php?success=delete");
+        header("Location: ./admin/artikel.php?success=delete");
         exit();
     } else {
         // Jika terjadi kesalahan saat menghapus artikel, tampilkan pesan kesalahan
@@ -20,7 +20,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     }
 } else {
     // Jika tidak ada parameter ID artikel yang dikirimkan melalui URL, redirect ke halaman artikel
-    header("Location: artikel.php");
+    header("Location: ./admin/artikel.php");
     exit();
 }
 

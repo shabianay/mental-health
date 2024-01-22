@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
     exit(); // Stop further execution
 }
 
-require_once "koneksi.php";
+require_once "./include/koneksi.php";
 
 // Periksa apakah parameter id artikel telah diberikan
 if (isset($_GET['id'])) {
@@ -74,14 +74,14 @@ mysqli_close($koneksi);
     <!-- Page Wrapper -->
     <div id="wrapper">
         <?php
-        require_once('navbar_user.php')
+        require_once('./include/navbar_user.php')
         ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
                 <?php
-                require_once('topbar_user.php')
+                require_once('./include/topbar_user.php')
                 ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -105,7 +105,7 @@ mysqli_close($koneksi);
             </div>
             <!-- End of Main Content -->
             <?php
-            require_once('footer.php')
+            require_once('./include/footer.php')
             ?>
         </div>
         <!-- End of Content Wrapper -->

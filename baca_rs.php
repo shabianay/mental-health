@@ -40,7 +40,7 @@ if (isset($_SESSION['namaLengkap'])) {
     <!-- Page Wrapper -->
     <div id="wrapper">
         <?php
-        require_once('navbar_user.php')
+        require_once('./include/navbar_user.php')
         ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -48,7 +48,7 @@ if (isset($_SESSION['namaLengkap'])) {
             <div id="content">
                 <!-- Topbar -->
                 <?php
-                require_once('topbar_user.php')
+                require_once('./include/topbar_user.php')
                 ?>
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
@@ -57,7 +57,7 @@ if (isset($_SESSION['namaLengkap'])) {
                     <h1 style="text-align: center" class="h2 mb-4 text-gray-800">Daftar Data Rumah Sakit</h1>
                     <div class="row" id="hospitalList">
                         <?php
-                        require_once "koneksi.php";
+                        require_once "./include/koneksi.php";
 
                         // Query untuk mengambil semua data rumah sakit
                         $query = "SELECT * FROM hospitals";
@@ -96,7 +96,7 @@ if (isset($_SESSION['namaLengkap'])) {
 
             <!-- Footer -->
             <?php
-            require_once('footer.php')
+            require_once('./include/footer.php')
             ?>
             <!-- End of Footer -->
         </div>

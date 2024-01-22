@@ -4,12 +4,12 @@ session_start();
 // Check if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
   // Redirect to the login page
-  header("Location: login.php");
+  header("Location: ../login.php");
   exit(); // Stop further execution
 }
 
 // Lakukan koneksi ke database
-require_once 'koneksi.php';
+require_once '../include/koneksi.php';
 
 // Query untuk mengambil jumlah pengguna dari database (misalnya dari tabel 'users')
 $query = "SELECT COUNT(*) AS total_pengguna FROM users";
@@ -94,21 +94,21 @@ $user = mysqli_fetch_assoc($result);
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
   <!-- Custom styles for this template-->
-  <link href="css/sb-admin-2.css" rel="stylesheet" />
+  <link href="../css/sb-admin-2.css" rel="stylesheet" />
 </head>
 
 <body id="page-top">
   <!-- Page Wrapper -->
   <div id="wrapper">
     <?php
-    require_once('navbar_admin.php')
+    require_once('../include/navbar_admin.php')
     ?>
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
       <!-- Main Content -->
       <div id="content">
         <?php
-        require_once('topbar_admin.php')
+        require_once('../include/topbar_admin.php')
         ?>
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -212,7 +212,7 @@ $user = mysqli_fetch_assoc($result);
               </h1>
             </div>
             <div class="card-body">
-              <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/undraw_posting_photo.svg" alt="...">
+              <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="../img/undraw_posting_photo.svg" alt="...">
               <p>
                 Aplikasi mental health ini adalah...
               </p>
@@ -223,7 +223,7 @@ $user = mysqli_fetch_assoc($result);
       </div>
       <!-- End of Main Content -->
       <?php
-      require_once('footer.php')
+      require_once('../include/footer.php')
       ?>
     </div>
     <!-- End of Content Wrapper -->
@@ -236,21 +236,21 @@ $user = mysqli_fetch_assoc($result);
   </a>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../vendor/jquery/jquery.min.js"></script>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin-2.min.js"></script>
+  <script src="../js/sb-admin-2.min.js"></script>
 
   <!-- Page level plugins -->
-  <script src="vendor/chart.js/Chart.min.js"></script>
+  <script src="../vendor/chart.js/Chart.min.js"></script>
 
   <!-- Page level custom scripts -->
-  <script src="js/demo/chart-area-demo.js"></script>
-  <script src="js/demo/chart-pie-demo.js"></script>
+  <script src="../js/demo/chart-area-demo.js"></script>
+  <script src="../js/demo/chart-pie-demo.js"></script>
 </body>
 
 </html>

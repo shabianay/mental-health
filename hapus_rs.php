@@ -1,5 +1,5 @@
 <?php
-require_once "koneksi.php";
+require_once "./include/koneksi.php";
 
 // Periksa apakah ada parameter ID rumah sakit yang dikirimkan melalui URL
 if (isset($_GET['id']) && !empty($_GET['id'])) {
@@ -12,7 +12,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
     if ($deleteResult) {
         // Jika penghapusan berhasil, redirect ke halaman daftar rumah sakit dengan pesan sukses
-        header("Location: rumahsakit.php?success=delete");
+        header("Location: ./admin/rumahsakit.php?success=delete");
         exit();
     } else {
         // Jika terjadi kesalahan saat menghapus rumah sakit, tampilkan pesan kesalahan
@@ -20,7 +20,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     }
 } else {
     // Jika tidak ada parameter ID rumah sakit yang dikirimkan melalui URL, redirect ke halaman daftar rumah sakit
-    header("Location: rumahsakit.php");
+    header("Location: ./admin/rumahsakit.php");
     exit();
 }
 

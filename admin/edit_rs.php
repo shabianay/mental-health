@@ -4,10 +4,10 @@ session_start();
 // Check if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to the login page
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit(); // Stop further execution
 }
-require_once "koneksi.php";
+require_once "../include/koneksi.php";
 
 // Periksa apakah parameter id telah diterima dari URL
 if (isset($_GET['id'])) {
@@ -30,7 +30,7 @@ if (isset($_GET['id'])) {
     mysqli_free_result($result);
 } else {
     // Jika parameter id tidak ditemukan, redirect ke halaman lain atau tampilkan pesan error
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_FILES['image']['size'] > 0) {
         $image_name = $_FILES['image']['name'];
         $image_temp = $_FILES['image']['tmp_name'];
-        $image_path = "uploads/" . $image_name;
+        $image_path = "../uploads/" . $image_name;
 
         // Pindahkan file gambar ke folder uploads
         move_uploaded_file($image_temp, $image_path);
@@ -93,13 +93,13 @@ mysqli_close($koneksi);
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.css" rel="stylesheet" />
+    <link href="../css/sb-admin-2.css" rel="stylesheet" />
 </head>
 
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php require_once('navbar_admin.php') ?>
+        <?php require_once('../include/navbar_admin.php') ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
@@ -170,7 +170,7 @@ mysqli_close($koneksi);
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php require_once('footer.php') ?>
+            <?php require_once('../include/footer.php') ?>
             <!-- End of Footer -->
         </div>
         <!-- End of Content Wrapper -->
@@ -183,14 +183,14 @@ mysqli_close($koneksi);
     </a>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
 </body>
 
 </html>

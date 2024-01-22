@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit(); // Stop further execution
 }
-require_once "koneksi.php";
+require_once "./include/koneksi.php";
 
 // Ambil informasi pengguna dari database
 $user_id = $_SESSION['user_id'];

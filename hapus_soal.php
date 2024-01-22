@@ -1,5 +1,5 @@
 <?php
-require_once "koneksi.php";
+require_once "./include/koneksi.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     $id_soal = $_GET['id'];
@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
 
         if (mysqli_stmt_affected_rows($stmt) > 0) {
             // Redirect to the list of questions with a success message
-            header("Location: soal.php?success=delete");
+            header("Location: ./admin/soal.php?success=delete");
             exit();
         } else {
             echo "Error: Failed to delete the question!";

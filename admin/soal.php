@@ -4,10 +4,10 @@ session_start();
 // Check if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to the login page
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit(); // Stop further execution
 }
-require_once "koneksi.php";
+require_once "../include/koneksi.php";
 $retrieveQuery = "SELECT * FROM `questions`";
 $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
 
@@ -60,21 +60,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
     <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php require_once('navbar_admin.php') ?>
+        <?php require_once('../include/navbar_admin.php') ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
                 <?php
-                require_once('topbar_admin.php')
+                require_once('../include/topbar_admin.php')
                 ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -146,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                     <!-- Display existing questions -->
                     <?php
-                    require_once "koneksi.php";
+                    require_once "../include/koneksi.php";
                     // Check if the 'success' parameter exists in the URL
                     if (isset($_GET['success'])) {
                         // Check the value of the 'success' parameter
@@ -209,7 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             echo "<td style='text-align: center'>";
                             echo "<a href='edit_soal.php?id=" . $row['id_soal'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
                             echo "&nbsp;";
-                            echo "<a href='hapus_soal.php?id=" . $row['id_soal'] . "' class='btn btn-danger btn-sm'>Hapus<i class='ml-2 fa-regular fa-trash-can'></i></a>";
+                            echo "<a href='../hapus_soal.php?id=" . $row['id_soal'] . "' class='btn btn-danger btn-sm'>Hapus<i class='ml-2 fa-regular fa-trash-can'></i></a>";
                             echo "</td>";
                             echo "</tr>";
                             $counter++; // Tingkatkan counter setelah setiap baris
@@ -233,7 +233,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
                 <!-- /.container-fluid -->
                 <!-- Footer -->
-                <?php require_once('footer.php') ?>
+                <?php require_once('../include/footer.php') ?>
                 <!-- End of Footer -->
             </div>
             <!-- End of Main Content -->
@@ -247,21 +247,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </a>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script src="../js/demo/datatables-demo.js"></script>
 </body>
 
 </html>

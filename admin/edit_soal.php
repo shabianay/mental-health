@@ -5,10 +5,10 @@ if (session_status() === PHP_SESSION_NONE) {
 // Check if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to the login page
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit(); // Stop further execution
 }
-require_once "koneksi.php";
+require_once "../include/koneksi.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     $id_soal = $_GET['id'];
@@ -47,48 +47,24 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     <meta name="author" content="" />
     <title>Manage Questions</title>
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.css" rel="stylesheet" />
+    <link href="../css/sb-admin-2.css" rel="stylesheet" />
 </head>
 
 <body>
     <div id="wrapper">
-        <?php require_once('navbar_admin.php') ?>
+        <?php require_once('../include/navbar_admin.php') ?>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600"></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="admin_profile.php">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profil
-                                </a>
-                                <a class="dropdown-item" href="logout.php">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav> <!-- Begin Page Content -->
+                <?php
+                require_once('../include/topbar_admin.php')
+                ?>
+                <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <h1 class="h3 mb-4 text-gray-800">Edit Soal</h1>
-                    <form method="post" action="update_soal.php">
+                    <form method="post" action="../update_soal.php">
                         <input type="hidden" name="id_soal" value="<?php echo $row['id_soal']; ?>">
                         <div class="form-group">
                             <label for="questionText">Soal</label>
@@ -123,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
                     </form>
                 </div>
             </div>
-            <?php require_once('footer.php') ?>
+            <?php require_once('../include/footer.php') ?>
         </div>
     </div>
 
@@ -132,14 +108,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
         <i class="fas fa-angle-up"></i>
     </a>
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
 </body>
 
 </html>

@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Lakukan koneksi ke database
-require_once 'koneksi.php';
+require_once './include/koneksi.php';
 
 // Query untuk mengambil jumlah soal dari database 
 $query = "SELECT COUNT(*) AS total_soal FROM questions";
@@ -87,7 +87,7 @@ $user = mysqli_fetch_assoc($result);
   <!-- Page Wrapper -->
   <div id="wrapper">
     <?php
-    require_once('navbar_user.php')
+    require_once('./include/navbar_user.php')
     ?>
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -95,7 +95,7 @@ $user = mysqli_fetch_assoc($result);
       <div id="content">
         <!-- Topbar -->
         <?php
-        require_once('topbar_user.php')
+        require_once('./include/topbar_user.php')
         ?>
         <!-- End of Topbar -->
         <!-- Begin Page Content -->
@@ -192,7 +192,7 @@ $user = mysqli_fetch_assoc($result);
 
       <!-- Footer -->
       <?php
-      require_once('footer.php')
+      require_once('./include/footer.php')
       ?>
       <!-- End of Footer -->
     </div>

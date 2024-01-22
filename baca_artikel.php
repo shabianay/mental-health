@@ -41,7 +41,7 @@ if (isset($_SESSION['namaLengkap'])) {
     <!-- Page Wrapper -->
     <div id="wrapper">
         <?php
-        require_once('navbar_user.php')
+        require_once('./include/navbar_user.php')
         ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -49,7 +49,7 @@ if (isset($_SESSION['namaLengkap'])) {
             <div id="content">
                 <!-- Topbar -->
                 <?php
-                require_once('topbar_user.php')
+                require_once('./include/topbar_user.php')
                 ?>
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
@@ -59,7 +59,7 @@ if (isset($_SESSION['namaLengkap'])) {
                     <p style="text-align: center" class="h5 mb-3 text-gray-800">Baca artikel kita yuk, biar lebih mengenal diri kita</p>
                     <div class="row" id="artikelList">
                         <?php
-                        require_once "koneksi.php";
+                        require_once "./include/koneksi.php";
                         // Query untuk mengambil semua data artikel
                         $query = "SELECT * FROM articles";
                         $result = mysqli_query($koneksi, $query);
@@ -94,7 +94,7 @@ if (isset($_SESSION['namaLengkap'])) {
             <!-- End of Main Content -->
             <!-- Footer -->
             <?php
-            require_once('footer.php')
+            require_once('./include/footer.php')
             ?>
             <!-- End of Footer -->
         </div>

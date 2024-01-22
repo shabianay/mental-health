@@ -1,5 +1,5 @@
 <?php
-require_once "koneksi.php";
+require_once "./include/koneksi.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_soal'])) {
     $id_soal = $_POST['id_soal'];
@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_soal'])) {
 
         if ($success) {
             // Redirect to the question list page with a success message
-            header("Location: soal.php?success=update");
+            header("Location: ./admin/soal.php?success=update");
             exit();
         } else {
             echo "Error updating question: " . mysqli_error($koneksi);

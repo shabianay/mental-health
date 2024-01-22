@@ -1,5 +1,5 @@
 <?php
-require_once "koneksi.php";
+require_once "./include/koneksi.php";
 
 // Check if the HTTP POST request method is used
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Execute the statement
         if (mysqli_stmt_execute($stmt)) {
             // If the update was successful, redirect to the appropriate page with a success message
-            header("Location: soal_group.php?success=update");
+            header("Location: ./admin/soal_group.php?success=update");
             exit();
         } else {
             // If there was an error with the update, display an error message
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     mysqli_stmt_close($stmt);
 } else {
     // If the request method is not POST, redirect to the appropriate page
-    header("Location: soal_group.php");
+    header("Location: ./admin/soal_group.php");
     exit();
 }
 
