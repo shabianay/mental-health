@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ambil informasi file gambar
     $image_name = $_FILES["image"]["name"];
     $image_tmp = $_FILES["image"]["tmp_name"];
-    $image_path = "uploads" . $image_name;
+    $image_path = "../uploads/" . $image_name;
 
     // Periksa ukuran file gambar (maksimal 2MB)
     if ($_FILES["image"]["size"] > 2 * 1024 * 1024) {
