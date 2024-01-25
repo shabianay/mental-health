@@ -44,6 +44,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create_group"])) {
         echo "Error creating soal group: " . mysqli_error($koneksi);
     }
 }
+// Ambil informasi pengguna dari database
+$user_id = $_SESSION['user_id'];
+$query = "SELECT * FROM users WHERE id = $user_id";
+$result = mysqli_query($koneksi, $query);
+if (!$result) {
+    // Error saat mengambil data dari database
+    die("Query error: " . mysqli_error($koneksi));
+}
+$user = mysqli_fetch_assoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -203,11 +212,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create_group"])) {
                     ?>
                 </div>
                 <!-- /.container-fluid -->
-                <!-- Footer -->
-                <?php require_once('../include/footer.php') ?>
-                <!-- End of Footer -->
             </div>
             <!-- End of Main Content -->
+            <!-- Footer -->
+            <?php require_once('../include/footer.php') ?>
+            <!-- End of Footer -->
         </div>
         <!-- End of Content Wrapper -->
     </div>

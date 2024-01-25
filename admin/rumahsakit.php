@@ -29,9 +29,9 @@ require_once "../include/koneksi.php";
 $name = "";
 $address = "";
 $phone = "";
-$email = "";
 $website = "";
 $image_path = "";
+$maps = "";
 
 // Jika tombol "Submit" diklik
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -39,8 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST["name"];
     $address = $_POST["address"];
     $phone = $_POST["phone"];
-    $email = $_POST["email"];
     $website = $_POST["website"];
+    $maps = $_POST["maps"];
 
     // Ambil informasi file gambar
     $image_name = $_FILES["image"]["name"];
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($image_tmp, $image_path);
 
         // Query untuk menyimpan rumah sakit ke database
-        $query = "INSERT INTO hospitals (name, address, phone, email, website, image_path) VALUES ('$name', '$address', '$phone', '$email', '$website', '$image_path')";
+        $query = "INSERT INTO hospitals (name, address, phone, website, image_path, maps) VALUES ('$name', '$address', '$phone', '$website', '$image_path', '$maps')";
         $result = mysqli_query($koneksi, $query);
 
         // Jika query berhasil dijalankan
@@ -66,6 +66,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+// Ambil informasi pengguna dari database
+$user_id = $_SESSION['user_id'];
+$query = "SELECT * FROM users WHERE id = $user_id";
+$result = mysqli_query($koneksi, $query);
+if (!$result) {
+    // Error saat mengambil data dari database
+    die("Query error: " . mysqli_error($koneksi));
+}
+$user = mysqli_fetch_assoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -138,12 +147,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <input type="text" class="form-control" id="phone" name="phone" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="email">Email</label>
-                                            <input type="email" class="form-control" id="email" name="email">
-                                        </div>
-                                        <div class="form-group">
                                             <label for="website">Website</label>
                                             <input type="text" class="form-control" id="website" name="website">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="maps">Maps</label>
+                                            <input type="text" class="form-control" id="maps" name="maps">
                                         </div>
                                         <div class="form-group">
                                             <label for="image">Gambar (maksimal 2MB)</label>
@@ -190,11 +199,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         echo "<th>Nama</th>";
                         echo "<th>Alamat</th>";
                         echo "<th>Telepon</th>";
-                        echo "<th>Email</th>";
                         echo "<th>Website</th>";
+                        echo "<th>Maps</th>";
                         echo "<th>Gambar</th>";
-                        echo "<th>Dibuat</th>";
-                        echo "<th>Diperbarui</th>";
                         echo "<th>Aksi</th>";
                         echo "</tr>";
                         echo "</thead>";
@@ -206,11 +213,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             echo "<td>" . $row['name'] . "</td>";
                             echo "<td>" . $row['address'] . "</td>";
                             echo "<td>" . $row['phone'] . "</td>";
-                            echo "<td>" . $row['email'] . "</td>";
                             echo "<td>" . $row['website'] . "</td>";
+                            echo "<td>" . $row['maps'] . "</td>";
                             echo "<td><img src='" . $row['image_path'] . "' alt='Rumah Sakit Image' style='max-width: 100px; max-height: 100px;'></td>";
-                            echo "<td>" . $row['created_at'] . "</td>";
-                            echo "<td>" . $row['updated_at'] . "</td>";
                             echo "<td style='text-align:center'>";
                             echo "<a href='edit_rs.php?id=" . $row['id'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
                             echo "&nbsp;"; // Add a non-breaking space here for spacing

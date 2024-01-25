@@ -55,8 +55,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $address = $_POST['address'];
     $phone = $_POST['phone'];
-    $email = $_POST['email'];
     $website = $_POST['website'];
+    $maps = $_POST['maps'];
 
     // Periksa apakah file gambar baru diunggah
     if ($_FILES['image']['size'] > 0) {
@@ -68,10 +68,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($image_temp, $image_path);
 
         // Update rumah sakit beserta gambar baru
-        $updateQuery = "UPDATE hospitals SET name = '$name', address = '$address', phone = '$phone', email = '$email', website = '$website', image_path = '$image_path' WHERE id = $hospital_id";
+        $updateQuery = "UPDATE hospitals SET name = '$name', address = '$address', phone = '$phone', website = '$website', image_path = '$image_path', maps = '$maps' WHERE id = $hospital_id";
     } else {
         // Jika tidak ada gambar baru diunggah, update rumah sakit tanpa mengubah gambar
-        $updateQuery = "UPDATE hospitals SET name = '$name', address = '$address', phone = '$phone', email = '$email', website = '$website' WHERE id = $hospital_id";
+        $updateQuery = "UPDATE hospitals SET name = '$name', address = '$address', phone = '$phone', website = '$website', maps = '$maps' WHERE id = $hospital_id";
     }
 
     // Eksekusi query untuk memperbarui rumah sakit dalam database
@@ -87,7 +87,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error updating record: " . mysqli_error($koneksi);
     }
 }
-
+// Ambil informasi pengguna dari database
+$user_id = $_SESSION['user_id'];
+$query = "SELECT * FROM users WHERE id = $user_id";
+$result = mysqli_query($koneksi, $query);
+if (!$result) {
+    // Error saat mengambil data dari database
+    die("Query error: " . mysqli_error($koneksi));
+}
+$user = mysqli_fetch_assoc($result);
 // Tutup koneksi database
 mysqli_close($koneksi);
 ?>
@@ -104,6 +112,7 @@ mysqli_close($koneksi);
     <title>Edit Rumah Sakit</title>
 
     <!-- Custom fonts for this template-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
@@ -112,45 +121,13 @@ mysqli_close($koneksi);
 </head>
 
 <body id="page-top">
-    <!-- Page Wrapper -->
     <div id="wrapper">
         <?php require_once('../include/navbar_admin.php') ?>
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-            <!-- Main Content -->
             <div id="content">
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600"></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="admin_profile.php">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profil
-                                </a>
-                                <a class="dropdown-item" href="logout.php">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav> <!-- Begin Page Content -->
+                <?php require_once('../include/topbar_admin.php') ?>
                 <div class="container-fluid">
-                    <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">Edit Rumah Sakit</h1>
-                    <!-- Form untuk mengedit rumah sakit -->
                     <form method="post" action="edit_rs.php?id=<?php echo $hospital_id; ?>" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="name">Nama</label>
@@ -165,32 +142,27 @@ mysqli_close($koneksi);
                             <input type="text" class="form-control" id="phone" name="phone" value="<?php echo $hospital['phone']; ?>" required />
                         </div>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" value="<?php echo $hospital['email']; ?>" />
-                        </div>
-                        <div class="form-group">
                             <label for="website">Website</label>
                             <input type="text" class="form-control" id="website" name="website" value="<?php echo $hospital['website']; ?>" />
+                        </div>
+                        <div class="form-group">
+                            <label for="maps">Maps</label>
+                            <input type="text" class="form-control" id="maps" name="maps" value="<?php echo $hospital['maps']; ?>" />
                         </div>
                         <div class="form-group">
                             <label for="image">Gambar (maksimal 2MB)</label>
                             <input type="file" class="form-control-file" id="image" name="image" accept="image/*" maxlength="2097152" />
                         </div>
-                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                        <a href="rumahsakit.php" class="btn btn-secondary">Kembali</a>
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-rotate mr-2"></i>Simpan Perubahan</button>
+                        <a href="rumahsakit.php" class="btn btn-secondary"><i class="fa-solid fa-angle-left mr-2"></i>Kembali</a>
                     </form>
                 </div>
-                <!-- /.container-fluid -->
             </div>
-            <!-- End of Main Content -->
-
             <!-- Footer -->
             <?php require_once('../include/footer.php') ?>
             <!-- End of Footer -->
         </div>
-        <!-- End of Content Wrapper -->
     </div>
-    <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">

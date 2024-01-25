@@ -15,7 +15,8 @@
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_dashboard.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="admin_dashboard.php">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
+            <span>Dashboard</span>
+        </a>
     </li>
 
     <!-- Divider -->
@@ -37,27 +38,31 @@
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'artikel.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="artikel.php">
             <i class="fas fa-fw fa-newspaper"></i>
-            <span>Artikel</span></a>
+            <span>Artikel</span>
+        </a>
     </li>
 
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'rumahsakit.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="rumahsakit.php">
             <i class="fas fa-fw fa-hospital"></i>
-            <span>Rumah Sakit</span></a>
+            <span>Rumah Sakit</span>
+        </a>
     </li>
 
     <!-- Nav Item - Data Pengguna -->
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'pengguna.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="pengguna.php">
             <i class="fas fa-fw fa-users"></i>
-            <span>Data Pengguna</span></a>
+            <span>Data Pengguna</span>
+        </a>
     </li>
 
     <!-- Nav Item - Laporan -->
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'laporan.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="laporan.php">
             <i class="fas fa-fw fa-chart-area"></i>
-            <span>Laporan</span></a>
+            <span>Laporan</span>
+        </a>
     </li>
 
     <!-- Divider -->

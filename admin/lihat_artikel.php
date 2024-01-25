@@ -1,4 +1,27 @@
 <?php
+session_start();
+
+// Set session timeout in seconds (e.g., 30 minutes)
+$session_timeout = 1800; // 30 minutes * 60 seconds
+
+// Check if the user is logged in
+if (isset($_SESSION['user_id'])) {
+    // Check the time of the last activity
+    if (isset($_SESSION['last_activity']) && time() - $_SESSION['last_activity'] > $session_timeout) {
+        // Session has expired, destroy the session and redirect to the login page
+        session_unset();
+        session_destroy();
+        header("Location: ../login.php");
+        exit();
+    } else {
+        // Update the last activity time
+        $_SESSION['last_activity'] = time();
+    }
+} else {
+    // If the user is not logged in, redirect to the login page
+    header("Location: ../login.php");
+    exit();
+}
 require_once "../include/koneksi.php";
 
 // Cek apakah parameter 'id' ada dalam URL
@@ -25,7 +48,15 @@ if (isset($_GET['id'])) {
     // Jika parameter 'id' tidak ada dalam URL, tampilkan pesan error
     echo "ID Artikel tidak ditemukan";
 }
-
+// Ambil informasi pengguna dari database
+$user_id = $_SESSION['user_id'];
+$query = "SELECT * FROM users WHERE id = $user_id";
+$result = mysqli_query($koneksi, $query);
+if (!$result) {
+    // Error saat mengambil data dari database
+    die("Query error: " . mysqli_error($koneksi));
+}
+$user = mysqli_fetch_assoc($result);
 // Tutup koneksi ke database
 mysqli_close($koneksi);
 ?>

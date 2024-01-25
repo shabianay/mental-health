@@ -44,7 +44,8 @@ if (isset($_SESSION['namaLengkap'])) {
     <title>Dashboard User</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
     <!-- Custom styles for this template-->
@@ -82,15 +83,15 @@ if (isset($_SESSION['namaLengkap'])) {
                         if ($result) {
                             // Tampilkan data rumah sakit dalam bentuk card
                             while ($row = mysqli_fetch_assoc($result)) {
-                                echo "<div class='col-md-4'>";
+                                echo "<div class='col-xl-4 mb-4'>";
                                 echo "<div class='card hospital-card'>";
                                 echo "<img src='" . $row['image_path'] . "' class='card-img-top' alt='Gambar Rumah Sakit'>";
                                 echo "<div class='card-body'>";
-                                echo "<h5 class='card-title'>" . $row['name'] . "</h5>";
-                                echo "<p class='card-text'>Alamat: " . $row['address'] . "</p>";
-                                echo "<p class='card-text'>Telepon: " . $row['phone'] . "</p>";
-                                echo "<p class='card-text'>Email: " . $row['email'] . "</p>";
-                                echo "<p class='card-text'>Website: " . $row['website'] . "</p>";
+                                echo "<h5 class='card-title text-primary font-weight-bold'>" . $row['name'] . "</h5>";
+                                echo "<p class='card-text'><i class='fa-solid fa-location-dot mr-3'></i>" . $row['address'] . "</p>";
+                                echo "<p class='card-text'><i class='fa-solid fa-phone mr-3'></i>" . $row['phone'] . "</p>";
+                                echo "<p class='card-text'><i class='fa-solid fa-globe mr-3'></i><a href='" . $row['website'] . "' target='_blank' onclick='window.open(\"" . $row['website'] . "\", \"_blank\")'>" . $row['website'] . "</a></p>";
+                                echo "<p class='card-text mt-3'><button onclick='window.open(\"" . $row['maps'] . "\", \"_blank\")' class='btn btn-primary'><i class='fa-solid fa-location-arrow mr-3'></i>Mulai Rute</button></p>";
                                 echo "</div>";
                                 echo "</div>";
                                 echo "</div>";

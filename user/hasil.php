@@ -36,7 +36,8 @@ if (isset($_SESSION['user_id'])) {
     <title>Dashboard Admin</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
     <link href="../css/sb-admin-2.css" rel="stylesheet">
@@ -120,20 +121,16 @@ if (isset($_SESSION['user_id'])) {
                         // Jika query gagal dijalankan
                         echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
                     }
-
                     // Tutup koneksi ke database
                     mysqli_close($koneksi);
                     ?>
                 </div>
                 <!-- /.container-fluid -->
-                <!-- Footer -->
                 <?php
                 require_once('../include/footer.php')
                 ?>
-                <!-- End of Footer -->
             </div>
             <!-- End of Main Content -->
-
         </div>
         <!-- End of Content Wrapper -->
     </div>

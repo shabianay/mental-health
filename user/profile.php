@@ -42,6 +42,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newPassword = $_POST['newPassword'];
     $password = $_POST['password'];
     $phoneNumber = $_POST['phoneNumber'];
+    $angkatan = $_POST['angkatan'];
+    $gender = $_POST['gender'];
 
     // Periksa apakah email baru sudah terdaftar dalam database
     $checkEmailQuery = "SELECT * FROM users WHERE email = '$newEmail' AND id != $user_id"; // Pastikan tidak memeriksa email pengguna yang sedang diedit
@@ -59,10 +61,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Perbarui informasi pengguna dalam database
         if (!empty($newPassword)) {
             // Jika newPassword diisi, update password
-            $updateQuery = "UPDATE users SET Namalengkap = '$namaLengkap', email = '$newEmail', password = '$newPassword', phoneNumber = '$phoneNumber' WHERE id = $user_id";
+            $updateQuery = "UPDATE users SET Namalengkap = '$namaLengkap', email = '$newEmail', password = '$newPassword', phoneNumber = '$phoneNumber', gender = '$gender', angkatan = '$angkatan' WHERE id = $user_id";
         } else {
             // Jika newPassword tidak diisi, jangan update password
-            $updateQuery = "UPDATE users SET Namalengkap = '$namaLengkap', email = '$newEmail', phoneNumber = '$phoneNumber' WHERE id = $user_id";
+            $updateQuery = "UPDATE users SET Namalengkap = '$namaLengkap', email = '$newEmail', phoneNumber = '$phoneNumber', gender = '$gender', angkatan = '$angkatan' WHERE id = $user_id";
         }
 
         $updateResult = mysqli_query($koneksi, $updateQuery);
@@ -100,11 +102,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body id="page-top">
     <div id="wrapper">
-        <!-- Sidebar -->
+        <?php require_once('../include/navbar_user.php') ?>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"></nav>
-
+                <?php require_once('../include/topbar_user.php') ?>
                 <div class="container-fluid">
                     <h1 class="h3 mb-4 text-gray-800">Update Profile</h1>
                     <?php if (isset($_GET['success'])) : ?>
@@ -138,12 +139,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10,}" value="<?php echo $user['phoneNumber']; ?>" required />
                             <span class="text-muted">Nomor HP harus terdiri dari minimal 10 angka.</span>
                         </div>
+                        <div class="form-group">
+                            <label for="angkatan">Angkatan</label>
+                            <select class="form-control" id="angkatan" name="angkatan">
+                                <option value="2020" <?php if ($user['angkatan'] == '2020') echo 'selected'; ?>>2020</option>
+                                <option value="2021" <?php if ($user['angkatan'] == '2021') echo 'selected'; ?>>2021</option>
+                                <option value="2022" <?php if ($user['angkatan'] == '2022') echo 'selected'; ?>>2022</option>
+                                <option value="2023" <?php if ($user['angkatan'] == '2023') echo 'selected'; ?>>2023</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Jenis Kelamin</label>
+                            <select class="form-control" id="gender" name="gender" required>
+                                <option value="Laki-Laki" <?php if ($user['gender'] == 'Laki-Laki') echo 'selected'; ?>>Laki-Laki</option>
+                                <option value="Perempuan" <?php if ($user['gender'] == 'Perempuan') echo 'selected'; ?>>Perempuan</option>
+                            </select>
+                        </div>
                         <button type="submit" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-rotate mr-2"></i>Perbarui Profil</button>
                         <a href="user_dashboard.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
                     </form>
                     <!-- Button to go back to user_dashboard.php -->
                 </div>
             </div>
+            <?php require_once('../include/footer.php') ?>
         </div>
     </div>
     <script src="../vendor/jquery/jquery.min.js"></script>

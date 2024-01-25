@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// Memasukkan file koneksi database
+require_once "../include/koneksi.php";
+
 // Set session timeout in seconds (e.g., 30 minutes)
 $session_timeout = 1800; // 30 minutes * 60 seconds
 
@@ -22,6 +25,22 @@ if (isset($_SESSION['user_id'])) {
   header("Location: ../login.php");
   exit();
 }
+
+// Ambil informasi pengguna dari database
+if (isset($_SESSION['user_id'])) {
+  $user_id = $_SESSION['user_id'];
+  $query = "SELECT * FROM users WHERE id = $user_id";
+  $result = mysqli_query($koneksi, $query);
+  if (!$result) {
+    // Error saat mengambil data dari database
+    die("Query error: " . mysqli_error($koneksi));
+  }
+  $user = mysqli_fetch_assoc($result);
+} else {
+  // Jika user_id tidak tersedia dalam sesi, mungkin ada masalah dengan sesi
+  die("User ID tidak ditemukan dalam sesi.");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,15 +97,31 @@ if (isset($_SESSION['user_id'])) {
                       <th>Email</th>
                       <th>Telepon</th>
                       <th>Angkatan</th>
+                      <th>Foto</th>
                       <th>Gender</th>
                       <th>Role</th>
-                      <th>Created At</th>
-                      <th>Updated At</th>
+                      <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
                     require_once "../include/koneksi.php";
+                    // Check if the 'success' parameter exists in the URL
+                    if (isset($_GET['success'])) {
+                      // Check the value of the 'success' parameter
+                      if ($_GET['success'] === 'delete') {
+                        // If the value is 'delete', display a success message
+                        echo '<div class="alert alert-success" role="alert">Pengguna berhasil dihapus.</div>';
+                      }
+                    }
+                    // Check if the 'success' parameter exists in the URL
+                    if (isset($_GET['success'])) {
+                      // Check the value of the 'success' parameter
+                      if ($_GET['success'] === '1') {
+                        // If the value is '1', display a success message
+                        echo '<div class="alert alert-success" role="alert">Pengguna berhasil diperbarui.</div>';
+                      }
+                    }
                     // Query untuk mengambil data pengguna dari database
                     $query = "SELECT * FROM users";
                     $result = mysqli_query($koneksi, $query);
@@ -102,21 +137,45 @@ if (isset($_SESSION['user_id'])) {
                         echo "<td>" . $row['email'] . "</td>";
                         echo "<td>" . $row['phoneNumber'] . "</td>";
                         echo "<td>" . $row['angkatan'] . "</td>";
-                        echo "<td>" . $row['gender'] . "</td>";
-                        echo "<td>" . $row['role'] . "</td>";
-                        echo "<td>" . $row['created_at'] . "</td>";
-                        echo "<td>" . $row['updated_at'] . "</td>";
+                        if (!empty($row['profile_image'])) {
+                          echo "<td><img src='" . $row['profile_image'] . "' alt='Profil Image' width='50'></td>";
+                        } else {
+                          echo "<td>No Image</td>";
+                        }
+                        // Tampilkan badge sesuai dengan gender pengguna
+                        if ($row['gender'] == 'Laki-Laki') {
+                          echo '<td><span class="badge badge-info">' . $row['gender'] . '</span></a>';
+                        } elseif ($row['gender'] == 'Perempuan') {
+                          echo '<td><span class="badge badge-danger">' . $row['gender'] . '</span></a>';
+                        } else {
+                          echo $row['gender'];
+                        }
+                        echo "</td>";
+                        echo "<td>";
+                        // Tampilkan badge sesuai dengan peran (role) pengguna
+                        if ($row['role'] == "admin") {
+                          echo "<span class='badge badge-primary'>" . $row['role'] . "</span>";
+                        } else if ($row['role'] == "user") {
+                          echo "<span class='badge badge-success'>" . $row['role'] . "</span>";
+                        } else {
+                          echo $row['role'];
+                        }
+                        echo "</td>";
+                        // Tambahkan kolom untuk Actions dengan tautan Edit dan Delete
+                        echo "<td>";
+                        echo "<a href='edit_user.php?id=" . $row['id'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
+                        echo "&nbsp;"; // Add a non-breaking space here for spacing
+                        echo "<a href='../hapus_user.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Hapus<i class='ml-2 fa-regular fa-trash-can'></i></a>";
+                        echo "</td>";
                         echo "</tr>";
                         $counter++; // Tingkatkan counter setelah setiap baris
                       }
-
                       // Free result set
                       mysqli_free_result($result);
                     } else {
                       // Jika query gagal dijalankan
                       echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
                     }
-
                     // Tutup koneksi ke database
                     mysqli_close($koneksi);
                     ?>

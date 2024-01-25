@@ -84,6 +84,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error updating record: " . mysqli_error($koneksi);
     }
 }
+// Ambil informasi pengguna dari database
+$user_id = $_SESSION['user_id'];
+$query = "SELECT * FROM users WHERE id = $user_id";
+$result = mysqli_query($koneksi, $query);
+if (!$result) {
+    // Error saat mengambil data dari database
+    die("Query error: " . mysqli_error($koneksi));
+}
+$user = mysqli_fetch_assoc($result);
 // Tutup koneksi database
 mysqli_close($koneksi);
 ?>
@@ -114,7 +123,6 @@ mysqli_close($koneksi);
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <?php require_once('../include/topbar_admin.php') ?>
-                </nav>
                 <div class="container-fluid">
                     <h1 class="h3 mb-4 text-gray-800">Edit Artikel</h1>
                     <form method="post" action="edit_artikel.php?id=<?php echo $article_id; ?>" enctype="multipart/form-data">

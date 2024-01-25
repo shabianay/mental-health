@@ -224,6 +224,9 @@ $user = mysqli_fetch_assoc($result);
               <h1 class="mt-4 h4 text-gray-800 font-weight-bold">Selamat Datang</h1>
               <h1 class="h5 mb-4 text-white badge bg-primary">
                 <?php echo $user['Namalengkap']; ?>
+              </h1> Sebagai
+              <h1 class="h5 mb-4 text-white badge bg-primary">
+                <?php echo $user['role']; ?>
               </h1>
             </div>
             <div class="card-body">
