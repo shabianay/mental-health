@@ -155,7 +155,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <?php endif; ?>
                     <!-- Form for updating profile -->
                     <form method="post" action="admin_profile.php" enctype="multipart/form-data">
-                        <!-- Display current profile image -->
                         <div class="form-group">
                             <label for="profileImage">Foto Profil Saat Ini</label>
                             <div class="profile-image-container mb-3">

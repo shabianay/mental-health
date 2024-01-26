@@ -45,6 +45,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $angkatan = $_POST['angkatan'];
     $gender = $_POST['gender'];
 
+    // Handle profile image upload
+    if ($_FILES['profileImage']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = '../uploads/profile/';
+        $uploadFile = $uploadDir . basename($_FILES['profileImage']['name']);
+
+        // Move the uploaded file to the uploads directory
+        if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $uploadFile)) {
+            // File uploaded successfully, update the profile image path in the database
+            $updateQuery = "UPDATE users SET profile_image = '$uploadFile' WHERE id = $user_id";
+            $updateResult = mysqli_query($koneksi, $updateQuery);
+            if (!$updateResult) {
+                // Error updating the profile image path in the database
+                die("Update error: " . mysqli_error($koneksi));
+            }
+            // Redirect back to the profile page with a success message
+            header("Location: profile.php?success=1");
+            exit();
+        } else {
+            // Failed to upload the file, show an error message
+            $pesan = "Gagal mengunggah foto profil.";
+        }
+    }
+
     // Periksa apakah email baru sudah terdaftar dalam database
     $checkEmailQuery = "SELECT * FROM users WHERE email = '$newEmail' AND id != $user_id"; // Pastikan tidak memeriksa email pengguna yang sedang diedit
     $checkEmailResult = mysqli_query($koneksi, $checkEmailQuery);
@@ -66,13 +89,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Jika newPassword tidak diisi, jangan update password
             $updateQuery = "UPDATE users SET Namalengkap = '$namaLengkap', email = '$newEmail', phoneNumber = '$phoneNumber', gender = '$gender', angkatan = '$angkatan' WHERE id = $user_id";
         }
-
         $updateResult = mysqli_query($koneksi, $updateQuery);
         if (!$updateResult) {
             // Error saat memperbarui data dalam database
             die("Update error: " . mysqli_error($koneksi));
         }
-
         // Redirect kembali ke halaman profil dengan pesan sukses
         header("Location: profile.php?success=1");
         exit();
@@ -98,6 +119,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin-2.css" rel="stylesheet" />
+    <style>
+        .profile-image-container {
+            width: 150px;
+            /* Adjust this value to your desired size */
+            height: 150px;
+            /* Adjust this value to your desired size */
+            overflow: hidden;
+            border-radius: 50%;
+            /* Makes the container circular */
+        }
+
+        .profile-image-container img.rounded-circle {
+            width: 100%;
+            /* Ensures the image fills the container */
+            height: 100%;
+            /* Ensures the image fills the container */
+            object-fit: cover;
+            /* Maintains aspect ratio and covers the container */
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -107,15 +148,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div id="content">
                 <?php require_once('../include/topbar_user.php') ?>
                 <div class="container-fluid">
-                    <h1 class="h3 mb-4 text-gray-800">Update Profile</h1>
+                    <h1 class="h3 mb-4 text-gray-800">Perbarui Profil</h1>
                     <?php if (isset($_GET['success'])) : ?>
                         <div class="alert alert-success" role="alert">
                             Profile updated successfully!
                         </div>
                     <?php endif; ?>
                     <!-- Form for updating profile -->
-                    <form method="post" action="profile.php">
-                        <!-- Input fields for updating profile -->
+                    <form method="post" action="profile.php" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="profileImage">Foto Profil Saat Ini</label>
+                            <div class="profile-image-container mb-3">
+                                <?php if (!empty($user['profile_image'])) : ?>
+                                    <img src="<?php echo $user['profile_image']; ?>" class="rounded-circle" alt="Current Profile Image" />
+                                <?php else : ?>
+                                    <p>Foto Profil Saat Ini</p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <!-- Input for updating profile image -->
+                        <div class="form-group">
+                            <label for="profileImage">Ganti Foto Profil</label>
+                            <input type="file" name="profileImage" id="profileImage" accept="image/*" class="form-control-file" />
+                            <small class="form-text text-muted">Pilih file gambar untuk mengganti foto profil.</small>
+                        </div>
+                        <br><br>
                         <div class="form-group">
                             <label for="Namalengkap">Nama Lengkap</label>
                             <input type="text" class="form-control" id="Namalengkap" name="Namalengkap" value="<?php echo $user['Namalengkap']; ?>" required />
@@ -158,7 +215,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <button type="submit" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-rotate mr-2"></i>Perbarui Profil</button>
                         <a href="user_dashboard.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
                     </form>
-                    <!-- Button to go back to user_dashboard.php -->
                 </div>
             </div>
             <?php require_once('../include/footer.php') ?>

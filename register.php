@@ -39,8 +39,8 @@ if (isset($_POST['submit'])) {
       // Jalankan query
       if (mysqli_query($koneksi, $query)) {
         // Redirect ke halaman login.php
-        header("Location: login.php");
-        exit(); // Penting untuk menghentikan eksekusi script setelah redirect
+        header("Location: register.php?success=register");
+        exit();
       } else {
         echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
       }
@@ -83,6 +83,13 @@ if (isset($_POST['submit'])) {
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Daftar</h1>
               </div>
+              <!-- Check if the 'success' parameter exists in the URL -->
+              <?php if (isset($_GET['success']) && $_GET['success'] === 'register') : ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  Berhasil Daftar, Silahkan
+                  <a class="regular" href="login.php">Masuk</a>
+                </div>
+              <?php endif; ?>
               <?php if (!empty($pesan)) : ?>
                 <div class="alert alert-danger"><?php echo $pesan; ?></div>
               <?php endif; ?>

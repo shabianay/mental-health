@@ -77,6 +77,7 @@ if (!$result) {
   die("Query error: " . mysqli_error($koneksi));
 }
 $user = mysqli_fetch_assoc($result);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

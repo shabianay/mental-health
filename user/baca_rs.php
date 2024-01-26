@@ -30,6 +30,18 @@ if (isset($_SESSION['namaLengkap'])) {
     // Handle if the full name is not set in the session
     $namaLengkap = "Nama Lengkap Tidak Tersedia";
 }
+
+// Lakukan koneksi ke database
+require_once '../include/koneksi.php';
+// Ambil informasi pengguna dari database
+$user_id = $_SESSION['user_id'];
+$query = "SELECT * FROM users WHERE id = $user_id";
+$result = mysqli_query($koneksi, $query);
+if (!$result) {
+    // Error saat mengambil data dari database
+    die("Query error: " . mysqli_error($koneksi));
+}
+$user = mysqli_fetch_assoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
