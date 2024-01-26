@@ -8,7 +8,6 @@
         <div class="sidebar-brand-text mx-3">Mental Health</div>
     </a>
 
-    <!-- Divider -->
     <hr class="sidebar-divider my-0" />
     <!-- Nav Item - Dashboard -->
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'user_dashboard.php' ? 'active' : ''; ?>">
@@ -17,8 +16,7 @@
             <span>Dashboard</span></a>
     </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider" />
+    <hr class="sidebar-divider my-0" />
 
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'skrining.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="skrining.php">
@@ -40,16 +38,22 @@
             <i class="fas fa-fw fa-hospital"></i>
             <span>Rumah Sakit</span></a>
     </li>
-    <!-- Nav Item - Charts -->
-    <!-- Divider -->
-    <!-- <hr class="sidebar-divider my-0" />
 
-    <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'chatbot.php' ? 'active' : ''; ?>">
-        <a class="nav-link" href="chatbot.php">
-            <i class="fas fa-fw fa-robot"></i>
-            <span>Chatbot</span></a>
-    </li> -->
-    <!-- Divider -->
+    <hr class="sidebar-divider my-0" />
+
+    <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'active' : ''; ?>">
+        <a class="nav-link" href="profile.php">
+            <i class="fas fa-user fa-sm fa-fw"></i>
+            <span>Profil</span></a>
+    </li>
+
+    <hr class="sidebar-divider my-0" />
+    <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == '../include/logout.php' ? 'active' : ''; ?>">
+        <a class="nav-link" href="../include/logout.php">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw"></i>
+            <span>Keluar</span></a>
+    </li>
+
     <hr class="sidebar-divider d-none d-md-block" />
 
     <!-- Sidebar Toggler (Sidebar) -->
@@ -58,12 +62,6 @@
     </div>
 </ul>
 
-<!-- chatbot
-    <div class="chatbot-button">
-        <button class="fas fa-fw fa-robot" id="open-chatbot-btn"></button>
-        <div id="chatbot-container"></div>
-    </div> -->
-<!-- End of Sidebar -->
 <!-- JavaScript with jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

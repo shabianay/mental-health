@@ -8,10 +8,7 @@
         <div class="sidebar-brand-text mx-3">Mental Health</div>
     </a>
 
-    <!-- Divider -->
     <hr class="sidebar-divider my-0" />
-
-    <!-- Nav Item - Dashboard -->
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_dashboard.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="admin_dashboard.php">
             <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -19,9 +16,7 @@
         </a>
     </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider" />
-    <!-- Nav Item - Pages Collapse Menu -->
+    <hr class="sidebar-divider my-0" />
     <li class="nav-item collapsed <?php echo basename($_SERVER['PHP_SELF']) === 'soal.php' || basename($_SERVER['PHP_SELF']) === 'soal_group.php' ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSoal" aria-expanded="true" aria-controls="collapseSoal">
             <i class="fas fa-fw fa-cog"></i>
@@ -49,7 +44,6 @@
         </a>
     </li>
 
-    <!-- Nav Item - Data Pengguna -->
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'pengguna.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="pengguna.php">
             <i class="fas fa-fw fa-users"></i>
@@ -57,7 +51,6 @@
         </a>
     </li>
 
-    <!-- Nav Item - Laporan -->
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'laporan.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="laporan.php">
             <i class="fas fa-fw fa-chart-area"></i>
@@ -65,7 +58,21 @@
         </a>
     </li>
 
-    <!-- Divider -->
+    <hr class="sidebar-divider my-0" />
+
+    <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_profile.php' ? 'active' : ''; ?>">
+        <a class="nav-link" href="admin_profile.php">
+            <i class="fas fa-user fa-sm fa-fw"></i>
+            <span>Profil</span></a>
+    </li>
+
+    <hr class="sidebar-divider my-0" />
+    <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == '../include/logout.php' ? 'active' : ''; ?>">
+        <a class="nav-link" href="../include/logout.php">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw"></i>
+            <span>Keluar</span></a>
+    </li>
+
     <hr class="sidebar-divider d-none d-md-block" />
 
     <!-- Sidebar Toggler (Sidebar) -->

@@ -45,24 +45,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Handle profile image upload
     if ($_FILES['profileImage']['error'] === UPLOAD_ERR_OK) {
+        $maxFileSize = 2 * 1024 * 1024; // 2MB in bytes
         $uploadDir = '../uploads/profile/';
         $uploadFile = $uploadDir . basename($_FILES['profileImage']['name']);
 
-        // Move the uploaded file to the uploads directory
-        if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $uploadFile)) {
-            // File uploaded successfully, update the profile image path in the database
-            $updateQuery = "UPDATE users SET profile_image = '$uploadFile' WHERE id = $user_id";
-            $updateResult = mysqli_query($koneksi, $updateQuery);
-            if (!$updateResult) {
-                // Error updating the profile image path in the database
-                die("Update error: " . mysqli_error($koneksi));
-            }
-            // Redirect back to the profile page with a success message
-            header("Location: admin_profile.php?success=1");
-            exit();
+        // Check file size
+        if ($_FILES['profileImage']['size'] > $maxFileSize) {
+            $pesan = "Ukuran file terlalu besar. Maksimum 2MB.";
         } else {
-            // Failed to upload the file, show an error message
-            $pesan = "Gagal mengunggah foto profil.";
+            // Move the uploaded file to the uploads directory
+            if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $uploadFile)) {
+                // File uploaded successfully, update the profile image path in the database
+                $updateQuery = "UPDATE users SET profile_image = '$uploadFile' WHERE id = $user_id";
+                $updateResult = mysqli_query(
+                    $koneksi,
+                    $updateQuery
+                );
+                if (!$updateResult) {
+                    // Error updating the profile image path in the database
+                    die("Update error: " . mysqli_error($koneksi));
+                }
+                // Redirect back to the profile page with a success message
+                header("Location: admin_profile.php?success=1");
+                exit();
+            } else {
+                // Failed to upload the file, show an error message
+                $pesan = "Gagal mengunggah foto profil.";
+            }
         }
     }
 
@@ -126,6 +135,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             /* Adjust this value to your desired size */
             overflow: hidden;
             border-radius: 50%;
+            cursor: pointer;
+            border: 10px solid #eaecf4;
             /* Makes the container circular */
         }
 
@@ -156,22 +167,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <!-- Form for updating profile -->
                     <form method="post" action="admin_profile.php" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="profileImage">Foto Profil Saat Ini</label>
-                            <div class="profile-image-container mb-3">
-                                <?php if (!empty($user['profile_image'])) : ?>
-                                    <img src="<?php echo $user['profile_image']; ?>" class="rounded-circle" alt="Current Profile Image" />
-                                <?php else : ?>
-                                    <p>Foto Profil Saat Ini</p>
-                                <?php endif; ?>
-                            </div>
+                            <small class="form-text text-white badge bg-primary mb-3">Klik foto untuk mengganti foto profil.</small>
+                            <br>
+                            <label for="profileImage" class="profile-image-container mb-3">
+                                <img id="preview" src="<?php echo !empty($user['profile_image']) ? $user['profile_image'] : '#'; ?>" class="rounded-circle" alt="Current Profile Image" />
+                                <input type="file" name="profileImage" id="profileImage" accept="image/*" class="d-none" onchange="previewImage(event)">
+                            </label>
+                            <br>
+                            <label for="image">Gambar (maksimal 2MB)</label>
                         </div>
-                        <!-- Input for updating profile image -->
-                        <div class="form-group">
-                            <label for="profileImage">Ganti Foto Profil</label>
-                            <input type="file" name="profileImage" id="profileImage" accept="image/*" class="form-control-file" />
-                            <small class="form-text text-muted">Pilih file gambar untuk mengganti foto profil.</small>
-                        </div>
-                        <br><br>
                         <div class="form-group">
                             <label for="Namalengkap">Nama Lengkap</label>
                             <input type="text" class="form-control" id="Namalengkap" name="Namalengkap" value="<?php echo $user['Namalengkap']; ?>" required />
@@ -207,6 +211,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="../js/sb-admin-2.min.js"></script>
+    <script>
+        // Function to preview the selected image before upload
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 </body>
 
 </html>
