@@ -67,7 +67,8 @@ $user = mysqli_fetch_assoc($result);
     <title>Edit Soal Group</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
     <!-- Custom styles for this template-->
@@ -87,29 +88,32 @@ $user = mysqli_fetch_assoc($result);
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">Edit Soal Group</h1>
-                    <form method="post" action="../update_soal_group.php">
-                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                        <div class="form-group">
-                            <label for="name">Nama grup soal:</label>
-                            <input class="form-control" type="text" id="name" name="name" value="<?php echo $row['name']; ?>" required>
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <form method="post" action="../update_soal_group.php">
+                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                <div class="form-group">
+                                    <label for="name">Nama grup soal:</label>
+                                    <input class="form-control" type="text" id="name" name="name" value="<?php echo $row['name']; ?>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sehat">Sehat: (desimal)</label>
+                                    <input class="form-control" type="number" id="sehat" name="sehat" step="0.01" min="0" value="<?php echo $row['sehat']; ?>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="perlu_perhatian">Perlu Perhatian: (desimal)</label>
+                                    <input class="form-control" type="number" id="perlu_perhatian" name="perlu_perhatian" step="0.01" min="0" value="<?php echo $row['perlu_perhatian']; ?>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="butuh_penanganan">Butuh Penanganan: (desimal)</label>
+                                    <input class="form-control" type="number" id="butuh_penanganan" name="butuh_penanganan" step="0.01" min="0" value="<?php echo $row['butuh_penanganan']; ?>" required>
+                                </div>
+                                <button type="submit" name="submit" class="btn btn-primary"><i class="fa-solid fa-rotate mr-2"></i>Simpan Perubahan</button>
+                                <a href="pengguna.php" class="btn btn-secondary"><i class="fa-solid fa-angle-left mr-2"></i>Kembali</a>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label for="sehat">Sehat: (desimal)</label>
-                            <input class="form-control" type="number" id="sehat" name="sehat" step="0.01" min="0" value="<?php echo $row['sehat']; ?>" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="perlu_perhatian">Perlu Perhatian: (desimal)</label>
-                            <input class="form-control" type="number" id="perlu_perhatian" name="perlu_perhatian" step="0.01" min="0" value="<?php echo $row['perlu_perhatian']; ?>" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="butuh_penanganan">Butuh Penanganan: (desimal)</label>
-                            <input class="form-control" type="number" id="butuh_penanganan" name="butuh_penanganan" step="0.01" min="0" value="<?php echo $row['butuh_penanganan']; ?>" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary" name="create_group">Update soal grup</button>
-                        <a href="soal_group.php" class="btn btn-secondary">Kembali</a>
-                    </form>
+                    </div>
                 </div>
-                <!-- /.container-fluid -->
             </div>
             <?php require_once('../include/footer.php') ?>
         </div>

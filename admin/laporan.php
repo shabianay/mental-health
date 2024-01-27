@@ -136,16 +136,12 @@ $user = mysqli_fetch_assoc($result);
             </div>
           </div>
         </div>
-        <!-- /.container-fluid -->
       </div>
       <?php
       require_once('../include/footer.php')
       ?>
-      <!-- End of Main Content -->
     </div>
-    <!-- End of Content Wrapper -->
   </div>
-  <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">

@@ -135,7 +135,6 @@ if (isset($_POST['submit'])) {
                 <input type="submit" name="submit" value="Buat akun" class="btn btn-primary btn-user btn-block">
               </form>
 
-              <hr />
               <!-- <div class="text-center">
                   <a class="small" href="forgot-password.html"
                     >Lupa password?</a

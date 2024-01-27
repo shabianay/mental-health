@@ -3,9 +3,9 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="user_dashboard.php">
         <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
+            <i class="fa-solid fa-spa"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Mental Health</div>
+        <div class="sidebar-brand-text mx-3">MIndful</div>
     </a>
 
     <hr class="sidebar-divider my-0" />

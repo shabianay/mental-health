@@ -9,7 +9,7 @@
         <li class="nav-item dropdown no-arrow">
             <?php
             // Mendapatkan path gambar profil
-            $profileImage = !empty($user['profile_image']) ? $user['profile_image'] : '../img/undraw_profile.svg';
+            $profileImage = !empty($user['profile_image']) ? $user['profile_image'] : '../img/circle-user-solid.svg';
             ?>
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-white badge bg-success">Akun</span>

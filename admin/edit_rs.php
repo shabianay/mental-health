@@ -128,56 +128,64 @@ mysqli_close($koneksi);
                 <?php require_once('../include/topbar_admin.php') ?>
                 <div class="container-fluid">
                     <h1 class="h3 mb-4 text-gray-800">Edit Rumah Sakit</h1>
-                    <form method="post" action="edit_rs.php?id=<?php echo $hospital_id; ?>" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="name">Nama</label>
-                            <input type="text" class="form-control" id="name" name="name" value="<?php echo $hospital['name']; ?>" required />
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <form method="post" action="edit_rs.php?id=<?php echo $hospital_id; ?>" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="name">Nama</label>
+                                    <input type="text" class="form-control" id="name" name="name" value="<?php echo $hospital['name']; ?>" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Alamat</label>
+                                    <input type="text" class="form-control" id="address" name="address" value="<?php echo $hospital['address']; ?>" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Telepon</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" value="<?php echo $hospital['phone']; ?>" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="website">Website</label>
+                                    <input type="text" class="form-control" id="website" name="website" value="<?php echo $hospital['website']; ?>" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="maps">Maps</label>
+                                    <input type="text" class="form-control" id="maps" name="maps" value="<?php echo $hospital['maps']; ?>" />
+                                </div>
+                                <div>
+                                    <label for="content">Tampilan gambar: </label>
+                                    <br>
+                                    <?php if (!empty($hospital['image_path'])) : ?>
+                                        <img src="<?php echo $hospital['image_path']; ?>" alt="Rumah Sakit Image" style="max-width: 300px;">
+                                    <?php endif; ?>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label style="cursor: pointer;" for="image">Perbarui gambar (maksimal 2MB)</label>
+                                    <input style="cursor: pointer;" type="file" class="form-control-file mb-3" id="image" name="image" accept="image/*" maxlength="2097152" />
+                                </div>
+                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-rotate mr-2"></i>Simpan Perubahan</button>
+                                <a href="rumahsakit.php" class="btn btn-secondary"><i class="fa-solid fa-angle-left mr-2"></i>Kembali</a>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label for="address">Alamat</label>
-                            <input type="text" class="form-control" id="address" name="address" value="<?php echo $hospital['address']; ?>" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Telepon</label>
-                            <input type="text" class="form-control" id="phone" name="phone" value="<?php echo $hospital['phone']; ?>" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="website">Website</label>
-                            <input type="text" class="form-control" id="website" name="website" value="<?php echo $hospital['website']; ?>" />
-                        </div>
-                        <div class="form-group">
-                            <label for="maps">Maps</label>
-                            <input type="text" class="form-control" id="maps" name="maps" value="<?php echo $hospital['maps']; ?>" />
-                        </div>
-                        <div class="form-group">
-                            <label for="image">Gambar (maksimal 2MB)</label>
-                            <input type="file" class="form-control-file" id="image" name="image" accept="image/*" maxlength="2097152" />
-                        </div>
-                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-rotate mr-2"></i>Simpan Perubahan</button>
-                        <a href="rumahsakit.php" class="btn btn-secondary"><i class="fa-solid fa-angle-left mr-2"></i>Kembali</a>
-                    </form>
+                    </div>
                 </div>
+                <?php require_once('../include/footer.php') ?>
             </div>
-            <!-- Footer -->
-            <?php require_once('../include/footer.php') ?>
-            <!-- End of Footer -->
         </div>
-    </div>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Bootstrap core JavaScript-->
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="../js/sb-admin-2.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="../js/sb-admin-2.min.js"></script>
 </body>
 
 </html>

@@ -19,7 +19,7 @@
 <body>
     <div class="wrapper">
         <!-- <a href="user_dashboard.php" class="btn btn-secondary">Kembali</a> -->
-        <div class="title">Mental Health Bot</div>
+        <div class="title">MIndful Bot</div>
         <div class="form">
             <div class="bot-inbox inbox">
                 <div class="icon">

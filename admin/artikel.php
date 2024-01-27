@@ -110,7 +110,7 @@ $user = mysqli_fetch_assoc($result);
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Halaman Artikel</h1>
                     <!-- Tombol untuk membuat artikel baru -->
-                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addArticleModal">
+                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addArticleModal"><i class="fa-solid fa-plus mr-2"></i>
                         Tambah Artikel Baru
                     </button>
                     <!-- Modal -->

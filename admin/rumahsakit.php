@@ -117,7 +117,7 @@ $user = mysqli_fetch_assoc($result);
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Halaman Daftar Rumah Sakit</h1>
                     <!-- Tombol untuk membuat rs baru -->
-                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#tambahRumahSakitModal">
+                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#tambahRumahSakitModal"><i class="fa-solid fa-plus mr-2"></i>
                         Tambah Rumah Sakit
                     </button>
                     <!-- Modal -->

@@ -103,7 +103,7 @@ $user = mysqli_fetch_assoc($result);
                 <div class="container-fluid">
                     <h1 class="h3 mb-2 text-gray-800">Halaman Daftar Soal</h1>
                     <!-- Tombol untuk membuat artikel baru -->
-                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addQuestionModal">
+                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addQuestionModal"><i class="fa-solid fa-plus mr-2"></i>
                         Tambah Soal
                     </button>
                     <div class="modal fade" id="addQuestionModal" tabindex="-1" role="dialog" aria-labelledby="addQuestionModalLabel" aria-hidden="true">

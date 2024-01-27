@@ -159,49 +159,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?php require_once('../include/topbar_admin.php') ?>
                 <div class="container-fluid">
                     <h1 class="h3 mb-4 text-gray-800">Perbarui Profil</h1>
-                    <?php if (isset($_GET['success'])) : ?>
-                        <div class="alert alert-success" role="alert">
-                            Profile updated successfully!
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <?php if (isset($_GET['success'])) : ?>
+                                <div class="alert alert-success" role="alert">
+                                    Profile updated successfully!
+                                </div>
+                            <?php endif; ?>
+                            <form method="post" action="admin_profile.php" enctype="multipart/form-data">
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        <small class="form-text text-white badge bg-primary mb-3">Klik foto untuk mengganti foto profil.</small>
+                                        <br>
+                                        <label for="profileImage" class="profile-image-container mb-3">
+                                            <img id="preview" src="<?php echo !empty($user['profile_image']) ? $user['profile_image'] : '#'; ?>" class="rounded-circle" alt="Current Profile Image" />
+                                            <input type="file" name="profileImage" id="profileImage" accept="image/*" class="d-none" onchange="previewImage(event)">
+                                        </label>
+                                        <br>
+                                        <label for="image">Gambar (maksimal 2MB)</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Namalengkap">Nama Lengkap</label>
+                                    <input type="text" class="form-control" id="Namalengkap" name="Namalengkap" value="<?php echo $user['Namalengkap']; ?>" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="<?php echo $user['email']; ?>" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="text" class="form-control" id="password" name="password" value="********" disabled />
+                                    <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah password.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword">New Password</label>
+                                    <input type="password" class="form-control" id="newPassword" name="newPassword" pattern="(?=.*\d).{8,}" />
+                                    <small class="form-text text-muted">Password harus terdiri dari minimal 8 karakter dan mengandung angka.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phoneNumber">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10,}" value="<?php echo $user['phoneNumber']; ?>" required />
+                                    <small class="form-text text-muted">Nomor HP harus terdiri dari minimal 10 angka.</small>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-rotate mr-2"></i>Perbarui Profil</button>
+                                <a href="admin_dashboard.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
+                            </form>
                         </div>
-                    <?php endif; ?>
-                    <!-- Form for updating profile -->
-                    <form method="post" action="admin_profile.php" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <small class="form-text text-white badge bg-primary mb-3">Klik foto untuk mengganti foto profil.</small>
-                            <br>
-                            <label for="profileImage" class="profile-image-container mb-3">
-                                <img id="preview" src="<?php echo !empty($user['profile_image']) ? $user['profile_image'] : '#'; ?>" class="rounded-circle" alt="Current Profile Image" />
-                                <input type="file" name="profileImage" id="profileImage" accept="image/*" class="d-none" onchange="previewImage(event)">
-                            </label>
-                            <br>
-                            <label for="image">Gambar (maksimal 2MB)</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="Namalengkap">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="Namalengkap" name="Namalengkap" value="<?php echo $user['Namalengkap']; ?>" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" value="<?php echo $user['email']; ?>" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="text" class="form-control" id="password" name="password" value="********" disabled />
-                            <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah password.</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="newPassword">New Password</label>
-                            <input type="password" class="form-control" id="newPassword" name="newPassword" pattern="(?=.*\d).{8,}" />
-                            <small class="form-text text-muted">Password harus terdiri dari minimal 8 karakter dan mengandung angka.</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="phoneNumber">Phone Number</label>
-                            <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10,}" value="<?php echo $user['phoneNumber']; ?>" required />
-                            <small class="form-text text-muted">Nomor HP harus terdiri dari minimal 10 angka.</small>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-rotate mr-2"></i>Perbarui Profil</button>
-                        <a href="admin_dashboard.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
-                    </form>
+                    </div>
                 </div>
             </div>
             <?php require_once('../include/footer.php') ?>

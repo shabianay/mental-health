@@ -91,7 +91,7 @@ $user = mysqli_fetch_assoc($result);
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Halaman Soal Grup</h1>
                     <!-- Tombol untuk membuat artikel baru -->
-                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addSoalGroupModal">
+                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addSoalGroupModal"><i class="fa-solid fa-plus mr-2"></i>
                         Tambah Soal Grup
                     </button>
                     <div class="modal fade" id="addSoalGroupModal" tabindex="-1" role="dialog" aria-labelledby="addSoalGroupModalLabel" aria-hidden="true">

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Memasukkan file koneksi database
+// Include database connection file
 require_once "../include/koneksi.php";
 
 // Set session timeout in seconds (e.g., 30 minutes)
@@ -26,19 +26,65 @@ if (isset($_SESSION['user_id'])) {
   exit();
 }
 
-// Ambil informasi pengguna dari database
+// Jika tombol "Buat akun" diklik
+if (isset($_POST['submit'])) {
+  // Ambil nilai dari form
+  $namaLengkap = $_POST['Namalengkap'];
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+  $phoneNumber = $_POST['phoneNumber'];
+  $angkatan = $_POST['angkatan'];
+  $gender = $_POST['gender'];
+  $confirmPassword = $_POST['confirmPassword'];
+
+  // Inside the submit block, after the validation check
+  if (empty($namaLengkap) || empty($email) || empty($password) || empty($phoneNumber) || empty($angkatan) || empty($gender) || $password !== $confirmPassword) {
+    $pesan = "Harap isi semua kolom dengan benar atau pastikan password dan konfirmasi password sama.";
+  } else {
+    // Query untuk memeriksa apakah email sudah ada di database
+    $checkQuery = "SELECT * FROM users WHERE email='$email'";
+    $checkResult = mysqli_query($koneksi, $checkQuery);
+
+    if (mysqli_num_rows($checkResult) > 0) {
+      // Jika email sudah ada, tampilkan pesan kesalahan
+      $pesan = "Email sudah digunakan, gunakan email lain";
+    } else {
+      // Jika email belum ada, lakukan penyimpanan data
+      // Set default role to "user"
+      $role = "user";
+
+      // Hash the password
+      $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+      // Query untuk menyimpan data ke dalam database, termasuk role dan gender
+      $query = "INSERT INTO users (Namalengkap, email, password, phoneNumber, angkatan, role, gender) VALUES ('$namaLengkap', '$email', '$hashedPassword', '$phoneNumber', '$angkatan', '$role', '$gender')";
+
+      if (mysqli_query($koneksi, $query)) {
+        // Redirect ke halaman pengguna.php dengan pesan sukses
+        header("Location: pengguna.php?success=register");
+        exit();
+      } else {
+        echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
+      }
+    }
+  }
+  // Tutup koneksi ke database
+  mysqli_close($koneksi);
+}
+
+// Retrieve user information from the database
 if (isset($_SESSION['user_id'])) {
   $user_id = $_SESSION['user_id'];
   $query = "SELECT * FROM users WHERE id = $user_id";
   $result = mysqli_query($koneksi, $query);
   if (!$result) {
-    // Error saat mengambil data dari database
-    die("Query error: " . mysqli_error($koneksi));
+    // Error fetching data from the database
+    die("Query error: email telah terdaftar " . mysqli_error($koneksi));
   }
   $user = mysqli_fetch_assoc($result);
 } else {
-  // Jika user_id tidak tersedia dalam sesi, mungkin ada masalah dengan sesi
-  die("User ID tidak ditemukan dalam sesi.");
+  // If user_id is not available in session, there might be an issue with the session
+  die("User ID not found in session.");
 }
 
 ?>
@@ -82,6 +128,78 @@ if (isset($_SESSION['user_id'])) {
         <div class="container-fluid">
           <!-- Page Heading -->
           <h1 class="h3 mb-2 text-gray-800">Halaman Pengguna</h1>
+          <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#tambahPenggunaModal"><i class="fa-solid fa-plus mr-2"></i>
+            Tambah Pengguna
+          </button>
+          <?php
+          // Tambahkan kode untuk menampilkan pesan jika pengguna berhasil ditambahkan
+          if (isset($_GET['success']) && $_GET['success'] === 'register') {
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                  Pengguna berhasil ditambahkan.
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>';
+          }
+          ?>
+          <div class="modal fade" id="tambahPenggunaModal" tabindex="-1" role="dialog" aria-labelledby="tambahPenggunaModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="tambahPenggunaModalLabel">Tambah Pengguna</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form method="post" action="pengguna.php" enctype="multipart/form-data">
+                    <div class="form-group">
+                      <label for="Namalengkap">Nama Lengkap</label>
+                      <input type="text" class="form-control" id="Namalengkap" name="Namalengkap" placeholder="Nama Lengkap" />
+                    </div>
+                    <div class="form-group">
+                      <label for="email">Email</label>
+                      <input type="email" class="form-control" id="email" name="email" placeholder="Email" />
+                    </div>
+                    <div class="form-group">
+                      <label for="password">Password</label>
+                      <input type="password" class="form-control" id="password" name="password" placeholder="Password" pattern="(?=.*\d).{8,}" title="Password harus terdiri dari minimal 8 karakter dan mengandung angka" required />
+                    </div>
+                    <div class="form-group">
+                      <label for="confirmPassword">Konfirmasi Password</label>
+                      <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Konfirmasi Password" pattern="(?=.*\d).{8,}" title="Password harus terdiri dari minimal 8 karakter dan mengandung angka" required />
+                    </div>
+                    <div class="form-group">
+                      <label for="phoneNumber">Nomor HP</label>
+                      <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Nomor HP" pattern="[0-9]{10,}" title="Nomor HP harus terdiri dari minimal 10 angka" required />
+                    </div>
+                    <div class="form-group">
+                      <label for="angkatan">Angkatan</label>
+                      <select class="form-control" id="angkatan" name="angkatan">
+                        <option value="" selected disabled hidden>Pilih Angkatan</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="gender">Jenis Kelamin</label>
+                      <select class="form-control" id="gender" name="gender" required>
+                        <option value="" selected disabled hidden>Pilih Jenis Kelamin</option>
+                        <option value="Laki-Laki">Laki-Laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                      </select>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary" name="submit">Tambah Pengguna</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -105,30 +223,12 @@ if (isset($_SESSION['user_id'])) {
                   </thead>
                   <tbody>
                     <?php
-                    require_once "../include/koneksi.php";
-                    // Check if the 'success' parameter exists in the URL
-                    if (isset($_GET['success'])) {
-                      // Check the value of the 'success' parameter
-                      if ($_GET['success'] === 'delete') {
-                        // If the value is 'delete', display a success message
-                        echo '<div class="alert alert-success" role="alert">Pengguna berhasil dihapus.</div>';
-                      }
-                    }
-                    // Check if the 'success' parameter exists in the URL
-                    if (isset($_GET['success'])) {
-                      // Check the value of the 'success' parameter
-                      if ($_GET['success'] === '1') {
-                        // If the value is '1', display a success message
-                        echo '<div class="alert alert-success" role="alert">Pengguna berhasil diperbarui.</div>';
-                      }
-                    }
-                    // Query untuk mengambil data pengguna dari database
+                    // Query to retrieve user data from the database
                     $query = "SELECT * FROM users";
                     $result = mysqli_query($koneksi, $query);
-                    // Jika query berhasil dijalankan
                     if ($result) {
-                      $counter = 1; // Inisialisasi counter
-                      // Tampilkan data pengguna ke dalam tabel HTML
+                      $counter = 1; // Initialize counter
+                      // Display user data in HTML table
                       while ($row = mysqli_fetch_assoc($result)) {
                         // Output data from each row into table cells
                         echo "<tr>";
@@ -142,7 +242,7 @@ if (isset($_SESSION['user_id'])) {
                         } else {
                           echo "<td>No Image</td>";
                         }
-                        // Tampilkan badge sesuai dengan gender pengguna
+                        // Display badge based on user's gender
                         if ($row['gender'] == 'Laki-Laki') {
                           echo '<td><span class="badge badge-info">' . $row['gender'] . '</span></a>';
                         } elseif ($row['gender'] == 'Perempuan') {
@@ -152,7 +252,7 @@ if (isset($_SESSION['user_id'])) {
                         }
                         echo "</td>";
                         echo "<td>";
-                        // Tampilkan badge sesuai dengan peran (role) pengguna
+                        // Display badge based on user's role
                         if ($row['role'] == "admin") {
                           echo "<span class='badge badge-primary'>" . $row['role'] . "</span>";
                         } else if ($row['role'] == "user") {
@@ -161,22 +261,19 @@ if (isset($_SESSION['user_id'])) {
                           echo $row['role'];
                         }
                         echo "</td>";
-                        // Tambahkan kolom untuk Actions dengan tautan Edit dan Delete
                         echo "<td>";
                         echo "<a href='edit_user.php?id=" . $row['id'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
                         echo "&nbsp;"; // Add a non-breaking space here for spacing
                         echo "<a href='../hapus_user.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Hapus<i class='ml-2 fa-regular fa-trash-can'></i></a>";
                         echo "</td>";
                         echo "</tr>";
-                        $counter++; // Tingkatkan counter setelah setiap baris
+                        $counter++; // Increment counter after each row
                       }
-                      // Free result set
                       mysqli_free_result($result);
                     } else {
-                      // Jika query gagal dijalankan
                       echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
                     }
-                    // Tutup koneksi ke database
+                    // Close database connection
                     mysqli_close($koneksi);
                     ?>
                   </tbody>
@@ -185,16 +282,12 @@ if (isset($_SESSION['user_id'])) {
             </div>
           </div>
         </div>
-        <!-- /.container-fluid -->
       </div>
       <?php
       require_once('../include/footer.php')
       ?>
-      <!-- End of Main Content -->
     </div>
-    <!-- End of Content Wrapper -->
   </div>
-  <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
@@ -216,6 +309,18 @@ if (isset($_SESSION['user_id'])) {
 
   <!-- Page level custom scripts -->
   <script src="../js/demo/datatables-demo.js"></script>
+  <script>
+    function validatePassword() {
+      var password = document.getElementById("password").value;
+      var confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (password != confirmPassword) {
+        alert("Password dan konfirmasi password harus sama.");
+        return false;
+      }
+      return true;
+    }
+  </script>
 </body>
 
 </html>

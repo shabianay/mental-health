@@ -232,21 +232,17 @@ $user = mysqli_fetch_assoc($result);
             <div class="card-body">
               <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="../img/undraw_posting_photo.svg" alt="...">
               <p>
-                Aplikasi mental health ini adalah...
+                Aplikasi MIndful ini adalah...
               </p>
             </div>
           </div>
         </div>
-        <!-- /.container-fluid -->
       </div>
-      <!-- End of Main Content -->
-      <?php
-      require_once('../include/footer.php')
-      ?>
+    <?php
+    require_once('../include/footer.php')
+    ?>
     </div>
-    <!-- End of Content Wrapper -->
   </div>
-  <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">

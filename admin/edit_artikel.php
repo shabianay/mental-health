@@ -125,32 +125,35 @@ mysqli_close($koneksi);
                 <?php require_once('../include/topbar_admin.php') ?>
                 <div class="container-fluid">
                     <h1 class="h3 mb-4 text-gray-800">Edit Artikel</h1>
-                    <form method="post" action="edit_artikel.php?id=<?php echo $article_id; ?>" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="title">Judul</label>
-                            <input type="text" class="form-control" id="title" name="title" value="<?php echo $article['title']; ?>" required />
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <form method="post" action="edit_artikel.php?id=<?php echo $article_id; ?>" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="title">Judul</label>
+                                    <input type="text" class="form-control" id="title" name="title" value="<?php echo $article['title']; ?>" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="content">Isi</label>
+                                    <textarea class="form-control" id="isiberita" name="content" rows="5" required><?php echo $article['content']; ?></textarea>
+                                </div>
+                                <div>
+                                    <label for="content">Tampilan gambar: </label>
+                                    <br>
+                                    <?php if (!empty($article['image_path'])) : ?>
+                                        <img src="<?php echo $article['image_path']; ?>" alt="Article Image" style="max-width: 300px;">
+                                    <?php endif; ?>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label style="cursor: pointer;" for="image">Perbarui gambar (maksimal 2MB)</label>
+                                    <input style="cursor: pointer;" type="file" class="form-control-file mb-3" id="image" name="image" accept="image/*" maxlength="2097152" />
+                                </div>
+                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-rotate mr-2"></i>Simpan Perubahan</button>
+                                <a href="artikel.php" class="btn btn-secondary"><i class="fa-solid fa-angle-left mr-2"></i>Kembali</a>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label for="content">Isi</label>
-                            <textarea class="form-control" id="isiberita" name="content" rows="5" required><?php echo $article['content']; ?></textarea>
-                        </div>
-                        <div>
-                            <label for="content">Tampilan gambar: </label>
-                            <br>
-                            <?php if (!empty($article['image_path'])) : ?>
-                                <img src="<?php echo $article['image_path']; ?>" alt="Article Image" style="max-width: 300px;">
-                            <?php endif; ?>
-                        </div>
-                        <div class="form-group mt-3">
-                            <label style="cursor: pointer;" for="image">Perbarui gambar (maksimal 2MB)</label>
-                            <input style="cursor: pointer;" type="file" class="form-control-file mb-3" id="image" name="image" accept="image/*" maxlength="2097152" />
-                        </div>
-                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-rotate mr-2"></i>Simpan Perubahan</button>
-                        <a href="artikel.php" class="btn btn-secondary"><i class="fa-solid fa-angle-left mr-2"></i>Kembali</a>
-                    </form>
+                    </div>
                 </div>
             </div>
-            <!-- Footer -->
             <?php require_once('../include/footer.php') ?>
         </div>
     </div>

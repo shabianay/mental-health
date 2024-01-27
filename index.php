@@ -2,11 +2,21 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selamat Datang</title>
-    <script src="https://kit.fontawesome.com/f3eccbebbf.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-eFJ5Z2IE5LlSVqf3+LyS/xA2T3cQj6zF3yZ5P7VfBmVfSrxcs6h3K9u7f8Z7f8wG" crossorigin="anonymous">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>MINDFUL</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+
+    <!-- Custom styles for this template-->
+    <link href="./css/sb-admin-2.css" rel="stylesheet" />
 
     <style>
         body {
@@ -21,17 +31,9 @@
             text-align: center;
         }
 
-        h1 {
-            font-size: 2.5em;
-        }
-
-        p {
-            font-size: 1.2em;
-        }
-
         .cta-button {
             padding: 10px 20px;
-            background-color: #3057c8;
+            background-color: #4e73df;
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
@@ -39,11 +41,12 @@
         }
 
         .cta-button:hover {
-            background-color: #396bff;
+            background-color: #3057c8;
+            color: #f0efef;
         }
 
         .hero {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 10)), url("./img/24720446_6907178.svg");
+            background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7)), url("./img/24720446_6907178.svg");
             background-attachment: fixed;
             background-size: cover;
             background-position: center;
@@ -54,76 +57,36 @@
             align-items: center;
             text-align: center;
             color: #fff;
-            padding: 0px 0px;
-            /* Updated padding for vertical and horizontal spacing */
-        }
-
-        .hero h1 {
-            font-size: 3.5em;
-            margin-bottom: 0px;
-            /* Added margin bottom for spacing */
-        }
-
-        .hero p {
-            font-size: 1.5m;
-            margin-bottom: 35px;
-            /* Added margin bottom for spacing */
+            padding: 50px;
         }
 
         .hero .cta-button {
-            padding: 15px 30px;
-            font-size: 1.2em;
+            text-decoration: none;
         }
 
-        /* .features {
-            background-color: #f9f9f9;
-            padding: 50px 0;
-            text-align: center;
+        .brand-icon i {
+            font-size: 2em;
         }
-
-        .feature {
-            margin-bottom: 30px;
-        }
-
-        .feature img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
-
-        .feature h3 {
-            margin-bottom: 10px;
-        }
-
-        .feature p {
-            font-size: 1.1em;
-        } */
     </style>
 </head>
 
 <body>
     <section class="hero">
-        <h1>Perhatikan Kesehatan Mental Anda</h1>
-        <p>Temukan dukungan kesehatan mental melalui platform ini dengan alat penilaian yang ramah pengguna</p>
+        <div class="brand mb-3">
+            <div class="brand-icon rotate-n-15">
+                <i class="fa-solid fa-spa"></i>
+            </div>
+            <div class="h4 brand-text">MIndful</div>
+        </div>
+        <div class="caption">
+            <h1 class="h2 mb-3">Perhatikan <span class="badge bg-primary"> Kesehatan Mental </span> Anda</h1>
+            <p class="mb-4">Temukan dukungan kesehatan mental melalui platform ini dengan alat penilaian yang ramah pengguna.</p>
+        </div>
         <a href="register.php" class="cta-button">
             Mulai Tes
             <i class="fas fa-arrow-right" style="margin-left: 5px;"></i>
         </a>
     </section>
-    <!-- <section class="features">
-        <div class="feature">
-            <img src="./uploads/msib.png" alt="Feature 1">
-            <h3>Feature 1</h3>
-            <p>Description of feature 1.</p>
-        </div>
-        <div class="feature">
-            <img src="./uploads/msib.png" alt="Feature 2">
-            <h3>Feature 2</h3>
-            <p>Description of feature 2.</p>
-        </div>
-    </section> -->
 </body>
 
 </html>
