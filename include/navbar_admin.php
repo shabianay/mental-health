@@ -68,10 +68,31 @@
 
     <hr class="sidebar-divider my-0" />
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == '../include/logout.php' ? 'active' : ''; ?>">
-        <a class="nav-link" href="../include/logout.php">
+        <a href="#" class="nav-link" data-toggle="modal" data-target="#logoutConfirmationModal">
             <i class="fas fa-sign-out-alt fa-sm fa-fw"></i>
-            <span>Keluar</span></a>
+            <span>Keluar</span>
+        </a>
     </li>
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="logoutConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold" id="logoutConfirmationModalLabel">Konfirmasi Logout</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin keluar?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa-regular fa-face-smile mr-2"></i>Batal</button>
+                    <a href="../include/logout.php" class="btn btn-primary"><i class="fa-regular fa-face-frown mr-2"></i>Yakin dong</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <hr class="sidebar-divider d-none d-md-block" />
 

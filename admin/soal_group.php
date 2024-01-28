@@ -140,7 +140,10 @@ $user = mysqli_fetch_assoc($result);
                         // Check the value of the 'success' parameter
                         if ($_GET['success'] === 'delete') {
                             // If the value is 'delete', display a success message
-                            echo '<div class="alert alert-success" role="alert">Grup Soal berhasil dihapus.</div>';
+                            echo '<div class="alert alert-success" role="alert">Grup Soal berhasil dihapus.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button></div>';
                         }
                     }
                     // Check if the 'success' parameter exists in the URL
@@ -148,7 +151,10 @@ $user = mysqli_fetch_assoc($result);
                         // Check the value of the 'success' parameter
                         if ($_GET['success'] === 'update') {
                             // If the value is 'update', display a success message
-                            echo '<div class="alert alert-success" role="alert">Grup Soal berhasil diperbarui.</div>';
+                            echo '<div class="alert alert-success" role="alert">Grup Soal berhasil diperbarui.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button></div>';
                         }
                     }
                     // Check if the query was successful

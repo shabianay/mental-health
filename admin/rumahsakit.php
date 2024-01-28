@@ -172,11 +172,20 @@ $user = mysqli_fetch_assoc($result);
                     require_once "../include/koneksi.php";
                     if (isset($_GET['success'])) {
                         if ($_GET['success'] === 'delete') {
-                            echo '<div class="alert alert-success" role="alert">Rumah Sakit berhasil dihapus.</div>';
+                            echo '<div class="alert alert-success" role="alert">Rumah Sakit berhasil dihapus
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>.</div>';
                         } elseif ($_GET['success'] === 'edit') {
-                            echo '<div class="alert alert-success" role="alert">Rumah Sakit berhasil diperbarui.</div>';
+                            echo '<div class="alert alert-success" role="alert">Rumah Sakit berhasil diperbarui.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button></div>';
                         } elseif ($_GET['success'] === 'add') {
-                            echo '<div class="alert alert-success" role="alert">Rumah Sakit berhasil ditambahkan.</div>';
+                            echo '<div class="alert alert-success" role="alert">Rumah Sakit berhasil ditambahkan.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button></div>';
                         }
                     }
 

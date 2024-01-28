@@ -164,6 +164,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <?php if (isset($_GET['success'])) : ?>
                                 <div class="alert alert-success" role="alert">
                                     Profile updated successfully!
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
                             <?php endif; ?>
                             <form method="post" action="admin_profile.php" enctype="multipart/form-data">

@@ -96,13 +96,18 @@ mysqli_close($koneksi);
                 ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <h1><?php echo $article['title']; ?></h1>
-                    <img src="<?php echo $article['image_path']; ?>" alt="Article Image" style="max-width: 100%;">
-                    <p><?php echo $article['content']; ?></p>
-                    <a href="artikel.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <h1><?php echo $article['title']; ?></h1>
+                            <img src="<?php echo $article['image_path']; ?>" alt="Article Image" style="max-width: 100%;">
+                            <p><?php echo $article['content']; ?></p>
+                            <a href="artikel.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
+                        </div>
+                        <!-- /.container-fluid -->
+                    </div>
                 </div>
-                <!-- /.container-fluid -->
             </div>
+            <!-- End of Main Content -->
             <?php
             require_once('../include/footer.php')
             ?>

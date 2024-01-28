@@ -37,9 +37,39 @@ if (!$result || mysqli_num_rows($result) === 0) {
     header("Location: pengguna.php"); // Redirect to user list if user does not exist
     exit();
 }
-
 $user = mysqli_fetch_assoc($result); // Fetch user data
 
+// Process form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
+    // Retrieve form data
+    $namaLengkap = mysqli_real_escape_string($koneksi, $_POST['Namalengkap']);
+    $email = mysqli_real_escape_string($koneksi, $_POST['email']);
+    $newPassword = mysqli_real_escape_string($koneksi, $_POST['newPassword']);
+    $phoneNumber = mysqli_real_escape_string($koneksi, $_POST['phoneNumber']);
+    $angkatan = mysqli_real_escape_string($koneksi, $_POST['angkatan']);
+    $gender = mysqli_real_escape_string($koneksi, $_POST['gender']);
+
+    // Update user data in the database
+    $updateQuery = "UPDATE users SET Namalengkap='$namaLengkap', email='$email', phoneNumber='$phoneNumber', angkatan='$angkatan', gender='$gender'";
+
+    // Check if a new password is provided and update it if necessary
+    if (!empty($newPassword)) {
+        // Hash the new password before storing it in the database
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+        $updateQuery .= ", password='$hashedPassword'";
+    }
+
+    $updateQuery .= " WHERE id=$user_id";
+
+    if (mysqli_query($koneksi, $updateQuery)) {
+        // Redirect to the user list with a success message
+        header("Location: pengguna.php?success=1");
+        exit();
+    } else {
+        // Handle the update failure
+        echo "Error updating record: " . mysqli_error($koneksi);
+    }
+}
 // Close database connection
 mysqli_close($koneksi);
 ?>
@@ -144,6 +174,7 @@ mysqli_close($koneksi);
 
         <!-- Custom scripts for all pages-->
         <script src="../js/sb-admin-2.min.js"></script>
+
 </body>
 
 </html>

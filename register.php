@@ -87,6 +87,9 @@ if (isset($_POST['submit'])) {
               <?php if (isset($_GET['success']) && $_GET['success'] === 'register') : ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                   Berhasil Daftar, Silahkan
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                   <a class="regular" href="login.php">Masuk</a>
                 </div>
               <?php endif; ?>

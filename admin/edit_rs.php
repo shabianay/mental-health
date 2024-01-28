@@ -162,8 +162,27 @@ mysqli_close($koneksi);
                                     <label style="cursor: pointer;" for="image">Perbarui gambar (maksimal 2MB)</label>
                                     <input style="cursor: pointer;" type="file" class="form-control-file mb-3" id="image" name="image" accept="image/*" maxlength="2097152" />
                                 </div>
-                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-rotate mr-2"></i>Simpan Perubahan</button>
-                                <a href="rumahsakit.php" class="btn btn-secondary"><i class="fa-solid fa-angle-left mr-2"></i>Kembali</a>
+                                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title font-weight-bold" id="confirmModalLabel">Konfirmasi</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Apakah Anda yakin ingin memperbarui Rumah Sakit?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" id="confirmButton">Perbarui</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-rotate mr-2"></i>Perbarui Rumah Sakit</button>
+                                <a href="rumahsakit.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
                             </form>
                         </div>
                     </div>
@@ -186,6 +205,22 @@ mysqli_close($koneksi);
 
         <!-- Custom scripts for all pages-->
         <script src="../js/sb-admin-2.min.js"></script>
+        <script>
+            // Function to handle form submission confirmation
+            function confirmSubmission(event) {
+                event.preventDefault(); // Prevent the default form submission
+                $('#confirmModal').modal('show'); // Show the confirmation modal
+            }
+
+            // Add event listener to the form submit button
+            document.querySelector('form').addEventListener('submit', confirmSubmission);
+
+            // Add event listener to the modal confirm button
+            document.getElementById('confirmButton').addEventListener('click', function() {
+                // If the user confirms, submit the form
+                document.querySelector('form').submit();
+            });
+        </script>
 </body>
 
 </html>

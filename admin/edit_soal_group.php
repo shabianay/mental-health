@@ -108,8 +108,27 @@ $user = mysqli_fetch_assoc($result);
                                     <label for="butuh_penanganan">Butuh Penanganan: (desimal)</label>
                                     <input class="form-control" type="number" id="butuh_penanganan" name="butuh_penanganan" step="0.01" min="0" value="<?php echo $row['butuh_penanganan']; ?>" required>
                                 </div>
-                                <button type="submit" name="submit" class="btn btn-primary"><i class="fa-solid fa-rotate mr-2"></i>Simpan Perubahan</button>
-                                <a href="pengguna.php" class="btn btn-secondary"><i class="fa-solid fa-angle-left mr-2"></i>Kembali</a>
+                                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title font-weight-bold" id="confirmModalLabel">Konfirmasi</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Apakah Anda yakin ingin memperbarui Soal Grup?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" id="confirmButton">Perbarui</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-rotate mr-2"></i>Perbarui Soal Grup</button>
+                                <a href="soal_group.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
                             </form>
                         </div>
                     </div>
@@ -131,6 +150,22 @@ $user = mysqli_fetch_assoc($result);
 
     <!-- Custom scripts for all pages-->
     <script src="../js/sb-admin-2.min.js"></script>
+    <script>
+        // Function to handle form submission confirmation
+        function confirmSubmission(event) {
+            event.preventDefault(); // Prevent the default form submission
+            $('#confirmModal').modal('show'); // Show the confirmation modal
+        }
+
+        // Add event listener to the form submit button
+        document.querySelector('form').addEventListener('submit', confirmSubmission);
+
+        // Add event listener to the modal confirm button
+        document.getElementById('confirmButton').addEventListener('click', function() {
+            // If the user confirms, submit the form
+            document.querySelector('form').submit();
+        });
+    </script>
 </body>
 
 </html>

@@ -17,9 +17,9 @@
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profil
                 </a>
-                <a class="dropdown-item" href="../include/logout.php">
+                <a href="../include/logout.php" class="dropdown-item" data-toggle="modal" data-target="#logoutConfirmationModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Logout
+                    <span>Keluar</span>
                 </a>
             </div>
         </li>
