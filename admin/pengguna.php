@@ -26,6 +26,11 @@ if (isset($_SESSION['user_id'])) {
   exit();
 }
 
+if ($_SESSION['role'] == 'user') {
+  header("Location: ../user/user_dashboard.php");
+  exit();
+}
+
 // Jika tombol "Buat akun" diklik
 if (isset($_POST['submit'])) {
   // Ambil nilai dari form

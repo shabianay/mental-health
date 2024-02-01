@@ -23,6 +23,11 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 
+if ($_SESSION['role'] == 'admin') {
+    header("Location: ../admin/admin_dashboard.php");
+    exit();
+}
+
 require_once "../include/koneksi.php";
 
 // Periksa apakah parameter id artikel telah diberikan

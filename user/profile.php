@@ -22,6 +22,12 @@ if (isset($_SESSION['user_id'])) {
     header("Location: ../login.php");
     exit();
 }
+
+if ($_SESSION['role'] == 'admin') {
+    header("Location: ../admin/admin_dashboard.php");
+    exit();
+}
+
 require_once "../include/koneksi.php";
 
 // Ambil informasi pengguna dari database

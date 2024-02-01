@@ -23,6 +23,11 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 
+if ($_SESSION['role'] == 'admin') {
+    header("Location: ../admin/admin_dashboard.php");
+    exit();
+}
+
 // Check if the full name is set in the session
 if (isset($_SESSION['namaLengkap'])) {
     $namaLengkap = $_SESSION['namaLengkap'];
@@ -62,6 +67,14 @@ $user = mysqli_fetch_assoc($result);
 
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin-2.css" rel="stylesheet" />
+
+    <style>
+        .artikel-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -99,7 +112,7 @@ $user = mysqli_fetch_assoc($result);
                                 echo "<img src='" . $row['image_path'] . "' class='card-img-top' alt='Gambar artikel'>";
                                 echo "<div class='card-body'>";
                                 echo "<small class='card-text'><i class='fas fa-clock mr-2 mb-3'></i>" . date('d M Y', strtotime($row['updated_at'])) . "</small>";
-                                echo "<h5 class='card-title mb-2 text-primary font-weight-bold'>" . substr($row['title'], 0, 50) . "</h5>";
+                                echo "<h5 class='card-title mb-2 text-primary font-weight-bold'>" . substr($row['title'], 0, 200) . "</h5>";
                                 echo "<p class='card-text'>" . substr($row['content'], 0, 180) . "....." . "</p>";
                                 echo "<a href='article_detail.php?id=" . $row['id'] . "'>Baca Selengkapnya</a>";
                                 echo "</div>";

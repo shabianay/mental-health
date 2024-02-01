@@ -64,6 +64,7 @@ if (isset($_POST['submit'])) {
   <title>Daftar Akun</title>
 
   <!-- Custom fonts for this template-->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
@@ -143,11 +144,13 @@ if (isset($_POST['submit'])) {
                     >Lupa password?</a
                   >
                 </div> -->
-              <div class="text-center">
+              <hr />
+
+              <div class="text-center mt-3">
                 <a class="small" href="login.php">Sudah punya akun? Masuk</a>
               </div>
-              <div class="text-center">
-                <a class="small" style="color:black" href="index.php">Balik halaman utama</a>
+              <div class="text-center mt-2">
+                <a class="small" style="color:black" href="index.php">Kembali</a>
               </div>
             </div>
           </div>

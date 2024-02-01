@@ -23,6 +23,11 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 
+if ($_SESSION['role'] == 'admin') {
+    header("Location: ../admin/admin_dashboard.php");
+    exit();
+}
+
 // Check if the full name is set in the session
 if (isset($_SESSION['namaLengkap'])) {
     $namaLengkap = $_SESSION['namaLengkap'];

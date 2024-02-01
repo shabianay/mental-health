@@ -25,6 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       // Set session variables
       $_SESSION['user_id'] = $user['id'];
       $_SESSION['email'] = $user['email'];
+      $_SESSION['role'] = $user['role'];
+      $_SESSION['user'] = $user;
 
       // Redirect based on user role
       if ($user['role'] == 'admin') {
@@ -60,6 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <title>Masuk</title>
 
   <!-- Custom fonts for this template-->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
@@ -110,8 +113,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <div class="text-center">
                     <a class="small" href="register.php">Buat akunmu</a>
                   </div>
-                  <div class="text-center">
-                    <a class="small" style="color:black" href="index.php">Balik halaman utama</a>
+                  <div class="text-center mt-2">
+                    <a class="small" style="color:black" href="index.php">Kembali</a>
                   </div>
                 </div>
               </div>

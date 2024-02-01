@@ -23,6 +23,11 @@ if (isset($_SESSION['user_id'])) {
   exit();
 }
 
+if ($_SESSION['role'] == 'user') {
+  header("Location: ../user/user_dashboard.php");
+  exit();
+}
+
 // Include file koneksi ke database
 require_once "../include/koneksi.php";
 

@@ -23,6 +23,11 @@ if (isset($_SESSION['user_id'])) {
   exit();
 }
 
+if ($_SESSION['role'] == 'admin') {
+  header("Location: ../admin/admin_dashboard.php");
+  exit();
+}
+
 // Lakukan koneksi ke database
 require_once '../include/koneksi.php';
 
@@ -207,9 +212,9 @@ $user = mysqli_fetch_assoc($result);
           </div>
         </div>
       </div>
-    <?php
-    require_once('../include/footer.php')
-    ?>
+      <?php
+      require_once('../include/footer.php')
+      ?>
     </div>
   </div>
 

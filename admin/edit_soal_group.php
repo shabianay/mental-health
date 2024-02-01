@@ -22,6 +22,12 @@ if (isset($_SESSION['user_id'])) {
     header("Location: ../login.php");
     exit();
 }
+
+if ($_SESSION['role'] == 'user') {
+    header("Location: ../user/user_dashboard.php");
+    exit();
+}
+
 require_once "../include/koneksi.php";
 // Check if the ID parameter is provided in the URL
 if (isset($_GET['id'])) {
