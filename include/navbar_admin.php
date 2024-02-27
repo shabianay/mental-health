@@ -20,12 +20,14 @@
     <li class="nav-item collapsed <?php echo basename($_SERVER['PHP_SELF']) === 'soal.php' || basename($_SERVER['PHP_SELF']) === 'soal_group.php' ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSoal" aria-expanded="true" aria-controls="collapseSoal">
             <i class="fas fa-fw fa-cog"></i>
-            <span>Soal</span>
+            <span>Kelola Soal</span>
         </a>
         <div id="collapseSoal" class="collapse" aria-labelledby="headingSoal" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="soal.php">Soal</a>
-                <a class="collapse-item" href="soal_group.php">Kategori Soal</a>
+                <a class="collapse-item" href="soal.php">Butir Soal</a>
+                <a class="collapse-item" href="soal_group.php">Grup Soal</a>
+                <a class="collapse-item" href="sub_soal_group.php">Sub-Kriteria</a>
+                <a class="collapse-item" href="alternatif.php">Alternatif</a>
             </div>
         </div>
     </li>

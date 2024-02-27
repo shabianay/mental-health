@@ -40,18 +40,14 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve form data
     $questionText = $_POST['questionText'];
-    $questionGroupId = $_POST['questionGroup'];
+    $questionGroupName = $_POST['questionGroup'];
     $nilaiA = $_POST['nilaiA'];
     $nilaiB = $_POST['nilaiB'];
-    $nilaiC = $_POST['nilaiC'];
-    $opsiA = $_POST['opsiA'];
-    $opsiB = $_POST['opsiB'];
-    $opsiC = $_POST['opsiC'];
 
     // Insert data into the database
-    $insertQuery = "INSERT INTO questions (question_group_id, nilai_a, nilai_b, nilai_c, opsi_a, opsi_b, opsi_c, question_text) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $insertQuery = "INSERT INTO questions (question_group, nilai_a, nilai_b, question_text) VALUES (?, ?, ?, ?)";
     $stmt = mysqli_prepare($koneksi, $insertQuery);
-    mysqli_stmt_bind_param($stmt, "iiisssss", $questionGroupId, $nilaiA, $nilaiB, $nilaiC, $opsiA, $opsiB, $opsiC, $questionText);
+    mysqli_stmt_bind_param($stmt, "ssss", $questionGroupName, $nilaiA, $nilaiB, $questionText);
 
     // Execute the statement
     if (mysqli_stmt_execute($stmt)) {
@@ -63,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Close the statement
     mysqli_stmt_close($stmt);
 }
+
 // Ambil informasi pengguna dari database
 $user_id = $_SESSION['user_id'];
 $query = "SELECT * FROM users WHERE id = $user_id";
@@ -141,29 +138,21 @@ $user = mysqli_fetch_assoc($result);
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="nilaiA">Nilai A</label>
+                                            <label for="nilaiA">Nilai Opsi Iya</label>
                                             <input type="number" class="form-control" id="nilaiA" name="nilaiA" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="nilaiB">Nilai B</label>
+                                            <label for="nilaiB">Nilai Opsi Tidak</label>
                                             <input type="number" class="form-control" id="nilaiB" name="nilaiB" required>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="nilaiC">Nilai C</label>
-                                            <input type="number" class="form-control" id="nilaiC" name="nilaiC" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="opsiA">Opsi A</label>
+                                        <!-- <div class="form-group">
+                                            <label for="opsiA">Opsi Jawaban Iya</label>
                                             <input type="text" class="form-control" id="opsiA" name="opsiA" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="opsiB">Opsi B</label>
+                                            <label for="opsiB">Opsi Jawaban Tidak</label>
                                             <input type="text" class="form-control" id="opsiB" name="opsiB" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="opsiC">Opsi C</label>
-                                            <input type="text" class="form-control" id="opsiC" name="opsiC" required>
-                                        </div>
+                                        </div> -->
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary">Tambah Soal</button>
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -202,7 +191,7 @@ $user = mysqli_fetch_assoc($result);
                         }
                     }
                     // Query to retrieve articles from the database
-                    $query = "SELECT * FROM questions";
+                    $query = "SELECT questions.id_soal, questions.question_text, soal_group.name AS group_name, questions.nilai_a, questions.nilai_b FROM questions JOIN soal_group ON questions.question_group = soal_group.id";
                     $result = mysqli_query($koneksi, $query);
                     // Check if the query was successful
                     if ($result) {
@@ -221,12 +210,10 @@ $user = mysqli_fetch_assoc($result);
                         echo "<th>No</th>";
                         echo "<th>Soal</th>";
                         echo "<th>Grup Soal</th>";
-                        echo "<th>Nilai A</th>";
-                        echo "<th>Nilai B</th>";
-                        echo "<th>Nilai C</th>";
-                        echo "<th>Opsi A</th>";
-                        echo "<th>Opsi B</th>";
-                        echo "<th>Opsi C</th>";
+                        echo "<th>Nilai Opsi Iya</th>";
+                        echo "<th>Nilai Opsi Tidak</th>";
+                        // echo "<th>Opsi A</th>";
+                        // echo "<th>Opsi B</th>";
                         echo "<th>Aksi</th>";
                         echo "</tr>";
                         echo "</thead>";
@@ -237,13 +224,11 @@ $user = mysqli_fetch_assoc($result);
                             echo "<tr>";
                             echo "<td>" . $counter . "</td>";
                             echo "<td>" . $row['question_text'] . "</td>";
-                            echo "<td>" . $row['question_group_id'] . "</td>";
+                            echo "<td>" . $row['group_name'] . "</td>";
                             echo "<td>" . $row['nilai_a'] . "</td>";
                             echo "<td>" . $row['nilai_b'] . "</td>";
-                            echo "<td>" . $row['nilai_c'] . "</td>";
-                            echo "<td>" . $row['opsi_a'] . "</td>";
-                            echo "<td>" . $row['opsi_b'] . "</td>";
-                            echo "<td>" . $row['opsi_c'] . "</td>";
+                            // echo "<td>" . $row['opsi_a'] . "</td>";
+                            // echo "<td>" . $row['opsi_b'] . "</td>";
                             echo "<td style='text-align: center'>";
                             echo "<a href='edit_soal.php?id=" . $row['id_soal'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
                             echo "&nbsp;";

@@ -30,39 +30,49 @@ if ($_SESSION['role'] == 'user') {
 
 require_once "../include/koneksi.php";
 
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
-    $id_soal = $_GET['id'];
+// Check if ID parameter is provided in the URL
+if (isset($_GET['id'])) {
+    $id_alternatif = $_GET['id'];
 
-    // Retrieve the question data from the database
-    $query = "SELECT * FROM questions WHERE id_soal = ?";
-    $stmt = mysqli_prepare($koneksi, $query);
+    // Retrieve alternatif data from database
+    $query = "SELECT * FROM alternatif WHERE id_alternatif = $id_alternatif";
+    $result = mysqli_query($koneksi, $query);
 
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, "i", $id_soal);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-
-        if ($row = mysqli_fetch_assoc($result)) {
-            // Display the form with the question data for editing
-        } else {
-            echo "Question not found!";
-        }
-        mysqli_stmt_close($stmt);
+    if ($result && mysqli_num_rows($result) > 0) {
+        $alternatif = mysqli_fetch_assoc($result);
     } else {
-        echo "Error: " . mysqli_error($koneksi);
+        echo "alternatif not found.";
+        exit();
     }
 } else {
-    echo "Invalid request!";
+    echo "ID not provided.";
+    exit();
 }
-// Retrieve the question group data from the database
-$query = "SELECT * FROM soal_group";
-$retrieveResult = mysqli_query($koneksi, $query);
-if (!$retrieveResult) {
-    // Error saat mengambil data dari database
-    die("Query error: " . mysqli_error($koneksi));
+
+// Update alternatif data in the database
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Retrieve form data
+    $alternatif_baru = $_POST['alternatif'];
+
+    // Update data in the database
+    $updateQuery = "UPDATE alternatif SET alternatif = ? WHERE id_alternatif = ?";
+    $stmt = mysqli_prepare($koneksi, $updateQuery);
+    mysqli_stmt_bind_param($stmt, "si", $alternatif_baru, $id_alternatif);
+
+    // Execute the statement
+    if (mysqli_stmt_execute($stmt)) {
+        header("Location: alternatif.php?success=update");
+        exit();
+    } else {
+        echo "Error updating alternatif: " . mysqli_error($koneksi);
+    }
+
+    // Close the statement
+    mysqli_stmt_close($stmt);
 }
-// Kembalikan pointer result set ke awal
-mysqli_data_seek($retrieveResult, 0);
+
+// Include file koneksi ke database
+require_once "../include/koneksi.php";
 
 // Ambil informasi pengguna dari database
 $user_id = $_SESSION['user_id'];
@@ -73,7 +83,6 @@ if (!$result) {
     die("Query error: " . mysqli_error($koneksi));
 }
 $user = mysqli_fetch_assoc($result);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,13 +93,13 @@ $user = mysqli_fetch_assoc($result);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Manage Questions</title>
+    <title>Edit Alternatif</title>
     <!-- Custom fonts for this template-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
     <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.css" rel="stylesheet" />
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
 </head>
 
 <body>
@@ -102,33 +111,13 @@ $user = mysqli_fetch_assoc($result);
                 require_once('../include/topbar_admin.php')
                 ?>
                 <div class="container-fluid">
-                    <h1 class="h3 mb-4 text-gray-800">Edit Soal</h1>
+                    <h1 class="h3 mb-4 text-gray-800">Edit Alternatif</h1>
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                            <form method="post" action="../update_soal.php">
-                                <input type="hidden" name="id_soal" value="<?php echo $row['id_soal']; ?>">
+                            <form method="post" action="edit_alternatif.php?id=<?php echo $id_alternatif; ?>" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label for="questionText">Soal</label>
-                                    <textarea class="form-control" id="questionText" name="questionText"><?php echo $row['question_text']; ?></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="questionGroup">Soal Grup</label>
-                                    <select class="form-control" id="questionGroup" name="questionGroup" required>
-                                        <option value="">Pilih Soal Grup</option>
-                                        <?php
-                                        while ($group = mysqli_fetch_assoc($retrieveResult)) {
-                                            echo "<option value='" . $group['id'] . "'" . ($row['question_group'] == $group['id'] ? ' selected' : '') . ">" . $group['name'] . "</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="nilaiA">Nilai A</label>
-                                    <input type="number" class="form-control" id="nilaiA" name="nilaiA" value="<?php echo $row['nilai_a']; ?>" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="nilaiB">Nilai B</label>
-                                    <input type="number" class="form-control" id="nilaiB" name="nilaiB" value="<?php echo $row['nilai_b']; ?>" required>
+                                    <label for="alternatif">Alternatif</label>
+                                    <input type="text" class="form-control" id="alternatif" name="alternatif" value="<?php echo $alternatif['alternatif']; ?>" required>
                                 </div>
                                 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -140,7 +129,7 @@ $user = mysqli_fetch_assoc($result);
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                Apakah Anda yakin ingin memperbarui Soal?
+                                                Apakah Anda yakin ingin memperbarui alternatif?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" id="confirmButton">Perbarui</button>
@@ -149,14 +138,14 @@ $user = mysqli_fetch_assoc($result);
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-rotate mr-2"></i>Perbarui Soal</button>
-                                <a href="soal.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
+                                <button type="submit" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-rotate mr-2"></i>Perbarui Alternatif</button>
+                                <a href="sub_soal_group.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
                             </form>
                         </div>
                     </div>
                 </div>
-                <?php require_once('../include/footer.php') ?>
             </div>
+            <?php require_once('../include/footer.php') ?>
         </div>
     </div>
 

@@ -99,6 +99,7 @@ $user = mysqli_fetch_assoc($result);
                       <th>Angkatan</th>
                       <th>Created At</th>
                       <th>Updated At</th>
+                      <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -121,6 +122,7 @@ $user = mysqli_fetch_assoc($result);
                         echo "<td>" . $row['angkatan'] . "</td>";
                         echo "<td>" . $row['created_at'] . "</td>";
                         echo "<td>" . $row['updated_at'] . "</td>";
+                        echo "<td>" . $row['aksi'] . "</td>";
                         echo "</tr>";
                         $counter++; // Tingkatkan counter setelah setiap baris
                       }
