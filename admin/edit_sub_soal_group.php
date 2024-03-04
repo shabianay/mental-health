@@ -49,16 +49,21 @@ if (isset($_GET['id'])) {
     exit();
 }
 
+// Retrieve kriteria data from database
+$retrieveQuery = "SELECT * FROM soal_group";
+$retrieveResult = mysqli_query($koneksi, $retrieveQuery);
+
 // Update subkriteria data in the database
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve form data
     $subkriteria_baru = $_POST['subkriteria'];
+    $kriteria_baru = $_POST['kriteria'];
     $nilai_baru = $_POST['nilai'];
 
     // Update data in the database
-    $updateQuery = "UPDATE subkriteria SET subkriteria = ?, nilai = ? WHERE id_subkriteria = ?";
+    $updateQuery = "UPDATE subkriteria SET subkriteria = ?, kriteria = ?, nilai = ? WHERE id_subkriteria = ?";
     $stmt = mysqli_prepare($koneksi, $updateQuery);
-    mysqli_stmt_bind_param($stmt, "ssi", $subkriteria_baru, $nilai_baru, $id_subkriteria);
+    mysqli_stmt_bind_param($stmt, "sssi", $subkriteria_baru, $kriteria_baru, $nilai_baru, $id_subkriteria);
 
     // Execute the statement
     if (mysqli_stmt_execute($stmt)) {
@@ -71,9 +76,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Close the statement
     mysqli_stmt_close($stmt);
 }
-
-// Include file koneksi ke database
-require_once "../include/koneksi.php";
 
 // Ambil informasi pengguna dari database
 $user_id = $_SESSION['user_id'];
@@ -94,7 +96,7 @@ $user = mysqli_fetch_assoc($result);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Edit Sub Kriteria</title>
+    <title>Dashboard Admin</title>
     <!-- Custom fonts for this template-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
@@ -115,10 +117,21 @@ $user = mysqli_fetch_assoc($result);
                     <h1 class="h3 mb-4 text-gray-800">Edit Sub Kriteria</h1>
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                            <form method="post" action="edit_sub_soal_group.php?id=<?php echo $id_subkriteria; ?>" enctype="multipart/form-data">
+                            <form method="post" action="edit_sub_soal_group.php?id=<?php echo $id_subkriteria; ?>">
                                 <div class="form-group">
                                     <label for="subkriteria">Sub-Kriteria</label>
                                     <input type="text" class="form-control" id="subkriteria" name="subkriteria" value="<?php echo $subkriteria['subkriteria']; ?>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="kriteria">Kriteria</label>
+                                    <select class="form-control" id="kriteria" name="kriteria" required>
+                                        <option value="">Pilih Kriteria</option>
+                                        <?php
+                                        while ($row = mysqli_fetch_assoc($retrieveResult)) {
+                                            echo "<option value='" . $row['id'] . "'" . ($subkriteria['kriteria'] == $row['id'] ? ' selected' : '') . ">" . $row['name'] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="nilai">Nilai</label>

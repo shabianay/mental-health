@@ -70,19 +70,25 @@ if (isset($_POST['submit'])) {
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.css" rel="stylesheet" />
+
+  <style>
+    .card {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 
 <body class="bg-gradient-primary">
   <div class="container">
-    <div class="card o-hidden border-0 shadow-lg my-5">
-      <div class="card-body p-0">
-        <!-- Nested Row within Card Body -->
-        <div class="row">
-          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-          <div class="col-lg-7">
+    <div class="row d-flex align-items-center" style="min-height: 100vh;">
+      <div class="col-lg-12">
+        <div class="card o-hidden border-0 shadow-lg my-5 mx-auto" style="max-width: 500px;">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
             <div class="p-5">
               <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Daftar</h1>
+                <h1 class="h4 text-gray-900 mb-4">Daftar Akun</h1>
               </div>
               <!-- Check if the 'success' parameter exists in the URL -->
               <?php if (isset($_GET['success']) && $_GET['success'] === 'register') : ?>
@@ -99,27 +105,27 @@ if (isset($_POST['submit'])) {
               <?php endif; ?>
               <form class="user" method="post" action="" onsubmit="return validatePassword()">
                 <div class="form-group">
-                  <label for="Namalengkap">Nama Lengkap</label>
+                  <!-- <label for="Namalengkap">Nama Lengkap</label> -->
                   <input type="text" class="form-control" id="Namalengkap" name="Namalengkap" placeholder="Nama Lengkap" />
                 </div>
                 <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" />
+                  <!-- <label for="email">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" /> -->
                 </div>
                 <div class="form-group">
-                  <label for="password">Password</label>
+                  <!-- <label for="password">Password</label> -->
                   <input type="password" class="form-control" id="password" name="password" placeholder="Password" pattern="(?=.*\d).{8,}" title="Password harus terdiri dari minimal 8 karakter dan mengandung angka" required />
                 </div>
                 <div class="form-group">
-                  <label for="confirmPassword">Konfirmasi Password</label>
+                  <!-- <label for="confirmPassword">Konfirmasi Password</label> -->
                   <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Konfirmasi Password" pattern="(?=.*\d).{8,}" title="Password harus terdiri dari minimal 8 karakter dan mengandung angka" required />
                 </div>
                 <div class="form-group">
-                  <label for="phoneNumber">Nomor HP</label>
+                  <!-- <label for="phoneNumber">Nomor HP</label> -->
                   <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Nomor HP" pattern="[0-9]{10,}" title="Nomor HP harus terdiri dari minimal 10 angka" required />
                 </div>
                 <div class="form-group">
-                  <label for="angkatan">Angkatan</label>
+                  <!-- <label for="angkatan">Angkatan</label> -->
                   <select class="form-control" id="angkatan" name="angkatan">
                     <option value="" selected disabled hidden>Pilih Angkatan</option>
                     <option value="2020">2020</option>
@@ -129,7 +135,7 @@ if (isset($_POST['submit'])) {
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="gender">Jenis Kelamin</label>
+                  <!-- <label for="gender">Jenis Kelamin</label> -->
                   <select class="form-control" id="gender" name="gender" required>
                     <option value="" selected disabled hidden>Pilih Jenis Kelamin</option>
                     <option value="Laki-Laki">Laki-Laki</option>

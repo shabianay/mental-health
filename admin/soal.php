@@ -44,7 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nilaiA = $_POST['nilaiA'];
     $nilaiB = $_POST['nilaiB'];
 
-    // Insert data into the database
     $insertQuery = "INSERT INTO questions (question_group, nilai_a, nilai_b, question_text) VALUES (?, ?, ?, ?)";
     $stmt = mysqli_prepare($koneksi, $insertQuery);
     mysqli_stmt_bind_param($stmt, "ssss", $questionGroupName, $nilaiA, $nilaiB, $questionText);
@@ -79,7 +78,7 @@ $user = mysqli_fetch_assoc($result);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Soal</title>
+    <title>Dashboard Admin</title>
     <!-- Custom fonts for this template-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
@@ -92,20 +91,15 @@ $user = mysqli_fetch_assoc($result);
 </head>
 
 <body id="page-top">
-    <!-- Page Wrapper -->
     <div id="wrapper">
         <?php require_once('../include/navbar_admin.php') ?>
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-            <!-- Main Content -->
             <div id="content">
                 <?php
                 require_once('../include/topbar_admin.php')
                 ?>
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <h1 class="h3 mb-2 text-gray-800">Halaman Daftar Soal</h1>
-                    <!-- Tombol untuk membuat artikel baru -->
                     <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addQuestionModal"><i class="fa-solid fa-plus mr-2"></i>
                         Tambah Soal
                     </button>
@@ -119,7 +113,6 @@ $user = mysqli_fetch_assoc($result);
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <!-- Form to add new question -->
                                     <form method="post" action="soal.php">
                                         <div class="form-group">
                                             <label for="questionText">Soal</label>
@@ -254,16 +247,10 @@ $user = mysqli_fetch_assoc($result);
                     mysqli_close($koneksi);
                     ?>
                 </div>
-                <!-- /.container-fluid -->
-                <!-- Footer -->
                 <?php require_once('../include/footer.php') ?>
-                <!-- End of Footer -->
             </div>
-            <!-- End of Main Content -->
         </div>
-        <!-- End of Content Wrapper -->
     </div>
-    <!-- End of Page Wrapper -->
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>

@@ -40,6 +40,44 @@ if (!$result) {
   die("Query error: " . mysqli_error($koneksi));
 }
 $user = mysqli_fetch_assoc($result);
+
+// Export to excel
+if (isset($_POST['export'])) {
+  // Nama file Excel yang akan dihasilkan
+  $filename = "data_laporan_" . date('Ymd') . ".xls";
+
+  // Header untuk menghasilkan file Excel
+  header("Content-Disposition: attachment; filename=\"$filename\"");
+  header("Content-Type: application/vnd.ms-excel");
+
+  // Query untuk mengambil data pengguna dari database
+  $query = "SELECT * FROM skrining";
+  $result = mysqli_query($koneksi, $query);
+
+  // Mulai output buffer agar hasil query tidak langsung ditampilkan
+  ob_start();
+
+  // Mulai tabel Excel
+  echo "<table border='1'>";
+  echo "<tr><th>No</th><th>Hasil</th><th>Nilai</th><th>Waktu Tes</th></tr>";
+
+  $counter = 1; // Inisialisasi counter
+  // Tampilkan data pengguna ke dalam tabel Excel
+  while ($row = mysqli_fetch_assoc($result)) {
+    echo "<tr>";
+    echo "<td>" . $counter . "</td>";
+    echo "<td>" . $row['hasil'] . "</td>";
+    echo "<td>" . $row['nilai'] . "</td>";
+    echo "<td>" . $row['waktu'] . "</td>";
+    echo "</tr>";
+    $counter++; // Tingkatkan counter setelah setiap baris
+  }
+  echo "</table>";
+  // Flush output buffer agar hasil query ditampilkan dalam file Excel
+  ob_end_flush();
+  exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -81,7 +119,9 @@ $user = mysqli_fetch_assoc($result);
         <div class="container-fluid">
           <!-- Page Heading -->
           <h1 class="h3 mb-2 text-gray-800">Halaman Laporan</h1>
-          <button class="btn btn-primary mb-3" onclick="printData()">Cetak Data</button>
+          <form method="post" action="laporan.php">
+            <button type="submit" name="export" class="btn btn-success mb-3"><i class="fa-regular fa-file-excel mr-3"></i>Cetak Data Excel</button>
+          </form>
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -93,12 +133,9 @@ $user = mysqli_fetch_assoc($result);
                   <thead>
                     <tr>
                       <th>No</th>
-                      <th>Nama Lengkap</th>
-                      <th>Email</th>
-                      <th>Telepon</th>
-                      <th>Angkatan</th>
-                      <th>Created At</th>
-                      <th>Updated At</th>
+                      <th>Hasil</th>
+                      <th>Nilai</th>
+                      <th>Waktu Tes</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
@@ -106,7 +143,7 @@ $user = mysqli_fetch_assoc($result);
                     <?php
                     require_once "../include/koneksi.php";
                     // Query untuk mengambil data pengguna dari database
-                    $query = "SELECT * FROM users";
+                    $query = "SELECT * FROM skrining";
                     $result = mysqli_query($koneksi, $query);
                     // Jika query berhasil dijalankan
                     if ($result) {
@@ -116,17 +153,16 @@ $user = mysqli_fetch_assoc($result);
                         // Output data from each row into table cells
                         echo "<tr>";
                         echo "<td>" . $counter . "</td>";
-                        echo "<td>" . $row['Namalengkap'] . "</td>";
-                        echo "<td>" . $row['email'] . "</td>";
-                        echo "<td>" . $row['phoneNumber'] . "</td>";
-                        echo "<td>" . $row['angkatan'] . "</td>";
-                        echo "<td>" . $row['created_at'] . "</td>";
-                        echo "<td>" . $row['updated_at'] . "</td>";
-                        echo "<td>" . $row['aksi'] . "</td>";
+                        echo "<td>" . $row['hasil'] . "</td>";
+                        echo "<td>" . $row['nilai'] . "</td>";
+                        echo "<td>" . $row['waktu'] . "</td>";
+                        echo "<td style='text-align: center'>";
+                        echo "<a href='cetaklaporan.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Download Laporan<i class='ml-2 fa-solid fa-download'></i></a>";
+                        echo "</td>";
+                        echo "</td>";
                         echo "</tr>";
                         $counter++; // Tingkatkan counter setelah setiap baris
                       }
-
                       // Free result set
                       mysqli_free_result($result);
                     } else {
@@ -171,19 +207,6 @@ $user = mysqli_fetch_assoc($result);
 
   <!-- Page level custom scripts -->
   <script src="../js/demo/datatables-demo.js"></script>
-
-  <script>
-    function printData() {
-      var printContents = document.getElementById('dataTable').outerHTML;
-      var originalContents = document.body.innerHTML;
-
-      document.body.innerHTML = printContents;
-
-      window.print();
-
-      document.body.innerHTML = originalContents;
-    }
-  </script>
 </body>
 
 </html>

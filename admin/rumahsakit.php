@@ -91,7 +91,7 @@ $user = mysqli_fetch_assoc($result);
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Rumah Sakit</title>
+    <title>Dashboard Admin</title>
 
     <!-- Custom fonts for this template-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">

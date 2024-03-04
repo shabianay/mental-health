@@ -13,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
         mysqli_stmt_execute($stmt);
 
         if (mysqli_stmt_affected_rows($stmt) > 0) {
-            // Redirect to the list of questions with a success message
             header("Location: ./admin/sub_soal_group.php?success=delete");
             exit();
         } else {
