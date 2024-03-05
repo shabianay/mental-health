@@ -34,8 +34,7 @@ require_once "../include/koneksi.php";
 if (isset($_GET['id'])) {
     // Sanitasi inputan id artikel
     $article_id = mysqli_real_escape_string($koneksi, $_GET['id']);
-    // Query untuk mengambil data artikel berdasarkan id
-    $query = "SELECT * FROM articles WHERE id = $article_id";
+    $query = "SELECT * FROM articles WHERE id = '$article_id'";
     $result = mysqli_query($koneksi, $query);
     // Periksa apakah query berhasil
     if ($result) {

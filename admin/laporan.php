@@ -133,6 +133,9 @@ if (isset($_POST['export'])) {
                   <thead>
                     <tr>
                       <th>No</th>
+                      <th>Nama</th>
+                      <th>Gender</th>
+                      <th>Angkatan</th>
                       <th>Hasil</th>
                       <th>Nilai</th>
                       <th>Waktu Tes</th>
@@ -143,7 +146,7 @@ if (isset($_POST['export'])) {
                     <?php
                     require_once "../include/koneksi.php";
                     // Query untuk mengambil data pengguna dari database
-                    $query = "SELECT * FROM skrining";
+                    $query = "SELECT skrining.*, users.Namalengkap, users.gender, users.angkatan FROM skrining JOIN users ON skrining.user_id = users.id";
                     $result = mysqli_query($koneksi, $query);
                     // Jika query berhasil dijalankan
                     if ($result) {
@@ -153,12 +156,16 @@ if (isset($_POST['export'])) {
                         // Output data from each row into table cells
                         echo "<tr>";
                         echo "<td>" . $counter . "</td>";
+                        echo "<td>" . $row['Namalengkap'] . "</td>";
+                        echo "<td>" . $row['gender'] . "</td>";
+                        echo "<td>" . $row['angkatan'] . "</td>";
                         echo "<td>" . $row['hasil'] . "</td>";
                         echo "<td>" . $row['nilai'] . "</td>";
                         echo "<td>" . $row['waktu'] . "</td>";
-                        echo "<td style='text-align: center'>";
+                        echo "<td style='text-align: center;'>";
                         echo "<a href='cetaklaporan.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Download Laporan<i class='ml-2 fa-solid fa-download'></i></a>";
-                        echo "</td>";
+                        echo "&nbsp;";
+                        echo "<a href='perhitungan.php?id=" . $row['id'] . "' class='btn btn-success btn-sm'>Detail Perhitungan<i class='ml-2 fa-regular fa-eye'></i></a>";
                         echo "</td>";
                         echo "</tr>";
                         $counter++; // Tingkatkan counter setelah setiap baris
@@ -169,7 +176,6 @@ if (isset($_POST['export'])) {
                       // Jika query gagal dijalankan
                       echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
                     }
-
                     // Tutup koneksi ke database
                     mysqli_close($koneksi);
                     ?>

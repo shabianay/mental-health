@@ -63,40 +63,46 @@ $user = mysqli_fetch_assoc($result);
 </head>
 
 <body id="page-top">
-    <!-- Page Wrapper -->
     <div id="wrapper">
         <?php
         require_once('../include/navbar_user.php')
         ?>
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-            <!-- Main Content -->
             <div id="content">
-                <!-- Topbar -->
                 <?php
                 require_once('../include/topbar_user.php')
                 ?>
-                <!-- End of Topbar -->
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <h1 style="text-align: left" class="h2 mb-2 text-gray-800">Skrining</h1>
-                    <p style="text-align: left" class="h5 mb-3 text-gray-800">Mulai Tes Yuk</p>
-                    <h1 style="text-align: center" class="h2 text-gray-800">MASIH DALAM DEVELOP</h1>
+                    <h1 class="h3 mb-4 text-gray-800">Skrining</h1>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                                <i class="mr-2 fas fa-info fa-1x text-gray-500"></i>
+                                Informasi
+                            </h6>
+                        </div>
+                        <div class="information" style="text-align:center; padding: 20px;">
+                            <h1 class="h3 text-gray-800 font-weight-bold">Ketentuan Penggunaan</h1>
+                            <ol style="text-align: left; margin-top:20px; margin-left: 20px;">
+                                <li>Anda akan diminta untuk menjawab beberapa pertanyaan yang berkaitan dengan kesehatan mental.</li>
+                                <li>Hasil skrining ini hanya sebagai tahap awal dan bukan sebagai diagnosa resmi.</li>
+                                <li>Hasil skrining ini akan digunakan untuk penelitian, yang bertujuan untuk memahami lebih dalam tentang kesehatan mental.</li>
+                                <li>Hasil skrining ini akan digunakan untuk kebaikan bersama, baik bagi yang mengisi skrining maupun bagi peneliti yang melakukan penelitian.</li>
+                                <li>Aplikasi ini dapat digunakan oleh mahasiswa yang berada di lingkungan Program Studi Manajemen Informatika Universitas Negeri Surabaya.</li>
+                            </ol>
+                            <p class="text-gray-800 font-weight-bold" style="margin-top: 30px;">
+                                Dengan menekan tombol "Bersedia", Anda menyetujui ketentuan penggunaan di atas.
+                            </p>
+                            <a href="mulai_skrining.php" class="btn btn-primary">Bersedia</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
             <?php
             require_once('../include/footer.php')
             ?>
-            <!-- End of Footer -->
         </div>
-        <!-- End of Content Wrapper -->
     </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
@@ -116,6 +122,7 @@ $user = mysqli_fetch_assoc($result);
     <!-- Page level custom scripts -->
     <script src="..js/demo/chart-area-demo.js"></script>
     <script src="../js/demo/chart-pie-demo.js"></script>
+
 </body>
 
 </html>
