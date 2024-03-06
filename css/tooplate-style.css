@@ -102,6 +102,14 @@ b, strong {
   background: #4e73df;
   color: #ffffff !important;
 }
+.custom-btn.custom-btn-bg1 {
+  background: #4e73df;
+  color: #ffffff;
+}
+.custom-btn.custom-btn-bg1:hover {
+  background: #474559;
+  color: #ffffff !important;
+}
 
 .animated {
   position: relative;
@@ -567,4 +575,11 @@ b, strong {
     display: inline-block;
     vertical-align: top;
   }
+}
+
+.about {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

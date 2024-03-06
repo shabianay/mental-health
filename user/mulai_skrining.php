@@ -1,6 +1,16 @@
 <?php
 session_start();
 
+checkAgreement();
+function checkAgreement()
+{
+    // Periksa apakah sudah ada sesi persetujuan
+    if (!isset($_SESSION['agreement']) || $_SESSION['agreement'] !== true) {
+        // Jika belum ada, redirect ke halaman skrining.php
+        header("Location: skrining.php");
+        exit();
+    }
+}
 // Set session timeout in seconds (e.g., 30 minutes)
 $session_timeout = 1800; // 30 minutes * 60 seconds
 
@@ -69,7 +79,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Query untuk menyimpan data ke dalam tabel skrining
     $query_insert = "INSERT INTO skrining (hasil, nilai, waktu, user_id) VALUES ('$hasil', $totalSkor, '$waktu', $user_id)";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -248,7 +257,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $('#skriningForm').submit();
 
             // Lakukan sesuatu saat tombol Selesai diklik
-            alert('Terima kasih telah mengisi skrining.');
             // Hentikan timer
             clearInterval(timerInterval);
         });

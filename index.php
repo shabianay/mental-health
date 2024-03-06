@@ -14,14 +14,11 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/owl.theme.default.min.css">
 
-    <!-- MAIN STYLE -->
     <link rel="stylesheet" href="css/tooplate-style.css">
 </head>
 
 <body>
-
-    <!-- ABOUT -->
-    <section class="about full-screen d-lg-flex justify-content-center align-items-center" id="about">
+    <section class="about full-screen d-lg-flex justify-content-center align-items-center" id="about" style="min-height: 100vh;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-7 col-md-12 col-12 d-flex align-items-center">
@@ -37,11 +34,11 @@
                         </h1>
                         <p>Dengan MINDFUL kamu dapat mengecek apakah kamu sedang dalam kondisi kurang sehat pada kesehatan mentalmu.</p>
                         <div class="custom-btn-group mt-4">
+                            <a href="login.php" class="btn custom-btn custom-btn-bg1 custom-btn-link">Mulai Skrining</a>
                             <a href="register.php" class="btn custom-btn custom-btn-bg custom-btn-link">Daftar Sekarang</a>
                         </div>
                     </div>
                 </div>
-
                 <div class="col-lg-5 col-md-12 col-12">
                     <div class="about-image svg">
                         <img src="img/undraw_messaging_fun_re_vic9.svg" class="img-fluid" alt="svg image">

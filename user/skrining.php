@@ -40,6 +40,15 @@ if (!$result) {
     die("Query error: " . mysqli_error($koneksi));
 }
 $user = mysqli_fetch_assoc($result);
+
+// Jika form disubmit
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['agree'])) {
+    // Set session persetujuan ke true
+    $_SESSION['agreement'] = true;
+    // Redirect ke halaman mulai_skrining.php
+    header("Location: mulai_skrining.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,14 +95,18 @@ $user = mysqli_fetch_assoc($result);
                             <ol style="text-align: left; margin-top:20px; margin-left: 20px;">
                                 <li>Anda akan diminta untuk menjawab beberapa pertanyaan yang berkaitan dengan kesehatan mental.</li>
                                 <li>Hasil skrining ini hanya sebagai tahap awal dan bukan sebagai diagnosa resmi.</li>
-                                <li>Hasil skrining ini akan digunakan untuk penelitian, yang bertujuan untuk memahami lebih dalam tentang kesehatan mental.</li>
+                                <li>Hasil skrining ini akan digunakan untuk penelitian, yang bertujuan untuk memahami lebih dalam tentang kesehatan mental di lingkungan Program Studi Manajemen Informatika Universitas Negeri Surabaya.</li>
                                 <li>Hasil skrining ini akan digunakan untuk kebaikan bersama, baik bagi yang mengisi skrining maupun bagi peneliti yang melakukan penelitian.</li>
                                 <li>Aplikasi ini dapat digunakan oleh mahasiswa yang berada di lingkungan Program Studi Manajemen Informatika Universitas Negeri Surabaya.</li>
+                                <div style="margin-top: 20px;">
+                                    <input type="checkbox" id="agreement-checkbox">
+                                    <label for="agreement-checkbox" class="text-gray-800 font-weight-bold">Saya setuju dengan ketentuan di atas</label>
+                                    <br>
+                                    <form method="post">
+                                        <button type="submit" name="agree" id="submit-button" class="btn btn-primary" disabled>Mulai Skrining</button>
+                                    </form>
+                                </div>
                             </ol>
-                            <p class="text-gray-800 font-weight-bold" style="margin-top: 30px;">
-                                Dengan menekan tombol "Bersedia", Anda menyetujui ketentuan penggunaan di atas.
-                            </p>
-                            <a href="mulai_skrining.php" class="btn btn-primary">Bersedia</a>
                         </div>
                     </div>
                 </div>
@@ -122,6 +135,20 @@ $user = mysqli_fetch_assoc($result);
     <!-- Page level custom scripts -->
     <script src="..js/demo/chart-area-demo.js"></script>
     <script src="../js/demo/chart-pie-demo.js"></script>
+
+    <script>
+        document.getElementById('agreement-checkbox').addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('submit-button').disabled = false;
+                document.getElementById('submit-button').onclick = function() {
+                    window.location.href = 'mulai_skrining.php';
+                };
+            } else {
+                document.getElementById('submit-button').disabled = true;
+                document.getElementById('submit-button').onclick = null;
+            }
+        });
+    </script>
 
 </body>
 
