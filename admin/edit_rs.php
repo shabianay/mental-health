@@ -35,13 +35,25 @@ if (isset($_GET['id'])) {
     $hospital_id = $_GET['id'];
 
     // Query untuk mengambil data rumah sakit berdasarkan id
-    $query = "SELECT * FROM hospitals WHERE id = $hospital_id";
-    $result = mysqli_query($koneksi, $query);
+    $query = "SELECT * FROM hospitals WHERE id = ?";
+    $stmt = mysqli_prepare($koneksi, $query);
 
     // Periksa apakah query berhasil
-    if ($result) {
+    if ($stmt) {
+        // Bind parameter id
+        mysqli_stmt_bind_param($stmt, "i", $hospital_id);
+
+        // Execute query
+        mysqli_stmt_execute($stmt);
+
+        // Get result
+        $result = mysqli_stmt_get_result($stmt);
+
         // Ambil data rumah sakit dari hasil query
         $hospital = mysqli_fetch_assoc($result);
+
+        // Bebaskan statement
+        mysqli_stmt_close($stmt);
     } else {
         // Jika query gagal, tampilkan pesan error
         echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
@@ -64,8 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $website = $_POST['website'];
     $maps = $_POST['maps'];
 
-    // Periksa apakah file gambar baru diunggah
-    if ($_FILES['image']['size'] > 0) {
+    // Periksa apakah file gambar baru diunggah dan ukurannya kurang dari atau sama dengan 2MB
+    if ($_FILES['image']['size'] > 0 && $_FILES['image']['size'] <= 2097152) { // 2MB = 2 * 1024 * 1024 bytes
         $image_name = $_FILES['image']['name'];
         $image_temp = $_FILES['image']['tmp_name'];
         $image_path = "../uploads/" . $image_name;
@@ -75,24 +87,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Update rumah sakit beserta gambar baru
         $updateQuery = "UPDATE hospitals SET name = '$name', address = '$address', phone = '$phone', website = '$website', image_path = '$image_path', maps = '$maps' WHERE id = $hospital_id";
-    } else {
-        // Jika tidak ada gambar baru diunggah, update rumah sakit tanpa mengubah gambar
-        $updateQuery = "UPDATE hospitals SET name = '$name', address = '$address', phone = '$phone', website = '$website', maps = '$maps' WHERE id = $hospital_id";
-    }
 
-    // Eksekusi query untuk memperbarui rumah sakit dalam database
-    $updateResult = mysqli_query($koneksi, $updateQuery);
+        // Eksekusi query untuk memperbarui rumah sakit dalam database
+        $updateResult = mysqli_query($koneksi, $updateQuery);
 
-    // Periksa apakah query berhasil
-    if ($updateResult) {
-        // Redirect kembali ke halaman daftar rumah sakit dengan pesan sukses
-        header("Location: rumahsakit.php?success=edit");
-        exit();
+        // Periksa apakah query berhasil
+        if ($updateResult) {
+            // Redirect kembali ke halaman daftar rumah sakit dengan pesan sukses
+            header("Location: rumahsakit.php?success=edit");
+            exit();
+        } else {
+            // Jika query gagal, tampilkan pesan error
+            echo "Error updating record: " . mysqli_error($koneksi);
+        }
     } else {
-        // Jika query gagal, tampilkan pesan error
-        echo "Error updating record: " . mysqli_error($koneksi);
+        // Jika ukuran file melebihi 2MB, tampilkan pesan error menggunakan alert JavaScript
+        echo "<script>alert('Error: Maksimal ukuran gambar 2MB.');</script>";
     }
 }
+
 // Ambil informasi pengguna dari database
 $user_id = $_SESSION['user_id'];
 $query = "SELECT * FROM users WHERE id = $user_id";

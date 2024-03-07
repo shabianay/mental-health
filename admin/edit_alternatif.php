@@ -35,15 +35,20 @@ if (isset($_GET['id'])) {
     $id_alternatif = $_GET['id'];
 
     // Retrieve alternatif data from database
-    $query = "SELECT * FROM alternatif WHERE id_alternatif = $id_alternatif";
-    $result = mysqli_query($koneksi, $query);
+    $query = "SELECT * FROM alternatif WHERE id_alternatif = ?";
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, "i", $id_alternatif);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
     if ($result && mysqli_num_rows($result) > 0) {
         $alternatif = mysqli_fetch_assoc($result);
     } else {
-        echo "alternatif not found.";
+        echo "Alternatif not found.";
         exit();
     }
+
+    mysqli_stmt_close($stmt);
 } else {
     echo "ID not provided.";
     exit();

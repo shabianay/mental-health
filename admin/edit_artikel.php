@@ -35,20 +35,20 @@ if (isset($_GET['id'])) {
     $article_id = $_GET['id'];
 
     // Query untuk mengambil data artikel berdasarkan id
-    $query = "SELECT * FROM articles WHERE id = $article_id";
-    $result = mysqli_query($koneksi, $query);
+    $query = "SELECT * FROM articles WHERE id = ?";
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, "i", $article_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
-    // Periksa apakah query berhasil
-    if ($result) {
-        // Ambil data artikel dari hasil query
+    if ($result && mysqli_num_rows($result) > 0) {
         $article = mysqli_fetch_assoc($result);
     } else {
-        // Jika query gagal, tampilkan pesan error
-        echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
+        echo "Article not found.";
+        exit();
     }
 
-    // Bebaskan hasil query
-    mysqli_free_result($result);
+    mysqli_stmt_close($stmt);
 } else {
     // Jika parameter id tidak ditemukan, redirect ke halaman lain atau tampilkan pesan error
     header("Location: ../index.php");
@@ -71,14 +71,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($image_temp, $image_path);
 
         // Update artikel beserta gambar baru
-        $updateQuery = "UPDATE articles SET title = '$title', content = '$content', image_path = '$image_path' WHERE id = $article_id";
+        $updateQuery = "UPDATE articles SET title = ?, content = ?, image_path = ? WHERE id = ?";
+        $stmt = mysqli_prepare($koneksi, $updateQuery);
+        mysqli_stmt_bind_param($stmt, "sssi", $title, $content, $image_path, $article_id);
     } else {
         // Jika tidak ada gambar baru diunggah, update artikel tanpa mengubah gambar
-        $updateQuery = "UPDATE articles SET title = '$title', content = '$content' WHERE id = $article_id";
+        $updateQuery = "UPDATE articles SET title = ?, content = ? WHERE id = ?";
+        $stmt = mysqli_prepare($koneksi, $updateQuery);
+        mysqli_stmt_bind_param($stmt, "ssi", $title, $content, $article_id);
     }
 
     // Eksekusi query untuk memperbarui artikel dalam database
-    $updateResult = mysqli_query($koneksi, $updateQuery);
+    $updateResult = mysqli_stmt_execute($stmt);
 
     // Periksa apakah query berhasil
     if ($updateResult) {
@@ -89,7 +93,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Jika query gagal, tampilkan pesan error
         echo "Error updating record: " . mysqli_error($koneksi);
     }
+
+    mysqli_stmt_close($stmt);
 }
+
 // Ambil informasi pengguna dari database
 $user_id = $_SESSION['user_id'];
 $query = "SELECT * FROM users WHERE id = $user_id";

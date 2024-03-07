@@ -33,17 +33,29 @@ require_once "../include/koneksi.php";
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    // Retrieve the Soal Group data from the database based on the provided ID
-    $query = "SELECT * FROM `soal_group` WHERE id = $id";
-    $result = mysqli_query($koneksi, $query);
+    // Query untuk mengambil data rumah sakit berdasarkan id
+    $query = "SELECT * FROM soal_group WHERE id = ?";
+    $stmt = mysqli_prepare($koneksi, $query);
 
-    // Check if the Soal Group with the provided ID exists
-    if (mysqli_num_rows($result) === 1) {
+    // Periksa apakah query berhasil
+    if ($stmt) {
+        // Bind parameter id
+        mysqli_stmt_bind_param($stmt, "i", $id);
+
+        // Execute query
+        mysqli_stmt_execute($stmt);
+
+        // Get result
+        $result = mysqli_stmt_get_result($stmt);
+
+        // Ambil data rumah sakit dari hasil query
         $row = mysqli_fetch_assoc($result);
-        // Display the form to edit the Soal Group
+
+        // Bebaskan statement
+        mysqli_stmt_close($stmt);
     } else {
-        // If the Soal Group with the provided ID does not exist, display an error message
-        echo "Soal Group not found";
+        // Jika query gagal, tampilkan pesan error
+        echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
     }
 } else {
     // If the ID parameter is not provided in the URL, redirect to the appropriate page

@@ -35,8 +35,11 @@ if (isset($_GET['id'])) {
     $id_subkriteria = $_GET['id'];
 
     // Retrieve subkriteria data from database
-    $query = "SELECT * FROM subkriteria WHERE id_subkriteria = $id_subkriteria";
-    $result = mysqli_query($koneksi, $query);
+    $query = "SELECT * FROM subkriteria WHERE id_subkriteria = ?";
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, "i", $id_subkriteria);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
     if ($result && mysqli_num_rows($result) > 0) {
         $subkriteria = mysqli_fetch_assoc($result);
@@ -44,6 +47,7 @@ if (isset($_GET['id'])) {
         echo "Subkriteria not found.";
         exit();
     }
+    mysqli_stmt_close($stmt);
 } else {
     echo "ID not provided.";
     exit();
