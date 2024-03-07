@@ -70,24 +70,17 @@ $user = mysqli_fetch_assoc($result);
 </head>
 
 <body id="page-top">
-    <!-- Page Wrapper -->
     <div id="wrapper">
         <?php
         require_once('../include/navbar_user.php')
         ?>
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-            <!-- Main Content -->
             <div id="content">
-                <!-- Topbar -->
                 <?php
                 require_once('../include/topbar_user.php')
                 ?>
-                <!-- End of Topbar -->
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <!-- Page Heading -->
-                    <h1 style="text-align: center" class="h2 mb-4 text-gray-800">Daftar Data Rumah Sakit</h1>
+                    <h1 style="text-align: center" class="h2 mb-4 text-gray-800">Rumah Sakit</h1>
                     <div class="row" id="hospitalList">
                         <?php
                         require_once "../include/koneksi.php";
@@ -123,21 +116,12 @@ $user = mysqli_fetch_assoc($result);
                         ?>
                     </div>
                 </div>
-                <!-- /.container-fluid -->
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
             <?php
             require_once('../include/footer.php')
             ?>
-            <!-- End of Footer -->
         </div>
-        <!-- End of Content Wrapper -->
     </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
