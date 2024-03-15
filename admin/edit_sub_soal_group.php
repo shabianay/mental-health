@@ -62,12 +62,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve form data
     $subkriteria_baru = $_POST['subkriteria'];
     $kriteria_baru = $_POST['kriteria'];
-    $nilai_baru = $_POST['nilai'];
 
     // Update data in the database
-    $updateQuery = "UPDATE subkriteria SET subkriteria = ?, kriteria = ?, nilai = ? WHERE id_subkriteria = ?";
+    $updateQuery = "UPDATE subkriteria SET subkriteria = ?, kriteria = ? WHERE id_subkriteria = ?";
     $stmt = mysqli_prepare($koneksi, $updateQuery);
-    mysqli_stmt_bind_param($stmt, "sssi", $subkriteria_baru, $kriteria_baru, $nilai_baru, $id_subkriteria);
+    mysqli_stmt_bind_param($stmt, "ssi", $subkriteria_baru, $kriteria_baru, $id_subkriteria);
 
     // Execute the statement
     if (mysqli_stmt_execute($stmt)) {
@@ -136,10 +135,6 @@ $user = mysqli_fetch_assoc($result);
                                         }
                                         ?>
                                     </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="nilai">Nilai</label>
-                                    <input type="number" class="form-control" id="nilai" name="nilai" value="<?php echo $subkriteria['nilai']; ?>" required>
                                 </div>
                                 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">

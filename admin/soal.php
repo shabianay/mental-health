@@ -36,17 +36,26 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
 $retrieveQuery = "SELECT id, name FROM soal_group";
 $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
 
+// Retrieve subkriteria from the database
+$subkriteriaQuery = "SELECT id_subkriteria, subkriteria FROM subkriteria";
+$subkriteriaResult = mysqli_query($koneksi, $subkriteriaQuery);
+
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve form data
     $questionText = $_POST['questionText'];
     $questionGroupName = $_POST['questionGroup'];
+    $subkriteria = $_POST['subkriteria'];
     $nilaiA = $_POST['nilaiA'];
     $nilaiB = $_POST['nilaiB'];
 
-    $insertQuery = "INSERT INTO questions (question_group, nilai_a, nilai_b, question_text) VALUES (?, ?, ?, ?)";
-    $stmt = mysqli_prepare($koneksi, $insertQuery);
-    mysqli_stmt_bind_param($stmt, "ssss", $questionGroupName, $nilaiA, $nilaiB, $questionText);
+    $insertQuery = "INSERT INTO questions (question_group, subkriteria, nilai_a, nilai_b, question_text) VALUES (?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare(
+        $koneksi,
+        $insertQuery
+    );
+    mysqli_stmt_bind_param($stmt, "isdds", $questionGroupName, $subkriteria, $nilaiA, $nilaiB, $questionText);
+
 
     // Execute the statement
     if (mysqli_stmt_execute($stmt)) {
@@ -123,9 +132,21 @@ $user = mysqli_fetch_assoc($result);
                                             <select class="form-control" id="questionGroup" name="questionGroup" required>
                                                 <option value="">Pilih Soal Grup</option>
                                                 <?php
-                                                // Use the $retrieveResult variable to populate the options
                                                 while ($row = mysqli_fetch_assoc($retrieveResult)) {
                                                     echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="subkriteria">Subkriteria</label>
+                                            <select class="form-control" id="subkriteria" name="subkriteria" required>
+                                                <option value="">Pilih Subkriteria</option>
+                                                <?php
+                                                $subkriteriaQuery = "SELECT id_subkriteria, subkriteria FROM subkriteria";
+                                                $subkriteriaResult = mysqli_query($koneksi, $subkriteriaQuery);
+                                                while ($subkriteriaRow = mysqli_fetch_assoc($subkriteriaResult)) {
+                                                    echo "<option value='" . $subkriteriaRow['id_subkriteria'] . "'>" . $subkriteriaRow['subkriteria'] . "</option>";
                                                 }
                                                 ?>
                                             </select>
@@ -183,8 +204,7 @@ $user = mysqli_fetch_assoc($result);
                             </button></div>';
                         }
                     }
-                    // Query to retrieve articles from the database
-                    $query = "SELECT questions.id_soal, questions.question_text, soal_group.name AS group_name, questions.nilai_a, questions.nilai_b FROM questions JOIN soal_group ON questions.question_group = soal_group.id";
+                    $query = "SELECT questions.id_soal, questions.question_text, soal_group.name AS group_name, questions.nilai_a, questions.nilai_b, subkriteria.subkriteria FROM questions JOIN soal_group ON questions.question_group = soal_group.id JOIN subkriteria ON questions.subkriteria = subkriteria.id_subkriteria";
                     $result = mysqli_query($koneksi, $query);
                     // Check if the query was successful
                     if ($result) {
@@ -203,6 +223,7 @@ $user = mysqli_fetch_assoc($result);
                         echo "<th>No</th>";
                         echo "<th>Soal</th>";
                         echo "<th>Grup Soal</th>";
+                        echo "<th>Kriteria</th>";
                         echo "<th>Nilai Opsi Iya</th>";
                         echo "<th>Nilai Opsi Tidak</th>";
                         // echo "<th>Opsi A</th>";
@@ -218,6 +239,7 @@ $user = mysqli_fetch_assoc($result);
                             echo "<td>" . $counter . "</td>";
                             echo "<td>" . $row['question_text'] . "</td>";
                             echo "<td>" . $row['group_name'] . "</td>";
+                            echo "<td>" . $row['subkriteria'] . "</td>";
                             echo "<td>" . $row['nilai_a'] . "</td>";
                             echo "<td>" . $row['nilai_b'] . "</td>";
                             // echo "<td>" . $row['opsi_a'] . "</td>";

@@ -1,4 +1,6 @@
 <?php
+require_once "../include/koneksi.php";
+
 session_start();
 
 // Set session timeout in seconds (e.g., 30 minutes)
@@ -28,6 +30,36 @@ if ($_SESSION['role'] == 'user') {
     exit();
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_soal'])) {
+    $id_soal = $_POST['id_soal'];
+    $questionText = $_POST['questionText'];
+    $questionGroup = $_POST['questionGroup'];
+    $subkriteria = $_POST['subkriteria'];
+    $nilaiA = $_POST['nilaiA'];
+    $nilaiB = $_POST['nilaiB'];
+
+    // Update the question data in the database
+    $query = "UPDATE questions SET question_text = ?, question_group = ?, subkriteria = ?, nilai_a = ?, nilai_b = ? WHERE id_soal = ?";
+    $stmt = mysqli_prepare($koneksi, $query);
+
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "siiiii", $questionText, $questionGroup, $subkriteria, $nilaiA, $nilaiB, $id_soal);
+        $success = mysqli_stmt_execute($stmt);
+
+        if ($success) {
+            // Redirect to the question list page with a success message
+            header("Location: soal.php?success=update");
+            exit();
+        } else {
+            echo "Error updating question: " . mysqli_error($koneksi);
+        }
+
+        mysqli_stmt_close($stmt);
+    } else {
+        echo "Error: " . mysqli_error($koneksi);
+    }
+}
+
 require_once "../include/koneksi.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
@@ -54,15 +86,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
 } else {
     echo "Invalid request!";
 }
-// Retrieve the question group data from the database
-$query = "SELECT * FROM soal_group";
-$retrieveResult = mysqli_query($koneksi, $query);
-if (!$retrieveResult) {
+// Retrieve the subcriteria data from the database
+$subcriteriaQuery = "SELECT * FROM subkriteria";
+$subcriteriaResult = mysqli_query($koneksi, $subcriteriaQuery);
+if (!$subcriteriaResult) {
     // Error saat mengambil data dari database
     die("Query error: " . mysqli_error($koneksi));
 }
 // Kembalikan pointer result set ke awal
-mysqli_data_seek($retrieveResult, 0);
+mysqli_data_seek($subcriteriaResult, 0);
 
 // Ambil informasi pengguna dari database
 $user_id = $_SESSION['user_id'];
@@ -74,6 +106,15 @@ if (!$result) {
 }
 $user = mysqli_fetch_assoc($result);
 
+// Retrieve the question group data from the database
+$query = "SELECT * FROM soal_group";
+$retrieveResult = mysqli_query($koneksi, $query);
+if (!$retrieveResult) {
+    // Error saat mengambil data dari database
+    die("Query error: " . mysqli_error($koneksi));
+}
+// Kembalikan pointer result set ke awal
+mysqli_data_seek($retrieveResult, 0);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,7 +146,7 @@ $user = mysqli_fetch_assoc($result);
                     <h1 class="h3 mb-4 text-gray-800">Edit Soal</h1>
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                            <form method="post" action="../update_soal.php">
+                            <form method="post" action="edit_soal.php">
                                 <input type="hidden" name="id_soal" value="<?php echo $row['id_soal']; ?>">
                                 <div class="form-group">
                                     <label for="questionText">Soal</label>
@@ -118,6 +159,18 @@ $user = mysqli_fetch_assoc($result);
                                         <?php
                                         while ($group = mysqli_fetch_assoc($retrieveResult)) {
                                             echo "<option value='" . $group['id'] . "'" . ($row['question_group'] == $group['id'] ? ' selected' : '') . ">" . $group['name'] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subkriteria">Subkriteria</label>
+                                    <select class="form-control" id="subkriteria" name="subkriteria" required>
+                                        <option value="">Pilih Subkriteria</option>
+                                        <?php
+                                        while ($subcriteria = mysqli_fetch_assoc($subcriteriaResult)) {
+                                            $selected = ($row['subkriteria'] == $subcriteria['id_subkriteria']) ? 'selected' : '';
+                                            echo "<option value='" . $subcriteria['id_subkriteria'] . "'" . $selected . ">" . $subcriteria['subkriteria'] . "</option>";
                                         }
                                         ?>
                                     </select>

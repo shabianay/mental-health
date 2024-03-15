@@ -52,6 +52,9 @@ if (!$result) {
 $user = mysqli_fetch_assoc($result);
 
 $query = "SELECT questions.id_soal, questions.question_text, soal_group.name AS question_group, questions.nilai_a, questions.nilai_b FROM questions JOIN soal_group ON questions.question_group = soal_group.id";
+
+// $query = "SELECT questions.id_soal, questions.question_text, soal_group.name AS question_group, questions.nilai_a, questions.nilai_b, subkriteria.subkriteria AS subgroup_name FROM questions JOIN soal_group ON questions.question_group = soal_group.id JOIN subkriteria ON questions.subkriteria = subkriteria.id_subkriteria";
+
 $result = mysqli_query($koneksi, $query);
 
 if (!$result) {
@@ -159,7 +162,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                     $current_group = "";
                                                     while ($row = mysqli_fetch_assoc($result)) {
                                                         if ($row['question_group'] != $current_group) {
-                                                            // Jika grup pertanyaan berbeda dengan grup sebelumnya, tampilkan judul grup
                                                             echo "<tr><td colspan='4'><strong>Kategori : " . $row['question_group'] . "</strong></td></tr>";
                                                             $current_group = $row['question_group'];
                                                         }

@@ -35,12 +35,9 @@ $retrieveResult = mysqli_query($koneksi, $retrieveQuery);
 // Create
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create_group"])) {
     $name = $_POST["name"];
-    $sehat = $_POST["sehat"];
-    $perlu_perhatian = $_POST["perlu_perhatian"];
-    $butuh_penanganan = $_POST["butuh_penanganan"];
 
-    $query = "INSERT INTO `soal_group` (`name`, `sehat`, `perlu_perhatian`, `butuh_penanganan`) 
-              VALUES ('$name', '$sehat', '$perlu_perhatian', '$butuh_penanganan')";
+    $query = "INSERT INTO `soal_group` (`name`) 
+              VALUES ('$name')";
 
     $result = mysqli_query($koneksi, $query);
 
@@ -50,6 +47,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create_group"])) {
         echo "Error creating soal group: " . mysqli_error($koneksi);
     }
 }
+
+// Update
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_group"])) {
+    $id = $_POST["id"];
+    $name = $_POST["name"];
+
+    $query = "UPDATE `soal_group` SET `name`='$name' WHERE `id`='$id'";
+    $result = mysqli_query($koneksi, $query);
+
+    if ($result) {
+        echo "<script>alert('Soal group updated successfully');</script>";
+    } else {
+        echo "Error updating soal group: " . mysqli_error($koneksi);
+    }
+}
+
 // Ambil informasi pengguna dari database
 $user_id = $_SESSION['user_id'];
 $query = "SELECT * FROM users WHERE id = $user_id";
@@ -117,18 +130,6 @@ $user = mysqli_fetch_assoc($result);
                                             <label for="name">Keterangan: </label>
                                             <input type="text" class="form-control" id="name" name="name" required>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="sehat">Sehat: (desimal)</label>
-                                            <input type="number" class="form-control" id="sehat" name="sehat" step="0.01" min="0" value="1.0" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="perlu_perhatian">Perlu Perhatian: (desimal)</label>
-                                            <input type="number" class="form-control" id="perlu_perhatian" name="perlu_perhatian" step="0.01" min="0" value="1.0" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="butuh_penanganan">Butuh Penanganan: (desimal)</label>
-                                            <input type="number" class="form-control" id="butuh_penanganan" name="butuh_penanganan" step="0.01" min="0" value="1.0" required>
-                                        </div>
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary" name="create_group">Tambah Soal Grup</button>
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -180,23 +181,19 @@ $user = mysqli_fetch_assoc($result);
                                             <tr>
                                                 <th>No</th>
                                                 <th>Keterangan</th>
-                                                <th>Sehat</th>
-                                                <th>Perlu Perhatian</th>
-                                                <th>Butuh Penanganan</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
                                             $counter = 1; // Inisialisasi counter
+                                            $kriteria = []; // Inisialisasi variabel $kriteria
                                             // Loop through the result set and display the articles
                                             while ($row = mysqli_fetch_assoc($retrieveResult)) {
+                                                $kriteria[] = $row['name']; // Tambahkan kriteria ke array $kriteria
                                                 echo "<tr>";
                                                 echo "<td>" . $counter . "</td>";
                                                 echo "<td>" . $row['name'] . "</td>";
-                                                echo "<td>" . $row['sehat'] . "</td>";
-                                                echo "<td>" . $row['perlu_perhatian'] . "</td>";
-                                                echo "<td>" . $row['butuh_penanganan'] . "</td>";
                                                 echo "<td style='text-align: center'>";
                                                 echo "<a href='edit_soal_group.php?id=" . $row['id'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
                                                 echo "&nbsp;";

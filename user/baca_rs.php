@@ -80,7 +80,10 @@ $user = mysqli_fetch_assoc($result);
                 require_once('../include/topbar_user.php')
                 ?>
                 <div class="container-fluid">
-                    <h1 style="text-align: center" class="h2 mb-4 text-gray-800">Rumah Sakit</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Rumah Sakit</h1>
+                    <div class="button-nearby">
+                        <a href="https://www.google.com/maps/search/?api=1&query=psikolog+dan+psikiater&query_place_id=current+location" class="btn btn-primary mb-3"><i class="mr-3 fa-solid fa-magnifying-glass"></i>Cari psikolog disekitarmu</a>
+                    </div>
                     <div class="row" id="hospitalList">
                         <?php
                         require_once "../include/koneksi.php";

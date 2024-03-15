@@ -41,11 +41,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve form data
     $subkriteria = $_POST['subkriteria'];
     $kriterianame = $_POST['kriteria'];
-    $nilai = $_POST['nilai'];
 
-    $insertQuery = "INSERT INTO subkriteria (subkriteria, kriteria, nilai) VALUES (?, ?, ?)";
+    $insertQuery = "INSERT INTO subkriteria (subkriteria, kriteria) VALUES (?, ?)";
     $stmt = mysqli_prepare($koneksi, $insertQuery);
-    mysqli_stmt_bind_param($stmt, "sss", $subkriteria, $kriterianame, $nilai);
+    mysqli_stmt_bind_param($stmt, "ss", $subkriteria, $kriterianame);
 
     // Execute the statement
     if (mysqli_stmt_execute($stmt)) {
@@ -128,10 +127,6 @@ $user = mysqli_fetch_assoc($result);
                                                 ?>
                                             </select>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="nilai">Nilai</label>
-                                            <input type="number" class="form-control" id="nilai" name="nilai" required>
-                                        </div>
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary">Tambah Sub-Kriteria</button>
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -170,7 +165,7 @@ $user = mysqli_fetch_assoc($result);
                         }
                     }
                     // Query untuk mengambil data subkriteria dengan kriteria yang sesuai
-                    $query = "SELECT subkriteria.id_subkriteria, subkriteria.subkriteria, soal_group.name AS kriteria_name, subkriteria.nilai FROM subkriteria JOIN soal_group ON subkriteria.kriteria = soal_group.id";
+                    $query = "SELECT subkriteria.id_subkriteria, subkriteria.subkriteria, soal_group.name AS kriteria_name FROM subkriteria JOIN soal_group ON subkriteria.kriteria = soal_group.id";
                     $result = mysqli_query($koneksi, $query);
 
                     // Check if the query was successful
@@ -190,7 +185,6 @@ $user = mysqli_fetch_assoc($result);
                         echo "<th>No</th>";
                         echo "<th>Nama Sub-Kriteria</th>";
                         echo "<th>Kriteria</th>";
-                        echo "<th>Nilai</th>";
                         echo "<th>Aksi</th>";
                         echo "</tr>";
                         echo "</thead>";
@@ -202,7 +196,6 @@ $user = mysqli_fetch_assoc($result);
                             echo "<td>" . $counter . "</td>";
                             echo "<td>" . $row['subkriteria'] . "</td>";
                             echo "<td>" . $row['kriteria_name'] . "</td>";
-                            echo "<td>" . $row['nilai'] . "</td>";
                             echo "<td style='text-align: center'>";
                             echo "<a href='edit_sub_soal_group.php?id=" . $row['id_subkriteria'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
                             echo "&nbsp;";

@@ -32,6 +32,13 @@
         </div>
     </li>
 
+    <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'perhitungan.php' ? 'active' : ''; ?>">
+        <a class="nav-link" href="perhitungan.php">
+            <i class="fa-solid fa-network-wired"></i>
+            <span>Perhitungan AHP</span>
+        </a>
+    </li>
+
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'artikel.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="artikel.php">
             <i class="fas fa-fw fa-newspaper"></i>
