@@ -59,7 +59,7 @@ if (isset($_POST['export'])) {
 
   // Mulai tabel Excel
   echo "<table border='1'>";
-  echo "<tr><th>No</th><th>Hasil</th><th>Nilai</th><th>Waktu Tes</th></tr>";
+  echo "<tr><th>No</th><th>Hasil</th><th>Nilai</th><th>Tanggal Tes</th><th>Waktu Tes</th></tr>";
 
   $counter = 1; // Inisialisasi counter
   // Tampilkan data pengguna ke dalam tabel Excel
@@ -69,6 +69,7 @@ if (isset($_POST['export'])) {
     echo "<td>" . $row['hasil'] . "</td>";
     echo "<td>" . $row['nilai'] . "</td>";
     echo "<td>" . $row['waktu'] . "</td>";
+    echo "<td>" . $row['timer'] . "</td>";
     echo "</tr>";
     $counter++; // Tingkatkan counter setelah setiap baris
   }
@@ -103,21 +104,16 @@ if (isset($_POST['export'])) {
 </head>
 
 <body id="page-top">
-  <!-- Page Wrapper -->
   <div id="wrapper">
     <?php
     require_once('../include/navbar_admin.php')
     ?>
-    <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-      <!-- Main Content -->
       <div id="content">
         <?php
         require_once('../include/topbar_admin.php')
         ?>
-        <!-- Begin Page Content -->
         <div class="container-fluid">
-          <!-- Page Heading -->
           <h1 class="h3 mb-2 text-gray-800">Halaman Laporan</h1>
           <form method="post" action="laporan.php">
             <button type="submit" name="export" class="btn btn-success mb-3"><i class="fa-regular fa-file-excel mr-3"></i>Cetak Data Excel</button>
@@ -138,6 +134,7 @@ if (isset($_POST['export'])) {
                       <th>Angkatan</th>
                       <th>Hasil</th>
                       <th>Nilai</th>
+                      <th>Tanggal Tes</th>
                       <th>Waktu Tes</th>
                       <th>Aksi</th>
                     </tr>
@@ -162,6 +159,7 @@ if (isset($_POST['export'])) {
                         echo "<td>" . $row['hasil'] . "</td>";
                         echo "<td>" . $row['nilai'] . "</td>";
                         echo "<td>" . $row['waktu'] . "</td>";
+                        echo "<td>" . $row['timer'] . "</td>";
                         echo "<td style='text-align: center;'>";
                         echo "<a href='cetaklaporan.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Download Laporan<i class='ml-2 fa-solid fa-download'></i></a>";
                         echo "&nbsp;";

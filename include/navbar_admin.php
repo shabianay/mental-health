@@ -17,7 +17,7 @@
     </li>
 
     <hr class="sidebar-divider my-0" />
-    <li class="nav-item collapsed <?php echo basename($_SERVER['PHP_SELF']) === 'soal.php' || basename($_SERVER['PHP_SELF']) === 'soal_group.php' ? 'active' : ''; ?>">
+    <li class="nav-item collapsed <?php echo basename($_SERVER['PHP_SELF']) === 'soal.php' || basename($_SERVER['PHP_SELF']) === 'soal_group.php' || basename($_SERVER['PHP_SELF']) === 'sub_soal_group.php' || basename($_SERVER['PHP_SELF']) === 'alternatif.php' ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSoal" aria-expanded="true" aria-controls="collapseSoal">
             <i class="fas fa-fw fa-cog"></i>
             <span>Kelola Soal</span>
@@ -26,17 +26,25 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="soal.php">Butir Soal</a>
                 <a class="collapse-item" href="soal_group.php">Grup Soal</a>
-                <a class="collapse-item" href="sub_soal_group.php">Sub-Kriteria</a>
+                <a class="collapse-item" href="sub_soal_group.php">Sub-Grup Soal</a>
                 <a class="collapse-item" href="alternatif.php">Alternatif</a>
             </div>
         </div>
     </li>
 
-    <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'perhitungan.php' ? 'active' : ''; ?>">
-        <a class="nav-link" href="perhitungan.php">
+    <hr class="sidebar-divider my-0" />
+    <li class="nav-item collapsed <?php echo basename($_SERVER['PHP_SELF']) === 'kriteria.php' || basename($_SERVER['PHP_SELF']) === 'subkriteria.php' || basename($_SERVER['PHP_SELF']) === 'alternatif_ahp.php' ? 'active' : ''; ?>">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAHP" aria-expanded="true" aria-controls="collapseAHP">
             <i class="fa-solid fa-network-wired"></i>
             <span>Perhitungan AHP</span>
         </a>
+        <div id="collapseAHP" class="collapse" aria-labelledby="headingAHP" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="kriteria.php">Kriteria</a>
+                <a class="collapse-item" href="subkriteria.php">Sub-Kriteria</a>
+                <a class="collapse-item" href="alternatif_ahp.php">Alternatif</a>
+            </div>
+        </div>
     </li>
 
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'artikel.php' ? 'active' : ''; ?>">

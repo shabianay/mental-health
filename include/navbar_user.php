@@ -23,10 +23,10 @@
             <i class="fas fa-fw fa-heart"></i>
             <span>Tes Skrining</span></a>
     </li>
-    <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'hasil.php' ? 'active' : ''; ?>">
-        <a class="nav-link" href="hasil.php">
+    <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'riwayat.php' ? 'active' : ''; ?>">
+        <a class="nav-link" href="riwayat.php">
             <i class="fas fa-fw fa-chart-area"></i>
-            <span>Hasil</span></a>
+            <span>Riwayat Skrining</span></a>
     </li>
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'baca_artikel.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="baca_artikel.php">
@@ -74,7 +74,7 @@
             </div>
         </div>
     </div>
-    
+
     <hr class="sidebar-divider d-none d-md-block" />
 
     <!-- Sidebar Toggler (Sidebar) -->

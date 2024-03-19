@@ -62,7 +62,7 @@ if (isset($_POST['export'])) {
 
     // Mulai tabel Excel
     echo "<table border='1'>";
-    echo "<tr><th>No</th><th>Hasil</th><th>Nilai</th><th>Waktu Tes</th></tr>";
+    echo "<tr><th>No</th><th>Hasil</th><th>Nilai</th><th>Tanggal Tes</th><th>Waktu Tes</th></tr>";
 
     $counter = 1; // Inisialisasi counter
     // Tampilkan data skrining ke dalam tabel Excel
@@ -72,6 +72,7 @@ if (isset($_POST['export'])) {
         echo "<td>" . $row['hasil'] . "</td>";
         echo "<td>" . $row['nilai'] . "</td>";
         echo "<td>" . $row['waktu'] . "</td>";
+        echo "<td>" . $row['timer'] . "</td>";
         echo "</tr>";
         $counter++; // Tingkatkan counter setelah setiap baris
     }
@@ -117,8 +118,8 @@ if (isset($_POST['export'])) {
                 ?>
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Halaman Hasil Skrining</h1>
-                    <form method="post" action="hasil.php">
+                    <h1 class="h3 mb-2 text-gray-800">Halaman Riwayat Skrining</h1>
+                    <form method="post" action="riwayat.php">
                         <button type="submit" name="export" class="btn btn-success mb-3"><i class="fa-regular fa-file-excel mr-3"></i>Cetak Data Excel</button>
                     </form>
                     <!-- DataTales Example -->
@@ -137,6 +138,7 @@ if (isset($_POST['export'])) {
                                             <th>Angkatan</th>
                                             <th>Hasil</th>
                                             <th>Nilai</th>
+                                            <th>Tanggal Tes</th>
                                             <th>Waktu Tes</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -161,10 +163,17 @@ if (isset($_POST['export'])) {
                                                 echo "<td>" . $row['hasil'] . "</td>";
                                                 echo "<td>" . $row['nilai'] . "</td>";
                                                 echo "<td>" . $row['waktu'] . "</td>";
+                                                $timer = $row['timer'];
+                                                $cleanTimer = str_replace(
+                                                    '.',
+                                                    '',
+                                                    $timer
+                                                );
+                                                echo "<td>" . $cleanTimer . "</td>";
                                                 echo "<td style='text-align: center;'>";
                                                 echo "<a href='cetaklaporan.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Download Laporan<i class='ml-2 fa-solid fa-download'></i></a>";
-                                                echo "&nbsp;";
-                                                echo "<a href='perhitungan.php?id=" . $row['id'] . "' class='btn btn-success btn-sm'>Detail Perhitungan<i class='ml-2 fa-regular fa-eye'></i></a>";
+                                                // echo "&nbsp;";
+                                                // echo "<a href='perhitungan.php?id=" . $row['id'] . "' class='btn btn-success btn-sm'>Detail Perhitungan<i class='ml-2 fa-regular fa-eye'></i></a>";
                                                 echo "</td>";
                                                 echo "</tr>";
                                                 $counter++; // Tingkatkan counter setelah setiap baris

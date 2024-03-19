@@ -1,16 +1,13 @@
 <?php
 session_start();
 
-checkAgreement();
-function checkAgreement()
-{
-    // Periksa apakah sudah ada sesi persetujuan
-    if (!isset($_SESSION['agreement']) || $_SESSION['agreement'] !== true) {
-        // Jika belum ada, redirect ke halaman skrining.php
-        header("Location: skrining.php");
-        exit();
-    }
+// Periksa apakah sudah ada sesi persetujuan
+if (!isset($_SESSION['agreement']) || $_SESSION['agreement'] !== true) {
+    // Jika belum ada, redirect ke halaman skrining.php
+    header("Location: skrining.php");
+    exit();
 }
+
 // Set session timeout in seconds (e.g., 30 minutes)
 $session_timeout = 1800; // 30 minutes * 60 seconds
 
@@ -51,9 +48,8 @@ if (!$result) {
 }
 $user = mysqli_fetch_assoc($result);
 
-$query = "SELECT questions.id_soal, questions.question_text, soal_group.name AS question_group, questions.nilai_a, questions.nilai_b FROM questions JOIN soal_group ON questions.question_group = soal_group.id";
-
-// $query = "SELECT questions.id_soal, questions.question_text, soal_group.name AS question_group, questions.nilai_a, questions.nilai_b, subkriteria.subkriteria AS subgroup_name FROM questions JOIN soal_group ON questions.question_group = soal_group.id JOIN subkriteria ON questions.subkriteria = subkriteria.id_subkriteria";
+// Query untuk mendapatkan daftar pertanyaan
+$query = "SELECT questions.id_soal, questions.question_text, soal_group.name AS question_group, questions.nilai_a, questions.nilai_b, subkriteria.subkriteria AS subgroup_name FROM questions JOIN soal_group ON questions.question_group = soal_group.id JOIN subkriteria ON questions.subkriteria = subkriteria.id_subkriteria";
 
 $result = mysqli_query($koneksi, $query);
 
@@ -79,8 +75,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Tanggal skrining
     $waktu = date('Y-m-d');
 
+    // Ambil nilai timer dari form
+    $timerValue = $_POST['timerValue'];
+    // Ubah nilai timer menjadi format time (hh:mm:ss)
+    $timerFormatted = gmdate("H:i:s", $timerValue);
+
     // Query untuk menyimpan data ke dalam tabel skrining
-    $query_insert = "INSERT INTO skrining (hasil, nilai, waktu, user_id) VALUES ('$hasil', $totalSkor, '$waktu', $user_id)";
+    $query_insert = "INSERT INTO skrining (hasil, nilai, waktu, user_id, timer) VALUES ('$hasil', $totalSkor, '$waktu', $user_id, '$timerFormatted')";
+
+    // Ambil ID skrining yang baru saja disimpan
+    $skrining_id = mysqli_insert_id($koneksi);
+
+    // Eksekusi query insert skrining
+    if (mysqli_query($koneksi, $query_insert)) {
+        // Ambil ID skrining yang baru saja disimpan
+        $skrining_id = mysqli_insert_id($koneksi);
+
+        // Loop to insert answers
+        foreach ($_POST as $key => $value) {
+            // Check if the input name corresponds to an answer
+            if (strpos($key, 'jawaban_') !== false) {
+                // Get the question_id from the input name
+                $question_id = substr($key, 8);
+
+                // Query to get the user_id based on the session user_id
+                $query_get_user_id = "SELECT id FROM users WHERE id = $user_id";
+                $result_get_user_id = mysqli_query($koneksi, $query_get_user_id);
+
+                if (!$result_get_user_id) {
+                    // Error handling if the query fails
+                    die("Query error: " . mysqli_error($koneksi));
+                }
+
+                $user_data = mysqli_fetch_assoc($result_get_user_id);
+                $user_id = $user_data['id'];
+
+                // Insert answer into answers table
+                $query_insert_jawaban = "INSERT INTO answers (skrining_id, question_id, answer, user_id) VALUES ($skrining_id, $question_id, $value, $user_id)";
+                mysqli_query($koneksi, $query_insert_jawaban);
+            }
+        }
+    }
 }
 ?>
 
@@ -126,20 +161,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ?>
                 <div class="container-fluid">
                     <h1 class="h3 mb-4 text-gray-800">Mulai Skrining</h1>
-                    <?php
-                    // Eksekusi query
-                    if (!empty($query_insert)) {
-                        if (mysqli_query($koneksi, $query_insert)) {
-                            // Tampilkan pesan berhasil disimpan
-                            echo '<div class="alert alert-success" role="alert">Data skrining berhasil disimpan.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button></div>';
-                        } else {
-                            echo "Error: " . $query_insert . "<br>" . mysqli_error($koneksi);
-                        }
-                    }
-                    ?>
+                    <?php if (isset($hasil) && !empty($hasil)) : ?>
+                        <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="resultModalLabel">Hasil Skrining</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h1 class="h3 mb-4 text-gray-700">Hasil skrining Anda</h1>
+                                        <p class="text-gray-900">Skor Total: <?php echo $totalSkor; ?></p>
+                                        <p class="text-gray-900">Hasil: <?php echo $hasil; ?></p>
+                                        <?php
+                                        if ($hasil == 'Butuh Penanganan') {
+                                            echo "<p>Anda perlu penanganan segera. Silakan hubungi layanan kesehatan terdekat atau konsultasikan hasil skrining Anda dengan dokter/psikolog. Tetap semangat ya!</p>";
+                                            // Tampilkan tombol menuju halaman baca_rs.php
+                                            echo "<a href='baca_rs.php' class='btn btn-primary mb-3'>Cari Psikolog Terdekat</a>";
+                                            echo "<a href='https://www.instagram.com/smccunesa/' class='btn btn-primary'>Kunjungi Akun Instagram SMCC UNESA</a>";
+                                            echo "<img src='../img/butuh_perlu.svg' alt='Image' class='img-fluid'>";
+                                        } elseif ($hasil == 'Perlu Perhatian') {
+                                            echo "<p>Anda perlu perhatian lebih lanjut. Segera lakukan konsultasi dengan dokter untuk evaluasi lebih lanjut. Tetap semangat ya!</p>";
+                                            // Tampilkan tombol menuju halaman baca_artikel.php
+                                            echo "<a href='baca_rs.php' class='btn btn-primary mb-3'>Cari Psikolog Terdekat</a>";
+                                            echo "<a href='https://www.instagram.com/smccunesa/' class='btn btn-primary'>Kunjungi Akun Instagram SMCC UNESA</a>";
+                                            echo "<img src='../img/butuh_perlu.svg' alt='Image' class='img-fluid'>";
+                                        } else {
+                                            echo "<p>Hasil skrining menunjukkan Anda dalam kondisi sehat. Tetap jaga kesehatan mental dan lakukan skrining secara berkala.</p>";
+                                            // Tampilkan tombol menuju akun Instagram
+                                            echo "<a href='baca_artikel.php' class='btn btn-primary'>Baca Artikel Kesehatan</a>";
+                                            echo "<img src='../img/sehat.svg' alt='Image' class='img-fluid'>";
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card shadow mb-4">
@@ -148,7 +211,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <form id="skriningForm" method="POST" action="">
                                         <div class="table-responsive">
                                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                                <thead>
+                                                <thead class='text-gray-800'>
                                                     <tr>
                                                         <th>No</th>
                                                         <th>Pertanyaan</th>
@@ -160,10 +223,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                     <?php
                                                     $counter = 1;
                                                     $current_group = "";
+                                                    $current_subgroup = "";
+
                                                     while ($row = mysqli_fetch_assoc($result)) {
                                                         if ($row['question_group'] != $current_group) {
-                                                            echo "<tr><td colspan='4'><strong>Kategori : " . $row['question_group'] . "</strong></td></tr>";
+                                                            echo "<tr class='text-gray-800'><td colspan='4'><strong>Kategori : " . $row['question_group'] . "</strong></td></tr>";
                                                             $current_group = $row['question_group'];
+                                                        }
+                                                        if ($row['subgroup_name'] != null && $row['subgroup_name'] != $current_subgroup) {
+                                                            echo "<tr><td colspan='4'><strong>Subkategori : " . $row['subgroup_name'] . "</strong></td></tr>";
+                                                            $current_subgroup = $row['subgroup_name'];
                                                         }
                                                         echo "<tr>";
                                                         echo "<td>" . $counter . "</td>";
@@ -173,17 +242,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                         echo "</tr>";
                                                         $counter++;
                                                     }
+
                                                     ?>
                                                 </tbody>
                                             </table>
                                             <input type="hidden" id="totalSkor" name="totalSkor" value="">
+                                            <input type="hidden" id="timerValue" name="timerValue" value="">
                                             <div class="card-footer" style="text-align: right;">
                                                 <button type="button" class="btn btn-primary" id="btnFinish">Akhiri Sesi Skrining</button>
                                             </div>
-                                        </div>
                                     </form>
                                 </div>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -210,31 +281,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="../vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="..js/demo/chart-area-demo.js"></script>
+    <script src="../js/demo/chart-area-demo.js"></script>
     <script src="../js/demo/chart-pie-demo.js"></script>
 
+    <!-- Script untuk menampilkan modal saat halaman dimuat -->
     <script>
-        // Set waktu awal
-        var timer = 0;
+        $(document).ready(function() {
+            $('#resultModal').modal('show');
+        });
+    </script>
+
+    <script>
+        // Tambahkan variabel untuk menyimpan nilai timer
+        var timerValue = 0;
 
         // Fungsi untuk menampilkan waktu
         function displayTimer() {
-            var hours = Math.floor(timer / 3600);
-            var minutes = Math.floor((timer % 3600) / 60);
-            var seconds = timer % 60;
+            var hours = Math.floor(timerValue / 3600);
+            var minutes = Math.floor((timerValue % 3600) / 60);
+            var seconds = timerValue % 60;
 
             // Tampilkan waktu dengan format HH:MM:SS
-            document.getElementById('timer').innerHTML = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds);
-        }
-
-        // Fungsi untuk menambahkan angka 0 di depan angka < 10
-        function pad(num) {
-            return num < 10 ? "0" + num : num;
+            var formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            document.getElementById('timer').innerHTML = formattedTime;
         }
 
         // Fungsi untuk menghitung waktu setiap detik
         var timerInterval = setInterval(function() {
-            timer++;
+            timerValue++;
             displayTimer();
         }, 1000);
 
@@ -252,8 +326,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 totalSkor += parseInt($(this).val());
             });
 
-            // Set nilai totalSkor ke dalam input hidden
+            // Set nilai totalSkor dan timer ke dalam input hidden
             $('#totalSkor').val(totalSkor);
+            $('#timerValue').val(timerValue);
 
             // Submit form
             $('#skriningForm').submit();
