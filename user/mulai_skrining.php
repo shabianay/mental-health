@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Ambil hasil skrining
     $hasil = '';
-    if ($totalSkor >= 20) {
+    if ($totalSkor >= 15 && $totalSkor <= 20) {
         $hasil = 'Butuh Penanganan';
     } else if ($totalSkor >= 8 && $totalSkor < 15) {
         $hasil = 'Perlu Perhatian';
@@ -178,20 +178,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <?php
                                         if ($hasil == 'Butuh Penanganan') {
                                             echo "<p>Anda perlu penanganan segera. Silakan hubungi layanan kesehatan terdekat atau konsultasikan hasil skrining Anda dengan dokter/psikolog. Tetap semangat ya!</p>";
-                                            // Tampilkan tombol menuju halaman baca_rs.php
+                                            echo "<div class='d-flex flex-column'>";
                                             echo "<a href='baca_rs.php' class='btn btn-primary mb-3'>Cari Psikolog Terdekat</a>";
-                                            echo "<a href='https://www.instagram.com/smccunesa/' class='btn btn-primary'>Kunjungi Akun Instagram SMCC UNESA</a>";
+                                            echo "<a href='https://www.instagram.com/smccunesa/' class='btn btn-primary mb-3'>Kunjungi Akun Instagram SMCC UNESA</a>";
+                                            echo "<a href='riwayat.php' class='btn btn-success'>Cetak Laporan Skrining</a>";
+                                            echo "</div>";
                                             echo "<img src='../img/butuh_perlu.svg' alt='Image' class='img-fluid'>";
                                         } elseif ($hasil == 'Perlu Perhatian') {
                                             echo "<p>Anda perlu perhatian lebih lanjut. Segera lakukan konsultasi dengan dokter untuk evaluasi lebih lanjut. Tetap semangat ya!</p>";
-                                            // Tampilkan tombol menuju halaman baca_artikel.php
+                                            echo "<div class='d-flex flex-column'>";
                                             echo "<a href='baca_rs.php' class='btn btn-primary mb-3'>Cari Psikolog Terdekat</a>";
-                                            echo "<a href='https://www.instagram.com/smccunesa/' class='btn btn-primary'>Kunjungi Akun Instagram SMCC UNESA</a>";
+                                            echo "<a href='https://www.instagram.com/smccunesa/' class='btn btn-primary mb-3'>Kunjungi Akun Instagram SMCC UNESA</a>";
+                                            echo "<a href='riwayat.php' class='btn btn-success'>Cetak Laporan Skrining</a>";
+                                            echo "</div>";
                                             echo "<img src='../img/butuh_perlu.svg' alt='Image' class='img-fluid'>";
                                         } else {
                                             echo "<p>Hasil skrining menunjukkan Anda dalam kondisi sehat. Tetap jaga kesehatan mental dan lakukan skrining secara berkala.</p>";
-                                            // Tampilkan tombol menuju akun Instagram
-                                            echo "<a href='baca_artikel.php' class='btn btn-primary'>Baca Artikel Kesehatan</a>";
+                                            echo "<div class='d-flex flex-column'>";
+                                            echo "<a href='baca_artikel.php' class='btn btn-primary mb-3'>Baca Artikel Kesehatan</a>";
+                                            echo "<a href='riwayat.php' class='btn btn-success'>Cetak Laporan Skrining</a>";
+                                            echo "</div>";
                                             echo "<img src='../img/sehat.svg' alt='Image' class='img-fluid'>";
                                         }
                                         ?>
@@ -284,8 +290,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Script untuk menampilkan modal saat halaman dimuat -->
     <script>
+        // Script untuk menampilkan modal saat halaman dimuat
         $(document).ready(function() {
             $('#resultModal').modal('show');
+
+            // Redirect ke skrining.php ketika modal ditutup
+            $('#resultModal').on('hidden.bs.modal', function() {
+                window.location.href = 'skrining.php';
+            });
         });
     </script>
 

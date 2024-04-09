@@ -179,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <small class="form-text text-white badge bg-success mb-3">Klik foto untuk mengganti foto profil.</small>
                                         <br>
                                         <label for="profileImage" class="profile-image-container mb-3">
-                                            <img id="preview" src="<?php echo !empty($user['profile_image']) ? $user['profile_image'] : '#'; ?>" class="h3 text-gray-800 rounded-circle" alt="Ganti foto profil disini" />
+                                            <img id="preview" src="<?php echo $profileImage; ?>" class="h3 text-gray-800 rounded-circle" />
                                             <input type="file" name="profileImage" id="profileImage" accept="image/*" class="d-none" onchange="previewImage(event)">
                                         </label>
                                         <br>

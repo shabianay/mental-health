@@ -598,7 +598,8 @@ $user = mysqli_fetch_assoc($result);
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>1</td>                                            <td>Sehat</td>
+                                            <td>1</td>
+                                            <td>Sehat</td>
                                             <td>3</td>
                                         </tr>
                                         <tr>

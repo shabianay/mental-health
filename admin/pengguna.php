@@ -216,7 +216,7 @@ if (isset($_SESSION['user_id'])) {
                   <thead>
                     <tr>
                       <th>No</th>
-                      <th>Nama Lengkap</th>
+                      <th width='10%'>Nama Lengkap</th>
                       <th>Email</th>
                       <th>Telepon</th>
                       <th>Angkatan</th>
