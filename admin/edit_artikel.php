@@ -47,11 +47,10 @@ if (isset($_GET['id'])) {
         echo "Article not found.";
         exit();
     }
-
     mysqli_stmt_close($stmt);
 } else {
     // Jika parameter id tidak ditemukan, redirect ke halaman lain atau tampilkan pesan error
-    header("Location: ../index.php");
+    header("Location: artikel.php");
     exit();
 }
 
@@ -62,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $content = $_POST['content'];
 
     // Periksa apakah file gambar baru diunggah
-    if ($_FILES['image']['size'] > 0) {
+    if ($_FILES['image']['size'] > 0 && $_FILES['image']['size'] <= 2097152) { // 2MB = 2 * 1024 * 1024 bytes
         $image_name = $_FILES['image']['name'];
         $image_temp = $_FILES['image']['tmp_name'];
         $image_path = "../uploads/" . $image_name;
@@ -190,7 +189,11 @@ mysqli_close($koneksi);
         </div>
     </div>
 
-    <!-- End of Footer -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
     <!-- Bootstrap core JavaScript-->
     <script src="../vendor/jquery/jquery.min.js"></script>
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

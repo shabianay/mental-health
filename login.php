@@ -79,44 +79,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body class="bg-gradient-primary">
   <div class="container">
-    <!-- Outer Row -->
-    <div class="row justify-content-center">
-      <div class="col-xl-10 col-lg-12 col-md-9">
-        <div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="row d-flex align-items-center" style="min-height: 100vh;">
+      <div class="col-lg-12">
+        <div class="card o-hidden border-0 shadow-lg my-5 mx-auto" style="max-width: 500px;">
           <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-              <div class="col-lg-6">
-                <div class="p-5">
-                  <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Hai, Silakan Masuk!</h1>
-                  </div>
-                  <?php
-                  // Check if error message is set and not empty
-                  if (isset($error_message) && !empty($error_message)) {
-                    echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
-                  }
-                  ?>
-                  <form class="user" method="post" action="">
-                    <div class="form-group">
-                      <input type="email" class="form-control form-control-user" name="email" id="email" placeholder="Email" required />
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Hai, Silakan Masuk!</h1>
+              </div>
+              <?php
+              // Check if error message is set and not empty
+              if (isset($error_message) && !empty($error_message)) {
+                echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
+              }
+              ?>
+              <form class="user" method="post" action="">
+                <div class="form-group">
+                  <input type="email" class="form-control form-control-user" name="email" id="email" placeholder="Email" required />
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <input type="password" class="form-control form-control-user" name="password" id="password" placeholder="Password" required />
+                    <div class="input-group-append">
+                      <span class="input-group-text" style="cursor: pointer;" onclick="togglePasswordVisibility()">
+                        <i id="password-icon" class="fas fa-eye-slash"></i>
+                      </span>
                     </div>
-                    <div class="form-group">
-                      <input type="password" class="form-control form-control-user" name="password" id="password" placeholder="Password" required />
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-user btn-block">
-                      Masuk
-                    </button>
-                  </form>
-                  <hr />
-                  <div class="text-center">
-                    <a class="small" href="register.php">Buat akunmu</a>
-                  </div>
-                  <div class="text-center mt-2">
-                    <a class="small" style="color:black" href="index.php">Kembali</a>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col text-right">
+                    <div class="form-group">
+                      <a class="small" href="forget_password.php">Lupa Password?</a>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-user btn-block">
+                  Masuk
+                </button>
+              </form>
+              <hr />
+              <div class="text-center">
+                <a class="small" href="register.php">Belum punya akun? Buat akun sekarang</a>
+              </div>
+              <div class="text-center mt-2">
+                <a class="small" style="color:black" href="index.php">Beranda</a>
               </div>
             </div>
           </div>
@@ -134,6 +141,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
+
+  <script>
+    function togglePasswordVisibility() {
+      var passwordInput = document.getElementById("password");
+      var icon = document.getElementById("password-icon");
+
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      } else {
+        passwordInput.type = "password";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      }
+    }
+  </script>
 </body>
 
 </html>

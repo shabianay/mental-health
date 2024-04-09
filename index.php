@@ -23,7 +23,9 @@
             <div class="row">
                 <div class="col-lg-7 col-md-12 col-12 d-flex align-items-center">
                     <div class="about-text">
-                        <small class="small-text">Selamat Datang di <span class="mobile-block">MINDFUL</span></small>
+                        <small class="small-text">Selamat Datang di,</small>
+                        <br>
+                        <img src="img/header-biru.jpg" class="mt-2" style="width: 30%; height: auto;">
                         <h1 class="animated animated-text">
                             <span class="mr-2">Hai teman, apakah kamu sedang merasa</span>
                             <div class="animated-info">
@@ -32,10 +34,10 @@
                                 <span class="animated-item">Depresi</span>
                             </div>
                         </h1>
-                        <p>Dengan MINDFUL kamu dapat mengecek apakah kamu sedang dalam kondisi kurang sehat pada kesehatan mentalmu.</p>
+                        <p>Dengan MINDFUL kamu dapat melakukan skrining kesehatan mental.</p>
                         <div class="custom-btn-group mt-4">
-                            <a href="login.php" class="btn custom-btn custom-btn-bg1 custom-btn-link">Mulai Skrining</a>
-                            <a href="register.php" class="btn custom-btn custom-btn-bg custom-btn-link">Daftar Sekarang</a>
+                            <a href="login.php" class="btn custom-btn custom-btn-bg1 custom-btn-link">Coba Skrining</a>
+                            <a href="register.php" class="btn custom-btn custom-btn-bg custom-btn-link">Buat Akun</a>
                         </div>
                     </div>
                 </div>

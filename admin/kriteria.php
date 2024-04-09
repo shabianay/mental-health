@@ -97,46 +97,23 @@ $groups = mysqli_fetch_all($result, MYSQLI_ASSOC);
                                         <tr>
                                             <th>Kriteria</th>
                                             <?php foreach ($groups as $group) : ?>
-                                                <td><?php echo $group['name']; ?></td>
+                                                <th><?php echo $group['name']; ?></th>
                                             <?php endforeach; ?>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Gejala kognitif</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Gejala cemas-depresi</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Gejala somatik</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Gejala penurunan energi</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Jumlah</th>
-                                            <td>4</td>
-                                            <td>4</td>
-                                            <td>4</td>
-                                            <td>4</td>
-                                        </tr>
+                                        <?php foreach ($groups as $group) : ?>
+                                            <tr>
+                                                <th><?php echo $group['name']; ?></th>
+                                                <?php foreach ($groups as $inner_group) : ?>
+                                                    <?php if ($group['id'] == $inner_group['id']) : ?>
+                                                        <td contenteditable="false">1</td>
+                                                    <?php else : ?>
+                                                        <td contenteditable="true" data-groupid="<?php echo $group['id']; ?>" data-innergroupid="<?php echo $inner_group['id']; ?>"></td>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?>
+                                            </tr>
+                                        <?php endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>

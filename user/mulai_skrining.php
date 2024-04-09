@@ -251,17 +251,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <div class="card-footer" style="text-align: right;">
                                                 <button type="button" class="btn btn-primary" id="btnFinish">Akhiri Sesi Skrining</button>
                                             </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <?php
-            require_once('../include/footer.php')
-            ?>
+            <?php require_once('../include/footer.php') ?>
         </div>
     </div>
     <a class="scroll-to-top rounded" href="#page-top">

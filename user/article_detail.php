@@ -113,10 +113,22 @@ mysqli_close($koneksi);
                         <div class="col-lg-12">
                             <div class="card shadow mb-4">
                                 <div class="card-body">
-                                    <h2 class="article-title font-weight-bold text-primary"><?php echo $article['title']; ?></h2>
-                                    <small class='card-text'><i class='fas fa-clock mr-2 mb-3'></i><?php echo date('d M Y', strtotime($article['updated_at'])); ?></small>
-                                    <img class="card-img-top" src="<?php echo $article['image_path']; ?>" alt="">
-                                    <p><?php echo $article['content']; ?></p>
+                                    <?php if ($article && isset($article['title'])) : ?>
+                                        <h2 class="article-title font-weight-bold text-primary"><?php echo $article['title']; ?></h2>
+                                    <?php endif; ?>
+
+                                    <?php if ($article && isset($article['updated_at'])) : ?>
+                                        <small class='card-text'><i class='fas fa-clock mr-2 mb-3'></i><?php echo date('d M Y', strtotime($article['updated_at'])); ?></small>
+                                    <?php endif; ?>
+
+                                    <?php if ($article && isset($article['image_path'])) : ?>
+                                        <img class="card-img-top" src="<?php echo $article['image_path']; ?>" alt="">
+                                    <?php endif; ?>
+
+                                    <?php if ($article && isset($article['content'])) : ?>
+                                        <p><?php echo $article['content']; ?></p>
+                                    <?php endif; ?>
+
                                     <a href="baca_artikel.php" class="btn btn-primary mb-3">
                                         <i class="fa-solid fa-angle-left"></i> Kembali
                                     </a>

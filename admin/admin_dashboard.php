@@ -123,16 +123,12 @@ $user = mysqli_fetch_assoc($result);
     <?php
     require_once('../include/navbar_admin.php')
     ?>
-    <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-      <!-- Main Content -->
       <div id="content">
         <?php
         require_once('../include/topbar_admin.php')
         ?>
-        <!-- Begin Page Content -->
         <div class="container-fluid">
-          <!-- Page Heading -->
           <div class="row">
             <!-- Pengguna -->
             <div class="col-xl-3 col-md-6 mb-4">
@@ -220,7 +216,7 @@ $user = mysqli_fetch_assoc($result);
           </div>
 
           <div class="row">
-            <div class="col-xl-8 col-md-6">
+            <div class="col-xl-8 col-md-12">
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">
@@ -240,25 +236,24 @@ $user = mysqli_fetch_assoc($result);
                 <div class="card-body">
                   <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="../img/undraw_posting_photo.svg" alt="...">
                   <p>
-                    Aplikasi MIndful ini adalah...
+                    Aplikasi MINDFUL ini adalah aplikasi yang dapat membantu kamu untuk skrining (Tahap Awal) mengetahui kesehatan mental. Jika ingin mendalami lebih lanjut tentang kesehatan mental kamu dapat menghubungi psikolog/psikiater atau juga dapat menghubungi SMCC UNESA, & kamu bisa membaca artikel yang telah kami sediakan. Selain itu, kamu juga bisa mencari rumah sakit terdekat yang bisa membantu kamu dalam menangani masalah kesehatan mental. Selamat menggunakan aplikasi MINDFUL!
                   </p>
                 </div>
               </div>
             </div>
 
-            <div class="col-xl-4 col-lg-5">
+            <div class="col-xl-4 col-lg-12">
               <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Data Pengguna - Angkatan</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Data Pengguna</h6>
                 </div>
-                <!-- Card Body -->
                 <div class="card-body">
                   <div class="chart-pie pt-4">
                     <canvas id="myPieChart"></canvas>
                   </div>
                   <hr>
                   <div class="mt-4 text-center small">
+                    <h6 class="m-4 font-weight-bold text-primary">Angkatan</h6>
                     <span class="mr-2">
                       <i class="fas fa-circle" style="color: #4e73df;"></i> 2020
                     </span>
@@ -272,6 +267,23 @@ $user = mysqli_fetch_assoc($result);
                       <i class="fas fa-circle" style="color: #f6c23e;"></i> 2023
                     </span>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Area Chart -->
+          <div class="row">
+            <div class="col-xl-12 col-lg-12">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Data Skrining</h6>
+                </div>
+                <div class="card-body">
+                  <div class="chart-area">
+                    <canvas id="myAreaChart"></canvas>
+                  </div>
+                  <hr>
                 </div>
               </div>
             </div>
@@ -303,7 +315,7 @@ $user = mysqli_fetch_assoc($result);
   <script src="../vendor/chart.js/Chart.min.js"></script>
 
   <!-- Page level custom scripts -->
-  <script src="../js/demo/chart-area-demo.js"></script>
+  <!-- <script src="../js/demo/chart-area-demo.js"></script> -->
   <!-- <script src="../js/demo/chart-pie-demo.js"></script> -->
   <script>
     $(document).ready(function() {
@@ -368,6 +380,112 @@ $user = mysqli_fetch_assoc($result);
       });
     });
   </script>
+
+  <script>
+    $(document).ready(function() {
+      // Fetch data from database for the Area Chart
+      $.ajax({
+        url: 'fetch_area_data.php',
+        type: 'POST',
+        dataType: 'json',
+        success: function(data) {
+          var labels = [];
+          var sehatData = [];
+          var butuhPenangananData = [];
+          var perluPerhatianData = [];
+
+          // Extract data from the response
+          data.forEach(function(item) {
+            labels.push(item.bulan);
+            sehatData.push(item.sehat);
+            butuhPenangananData.push(item.butuh_penanganan);
+            perluPerhatianData.push(item.perlu_perhatian);
+          });
+
+          // Create the Area Chart
+          var ctx = document.getElementById('myAreaChart').getContext('2d');
+          var myAreaChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [{
+                  label: 'Sehat',
+                  data: sehatData,
+                  backgroundColor: 'rgba(78, 115, 223, 0.1)',
+                  borderColor: 'rgba(78, 115, 223, 1)',
+                  pointRadius: 3,
+                  pointBackgroundColor: 'rgba(78, 115, 223, 1)',
+                  pointBorderColor: 'rgba(78, 115, 223, 1)',
+                  pointHoverRadius: 3,
+                  pointHoverBackgroundColor: 'rgba(78, 115, 223, 1)',
+                  pointHoverBorderColor: 'rgba(78, 115, 223, 1)',
+                  fill: 'origin',
+                },
+                {
+                  label: 'Butuh Penanganan',
+                  data: butuhPenangananData,
+                  backgroundColor: 'rgba(28, 200, 138, 0.1)',
+                  borderColor: 'rgba(28, 200, 138, 1)',
+                  pointRadius: 3,
+                  pointBackgroundColor: 'rgba(28, 200, 138, 1)',
+                  pointBorderColor: 'rgba(28, 200, 138, 1)',
+                  pointHoverRadius: 3,
+                  pointHoverBackgroundColor: 'rgba(28, 200, 138, 1)',
+                  pointHoverBorderColor: 'rgba(28, 200, 138, 1)',
+                  fill: 'origin',
+                },
+                {
+                  label: 'Perlu Perhatian',
+                  data: perluPerhatianData,
+                  backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                  borderColor: 'rgba(255, 193, 7, 1)',
+                  pointRadius: 3,
+                  pointBackgroundColor: 'rgba(255, 193, 7, 1)',
+                  pointBorderColor: 'rgba(255, 193, 7, 1)',
+                  pointHoverRadius: 3,
+                  pointHoverBackgroundColor: 'rgba(255, 193, 7, 1)',
+                  pointHoverBorderColor: 'rgba(255, 193, 7, 1)',
+                  fill: 'origin',
+                },
+              ],
+            },
+            options: {
+              maintainAspectRatio: false,
+              tooltips: {
+                mode: 'index',
+                intersect: false,
+              },
+              hover: {
+                mode: 'nearest',
+                intersect: true,
+              },
+              scales: {
+                xAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Bulan'
+                  }
+                }],
+                yAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Jumlah'
+                  }
+                }]
+              },
+              legend: {
+                display: true,
+                position: 'bottom',
+              },
+            }
+          });
+        }
+      });
+    });
+  </script>
+
 </body>
 
 </html>

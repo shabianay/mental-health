@@ -206,8 +206,7 @@ $user = mysqli_fetch_assoc($result);
             <div class="card-body">
               <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="../img/undraw_posting_photo.svg" alt="...">
               <p>
-                Aplikasi MIndful ini adalah...
-              </p>
+                Aplikasi MINDFUL ini adalah aplikasi yang dapat membantu kamu untuk skrining (Tahap Awal) mengetahui kesehatan mental. Jika ingin mendalami lebih lanjut tentang kesehatan mental kamu dapat menghubungi psikolog/psikiater atau juga dapat menghubungi SMCC UNESA, & kamu bisa membaca artikel yang telah kami sediakan. Selain itu, kamu juga bisa mencari rumah sakit terdekat yang bisa membantu kamu dalam menangani masalah kesehatan mental. Selamat menggunakan aplikasi MINDFUL! </p>
             </div>
           </div>
         </div>

@@ -30,7 +30,7 @@ if ($_SESSION['role'] == 'user') {
     exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id'];
     $name = $_POST['name'];
 
@@ -57,6 +57,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
 }
 
 require_once "../include/koneksi.php";
+
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $query = "SELECT * FROM soal_group WHERE id = $id";
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+    } else {
+        echo "Grup Soal tidak ditemukan!";
+        exit();
+    }
+} else {
+    header("Location: soal_group.php");
+    exit();
+}
+
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -155,8 +174,8 @@ $user = mysqli_fetch_assoc($result);
                         </div>
                     </div>
                 </div>
-                <?php require_once('../include/footer.php') ?>
             </div>
+            <?php require_once('../include/footer.php') ?>
         </div>
     </div>
 

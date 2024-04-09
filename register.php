@@ -85,7 +85,6 @@ if (isset($_POST['submit'])) {
       <div class="col-lg-12">
         <div class="card o-hidden border-0 shadow-lg my-5 mx-auto" style="max-width: 500px;">
           <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
             <div class="p-5">
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Daftar Akun</h1>
@@ -105,19 +104,22 @@ if (isset($_POST['submit'])) {
               <?php endif; ?>
               <form class="user" method="post" action="" onsubmit="return validatePassword()">
                 <div class="form-group">
-                  <!-- <label for="Namalengkap">Nama Lengkap</label> -->
                   <input type="text" class="form-control" id="Namalengkap" name="Namalengkap" placeholder="Nama Lengkap" />
                 </div>
                 <div class="form-group">
-                  <!-- <label for="email">Email</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" /> -->
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" />
                 </div>
                 <div class="form-group">
-                  <!-- <label for="password">Password</label> -->
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password" pattern="(?=.*\d).{8,}" title="Password harus terdiri dari minimal 8 karakter dan mengandung angka" required />
+                  <div class="input-group">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" pattern="(?=.*\d).{8,}" title="Password harus terdiri dari minimal 8 karakter dan mengandung angka" required />
+                    <div class="input-group-append">
+                      <span class="input-group-text" style="cursor: pointer;" onclick="togglePasswordVisibility('password')">
+                        <i id="password-icon" class="fas fa-eye-slash"></i>
+                      </span>
+                    </div>
+                  </div>
                 </div>
                 <div class="form-group">
-                  <!-- <label for="confirmPassword">Konfirmasi Password</label> -->
                   <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Konfirmasi Password" pattern="(?=.*\d).{8,}" title="Password harus terdiri dari minimal 8 karakter dan mengandung angka" required />
                 </div>
                 <div class="form-group">
@@ -144,19 +146,12 @@ if (isset($_POST['submit'])) {
                 </div>
                 <input type="submit" name="submit" value="Buat akun" class="btn btn-primary btn-user btn-block">
               </form>
-
-              <!-- <div class="text-center">
-                  <a class="small" href="forgot-password.html"
-                    >Lupa password?</a
-                  >
-                </div> -->
               <hr />
-
               <div class="text-center mt-3">
-                <a class="small" href="login.php">Sudah punya akun? Masuk</a>
+                <a class="small" href="login.php">Sudah punya akun? Masuk sekarang</a>
               </div>
               <div class="text-center mt-2">
-                <a class="small" style="color:black" href="index.php">Kembali</a>
+                <a class="small" style="color:black" href="index.php">Beranda</a>
               </div>
             </div>
           </div>
@@ -174,6 +169,23 @@ if (isset($_POST['submit'])) {
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
+
+  <script>
+    function togglePasswordVisibility() {
+      var passwordInput = document.getElementById("password");
+      var icon = document.getElementById("password-icon");
+
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      } else {
+        passwordInput.type = "password";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      }
+    }
+  </script>
 
   <script>
     // Fungsi untuk memeriksa apakah kolom password dan konfirmasi password sama

@@ -41,51 +41,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_soal'])) {
     // Update the question data in the database
     $query = "UPDATE questions SET question_text = ?, question_group = ?, subkriteria = ?, nilai_a = ?, nilai_b = ? WHERE id_soal = ?";
     $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, "siiiii", $questionText, $questionGroup, $subkriteria, $nilaiA, $nilaiB, $id_soal);
 
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, "siiiii", $questionText, $questionGroup, $subkriteria, $nilaiA, $nilaiB, $id_soal);
-        $success = mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_init($koneksi);
 
-        if ($success) {
-            // Redirect to the question list page with a success message
-            header("Location: soal.php?success=update");
-            exit();
-        } else {
-            echo "Error updating question: " . mysqli_error($koneksi);
-        }
-
-        mysqli_stmt_close($stmt);
+    if (!mysqli_stmt_prepare($stmt, $query)) {
+        die("Query error: " . mysqli_error($koneksi));
     } else {
-        echo "Error: " . mysqli_error($koneksi);
+        mysqli_stmt_bind_param($stmt, "siiiii", $questionText, $questionGroup, $subkriteria, $nilaiA, $nilaiB, $id_soal);
+        mysqli_stmt_execute($stmt);
+        header("Location: soal.php?success=update");
+        exit();
     }
 }
 
 require_once "../include/koneksi.php";
 
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
+if (isset($_GET['id'])) {
     $id_soal = $_GET['id'];
 
-    // Retrieve the question data from the database
+    // Query untuk mengambil data soal berdasarkan id
     $query = "SELECT * FROM questions WHERE id_soal = ?";
     $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, "i", $id_soal);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, "i", $id_soal);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-
-        if ($row = mysqli_fetch_assoc($result)) {
-            // Display the form with the question data for editing
-        } else {
-            echo "Question not found!";
-        }
-        mysqli_stmt_close($stmt);
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
     } else {
-        echo "Error: " . mysqli_error($koneksi);
+        echo "Soal tidak ditemukan!";
+        exit();
     }
 } else {
-    echo "Invalid request!";
+    header("Location: soal.php");
+    exit();
 }
+
 // Retrieve the subcriteria data from the database
 $subcriteriaQuery = "SELECT * FROM subkriteria";
 $subcriteriaResult = mysqli_query($koneksi, $subcriteriaQuery);
@@ -208,8 +200,8 @@ mysqli_data_seek($retrieveResult, 0);
                         </div>
                     </div>
                 </div>
-                <?php require_once('../include/footer.php') ?>
             </div>
+            <?php require_once('../include/footer.php') ?>
         </div>
     </div>
 

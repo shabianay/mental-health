@@ -37,30 +37,17 @@ if (isset($_GET['id'])) {
     // Query untuk mengambil data rumah sakit berdasarkan id
     $query = "SELECT * FROM hospitals WHERE id = ?";
     $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, "i", $hospital_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
-    // Periksa apakah query berhasil
-    if ($stmt) {
-        // Bind parameter id
-        mysqli_stmt_bind_param($stmt, "i", $hospital_id);
-
-        // Execute query
-        mysqli_stmt_execute($stmt);
-
-        // Get result
-        $result = mysqli_stmt_get_result($stmt);
-
-        // Ambil data rumah sakit dari hasil query
+    if ($result && mysqli_num_rows($result) > 0) {
         $hospital = mysqli_fetch_assoc($result);
-
-        // Bebaskan statement
-        mysqli_stmt_close($stmt);
     } else {
-        // Jika query gagal, tampilkan pesan error
-        echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
+        echo "RS not found.";
+        exit();
     }
-
-    // Bebaskan hasil query
-    mysqli_free_result($result);
+    mysqli_stmt_close($stmt);
 } else {
     // Jika parameter id tidak ditemukan, redirect ke halaman lain atau tampilkan pesan error
     header("Location: ../index.php");
@@ -76,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $website = $_POST['website'];
     $maps = $_POST['maps'];
 
-    // Periksa apakah file gambar baru diunggah dan ukurannya kurang dari atau sama dengan 2MB
+    // Periksa apakah file gambar baru diunggah
     if ($_FILES['image']['size'] > 0 && $_FILES['image']['size'] <= 2097152) { // 2MB = 2 * 1024 * 1024 bytes
         $image_name = $_FILES['image']['name'];
         $image_temp = $_FILES['image']['tmp_name'];
@@ -86,24 +73,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($image_temp, $image_path);
 
         // Update rumah sakit beserta gambar baru
-        $updateQuery = "UPDATE hospitals SET name = '$name', address = '$address', phone = '$phone', website = '$website', image_path = '$image_path', maps = '$maps' WHERE id = $hospital_id";
-
-        // Eksekusi query untuk memperbarui rumah sakit dalam database
-        $updateResult = mysqli_query($koneksi, $updateQuery);
-
-        // Periksa apakah query berhasil
-        if ($updateResult) {
-            // Redirect kembali ke halaman daftar rumah sakit dengan pesan sukses
-            header("Location: rumahsakit.php?success=edit");
-            exit();
-        } else {
-            // Jika query gagal, tampilkan pesan error
-            echo "Error updating record: " . mysqli_error($koneksi);
-        }
+        $updateQuery = "UPDATE hospitals SET name = ?, address = ?, phone = ?, website = ?, image_path = ?, maps = ? WHERE id = ?";
+        $stmt = mysqli_prepare($koneksi, $updateQuery);
+        mysqli_stmt_bind_param($stmt, "ssssssi", $name, $address, $phone, $website, $image_path, $maps, $hospital_id);
     } else {
-        // Jika ukuran file melebihi 2MB, tampilkan pesan error menggunakan alert JavaScript
-        echo "<script>alert('Error: Maksimal ukuran gambar 2MB.');</script>";
+        // Jika tidak ada gambar baru diunggah, update rs tanpa mengubah gambar
+        $updateQuery = "UPDATE hospitals SET name = ?, address = ?, phone = ?, website = ?, maps = ? WHERE id = ?";
+        $stmt = mysqli_prepare($koneksi, $updateQuery);
+        mysqli_stmt_bind_param($stmt, "sssssi", $name, $address, $phone, $website, $maps, $hospital_id);
     }
+    // Eksekusi query untuk memperbarui rumah sakit dalam database
+    $updateResult = mysqli_stmt_execute($stmt);
+
+    // Periksa apakah query berhasil
+    if ($updateResult) {
+        // Redirect kembali ke halaman daftar rumah sakit dengan pesan sukses
+        header("Location: rumahsakit.php?success=edit");
+        exit();
+    } else {
+        // Jika query gagal, tampilkan pesan error
+        echo "Error updating record: " . mysqli_error($koneksi);
+    }
+
+    mysqli_stmt_close($stmt);
 }
 
 // Ambil informasi pengguna dari database
@@ -206,40 +198,47 @@ mysqli_close($koneksi);
                         </div>
                     </div>
                 </div>
-                <?php require_once('../include/footer.php') ?>
             </div>
+            <?php require_once('../include/footer.php') ?>
         </div>
+    </div>
 
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="../vendor/jquery/jquery.min.js"></script>
-        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Core plugin JavaScript-->
-        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="../js/sb-admin-2.min.js"></script>
-        <script>
-            // Function to handle form submission confirmation
-            function confirmSubmission(event) {
-                event.preventDefault(); // Prevent the default form submission
-                $('#confirmModal').modal('show'); // Show the confirmation modal
-            }
+    <!-- Custom scripts for all pages-->
+    <script src="../js/sb-admin-2.min.js"></script>
+    <!-- Page level plugins -->
+    <script src="../vendor/chart.js/Chart.min.js"></script>
 
-            // Add event listener to the form submit button
-            document.querySelector('form').addEventListener('submit', confirmSubmission);
+    <!-- Page level custom scripts -->
+    <script src="../js/demo/chart-area-demo.js"></script>
+    <script src="../js/demo/chart-pie-demo.js"></script>
+    <script>
+        // Function to handle form submission confirmation
+        function confirmSubmission(event) {
+            event.preventDefault(); // Prevent the default form submission
+            $('#confirmModal').modal('show'); // Show the confirmation modal
+        }
 
-            // Add event listener to the modal confirm button
-            document.getElementById('confirmButton').addEventListener('click', function() {
-                // If the user confirms, submit the form
-                document.querySelector('form').submit();
-            });
-        </script>
+        // Add event listener to the form submit button
+        document.querySelector('form').addEventListener('submit', confirmSubmission);
+
+        // Add event listener to the modal confirm button
+        document.getElementById('confirmButton').addEventListener('click', function() {
+            // If the user confirms, submit the form
+            document.querySelector('form').submit();
+        });
+    </script>
 </body>
 
 </html>
