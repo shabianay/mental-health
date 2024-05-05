@@ -233,16 +233,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                                     while ($row = mysqli_fetch_assoc($result)) {
                                                         if ($row['question_group'] != $current_group) {
-                                                            echo "<tr class='text-gray-800'><td colspan='4'><strong>Kategori : " . $row['question_group'] . "</strong></td></tr>";
+                                                            echo "<tr class='text-gray-650'><td colspan='4'><strong>Kriteria : " . $row['question_group'] . "</strong></td></tr>";
                                                             $current_group = $row['question_group'];
                                                         }
                                                         if ($row['subgroup_name'] != null && $row['subgroup_name'] != $current_subgroup) {
-                                                            echo "<tr><td colspan='4'><strong>Subkategori : " . $row['subgroup_name'] . "</strong></td></tr>";
+                                                            echo "<tr class='text-gray-650'><td colspan='4'><strong>Subkritera : " . $row['subgroup_name'] . "</strong></td></tr>";
                                                             $current_subgroup = $row['subgroup_name'];
                                                         }
                                                         echo "<tr>";
-                                                        echo "<td>" . $counter . "</td>";
-                                                        echo "<td>" . $row['question_text'] . "</td>";
+                                                        echo "<td class='text-gray-800'><strong>" . $counter . "</td>";
+                                                        echo "<td class='text-gray-800'><strong>" . $row['question_text'] . "</td>";
                                                         echo "<td class='text-center'><input type='radio' name='jawaban_" . $row['id_soal'] . "' value='" . $row['nilai_a'] . "' style='width: 20px; height: 20px; cursor: pointer;' required></td>";
                                                         echo "<td class='text-center'><input type='radio' name='jawaban_" . $row['id_soal'] . "' value='" . $row['nilai_b'] . "' style='width: 20px; height: 20px; cursor: pointer;' required></td>";
                                                         echo "</tr>";
@@ -255,7 +255,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <input type="hidden" id="totalSkor" name="totalSkor" value="">
                                             <input type="hidden" id="timerValue" name="timerValue" value="">
                                             <div class="card-footer" style="text-align: right;">
-                                                <button type="button" class="btn btn-primary" id="btnFinish">Akhiri Sesi Skrining</button>
+                                                <button type="button" class="btn btn-primary" id="btnFinish">Lihat Hasil Skrining</button>
                                             </div>
                                         </div>
                                     </form>

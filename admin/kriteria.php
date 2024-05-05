@@ -114,6 +114,13 @@ $groups = mysqli_fetch_all($result, MYSQLI_ASSOC);
                                                 <?php endforeach; ?>
                                             </tr>
                                         <?php endforeach; ?>
+                                        <tr>
+                                            <th colspan="1">Jumlah</th>
+                                            <td>3</td>
+                                            <td>3</td>
+                                            <td>3</td>
+                                            <td>1</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

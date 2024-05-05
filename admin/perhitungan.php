@@ -175,12 +175,12 @@ if (!$result) {
                                         $current_subcategory = "";
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             if ($row['question_group'] != $current_group) {
-                                                echo "<tr class='text-gray-800'><td colspan='3'><strong>Kategori : " . $row['question_group'] . "</strong></td></tr>";
+                                                echo "<tr class='text-gray-800'><td colspan='3'><strong>Kriteria : " . $row['question_group'] . "</strong></td></tr>";
                                                 $current_group = $row['question_group'];
                                             }
 
                                             if ($row['subkriteria'] != null && $row['subkriteria'] != $current_subcategory) {
-                                                echo "<tr class='text-gray-800'><td colspan='3'><strong>Subkategori : " . $row['subkriteria'] . "</strong></td></tr>";
+                                                echo "<tr class='text-gray-800'><td colspan='3'><strong>Subkriteria : " . $row['subkriteria'] . "</strong></td></tr>";
                                                 $current_subcategory = $row['subkriteria'];
                                             }
 
