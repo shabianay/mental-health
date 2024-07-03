@@ -22,7 +22,6 @@ if (isset($_SESSION['user_id'])) {
     header("Location: ../login.php");
     exit();
 }
-
 if ($_SESSION['role'] == 'user') {
     header("Location: ../user/user_dashboard.php");
     exit();
@@ -43,13 +42,13 @@ $user = mysqli_fetch_assoc($result);
 
 // Check if the 'id' parameter is set in the URL
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $skrining_id = $_GET['id'];
+    $id = $_GET['id'];
 
     // Query untuk mengambil detail perhitungan dari skrining
-    $query = "SELECT skrining.*, users.Namalengkap AS nama_lengkap 
-              FROM skrining 
-              JOIN users ON skrining.user_id = users.id 
-              WHERE skrining.id = $skrining_id";
+    $query = "SELECT consultation_results.*, users.Namalengkap AS nama_lengkap 
+              FROM consultation_results 
+              JOIN users ON consultation_results.user_id = users.id 
+              WHERE consultation_results.id = $id";
     $result = mysqli_query($koneksi, $query);
 
     if ($result) {
@@ -65,23 +64,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     exit();
 }
 
-$query = "SELECT 
-              questions.id_soal, 
-              questions.question_text, 
-              soal_group.name AS question_group, 
-              questions.subkriteria, 
-              subkriteria.subkriteria AS subkriteria, 
-              answers.answer
-          FROM questions
-          LEFT JOIN answers ON questions.id_soal = answers.question_id AND answers.user_id = $user_id
-          LEFT JOIN soal_group ON questions.question_group = soal_group.id
-          LEFT JOIN subkriteria ON questions.subkriteria = subkriteria.id_subkriteria";
-
-$result = mysqli_query($koneksi, $query);
-
-if (!$result) {
-    die("Query error: " . mysqli_error($koneksi));
-}
 ?>
 
 <!DOCTYPE html>
@@ -93,6 +75,7 @@ if (!$result) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
     <title>Dashboard Admin</title>
 
@@ -118,12 +101,13 @@ if (!$result) {
                 require_once('../include/topbar_admin.php')
                 ?>
                 <div class="container-fluid">
-                    <h1 class="h3 mb-2 text-gray-800">Detail Perhitungan</h1>
+                    <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Detail Hasil Konsultasi</h2>
+                    <a href="laporan.php" class="btn btn-primary mb-3">
+                        <i class="fa-solid fa-angle-left"></i> Kembali
+                    </a>
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <a href="laporan.php" class="btn btn-primary">Kembali</a>
-                                <br><br>
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <tbody>
                                         <tr>
@@ -140,66 +124,16 @@ if (!$result) {
                                         </tr>
                                         <tr>
                                             <th>Hasil</th>
-                                            <td><?php echo $skrining['hasil']; ?></td>
+                                            <td><?php echo $skrining['result_category']; ?></td>
                                         </tr>
                                         <tr>
-                                            <th>Nilai</th>
-                                            <td><?php echo $skrining['nilai']; ?></td>
+                                            <th>Skor</th>
+                                            <td><?php echo $skrining['total_score']; ?></td>
                                         </tr>
                                         <tr>
                                             <th>Tanggal Tes</th>
-                                            <td><?php echo $skrining['waktu']; ?></td>
+                                            <td><?php echo $skrining['timestamp']; ?></td>
                                         </tr>
-                                        <tr>
-                                            <th>Waktu Tes</th>
-                                            <td><?php echo $skrining['timer']; ?></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Pertanyaan</th>
-                                            <th>Jawaban</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        // Display the questions and answers
-                                        $counter = 1;
-                                        $current_group = "";
-                                        $current_subcategory = "";
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            if ($row['question_group'] != $current_group) {
-                                                echo "<tr class='text-gray-800'><td colspan='3'><strong>Kriteria : " . $row['question_group'] . "</strong></td></tr>";
-                                                $current_group = $row['question_group'];
-                                            }
-
-                                            if ($row['subkriteria'] != null && $row['subkriteria'] != $current_subcategory) {
-                                                echo "<tr class='text-gray-800'><td colspan='3'><strong>Subkriteria : " . $row['subkriteria'] . "</strong></td></tr>";
-                                                $current_subcategory = $row['subkriteria'];
-                                            }
-
-                                            echo "<tr>";
-                                            echo "<td>" . $counter . "</td>";
-                                            echo "<td>" . $row['question_text'] . "</td>";
-                                            echo "<td>";
-                                            $question_id = $row['id_soal'];
-                                            $query_jawaban = "SELECT answer FROM answers WHERE skrining_id = $skrining_id AND question_id = $question_id";
-                                            $result_jawaban = mysqli_query($koneksi, $query_jawaban);
-                                            if ($result_jawaban) {
-                                                $jawaban = mysqli_fetch_assoc($result_jawaban)['answer'];
-                                                echo $jawaban;
-                                            }
-                                            echo "</td>";
-                                            echo "</tr>";
-                                            $counter++;
-                                        }
-                                        ?>
                                     </tbody>
                                 </table>
                             </div>

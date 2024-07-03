@@ -34,12 +34,14 @@ require_once "../include/koneksi.php";
 $title = "";
 $content = "";
 $image_path = "";
+$category = "";
 
 // Jika tombol "Submit" diklik
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ambil data dari formulir
     $title = $_POST["title"];
     $content = $_POST["content"];
+    $category = $_POST["category"]; // Ambil kategori yang dipilih
 
     // Ambil informasi file gambar
     $image_name = $_FILES["image"]["name"];
@@ -54,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($image_tmp, $image_path);
 
         // Query untuk menyimpan artikel ke database
-        $query = "INSERT INTO articles (title, content, image_path) VALUES ('$title', '$content', '$image_path')";
+        $query = "INSERT INTO articles (title, category, content, image_path) VALUES ('$title', '$category','$content', '$image_path')";
         $result = mysqli_query($koneksi, $query);
 
         // Jika query berhasil dijalankan
@@ -85,6 +87,7 @@ $user = mysqli_fetch_assoc($result);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
     <title>Dashboard Admin</title>
 
@@ -96,6 +99,14 @@ $user = mysqli_fetch_assoc($result);
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin-2.css" rel="stylesheet">
     <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <style>
+        .btn-transparent-green {
+            background-color: transparent;
+            border: 2px solid #69BE9D;
+            color: #69BE9D;
+            transition: background-color 0.3s, color 0.3s;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -114,11 +125,14 @@ $user = mysqli_fetch_assoc($result);
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Halaman Artikel</h1>
+                    <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Artikel Kesehatan Mental</h2>
                     <!-- Tombol untuk membuat artikel baru -->
-                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addArticleModal"><i class="fa-solid fa-plus mr-2"></i>
-                        Tambah Artikel Baru
-                    </button>
+                    <div class="d-flex justify-content-end mb-3">
+                        <a type="button" href="list_artikel.php" class="btn btn-transparent-green mr-2">Lihat List Artikel</a>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addArticleModal">
+                            <i class="fa-solid fa-plus mr-2"></i> Tambah Data
+                        </button>
+                    </div>
                     <!-- Modal -->
                     <div class="modal fade" id="addArticleModal" tabindex="-1" role="dialog" aria-labelledby="addArticleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -135,6 +149,14 @@ $user = mysqli_fetch_assoc($result);
                                         <div class="form-group">
                                             <label for="title">Judul</label>
                                             <input type="text" class="form-control" id="title" name="title" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="category">Kategori</label>
+                                            <select class="form-control" id="category" name="category" required>
+                                                <option value="">Pilih Kategori</option>
+                                                <option value="Gangguan Kecemasan">Gangguan Kecemasan</option>
+                                                <option value="Gangguan Kecemasan Umum">Gangguan Kecemasan Umum</option>
+                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="content">Isi</label>
@@ -197,11 +219,11 @@ $user = mysqli_fetch_assoc($result);
                         echo "<thead>";
                         echo "<tr>";
                         echo "<th>No</th>";
+                        echo "<th>Diperbarui</th>";
                         echo "<th width='10%'>Judul</th>";
+                        echo "<th width='10%'>Kategori</th>";
                         echo "<th width='10%'>Isi</th>";
                         echo "<th>Gambar</th>";
-                        echo "<th>Dibuat</th>";
-                        echo "<th>Diperbarui</th>";
                         echo "<th>Aksi</th>";
                         echo "</tr>";
                         echo "</thead>";
@@ -211,17 +233,17 @@ $user = mysqli_fetch_assoc($result);
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>";
                             echo "<td>" . $counter . "</td>";
+                            echo "<td>" . $row['updated_at'] . "</td>";
                             echo "<td>" . $row['title'] . "</td>";
+                            echo "<td>" . $row['category'] . "</td>";
                             echo "<td>" . substr($row['content'], 0, 100) . "</td>";
                             echo "<td><img src='" . $row['image_path'] . "' alt='Article Image' style='max-width: 100px; max-height: 100px;'></td>";
-                            echo "<td>" . $row['created_at'] . "</td>";
-                            echo "<td>" . $row['updated_at'] . "</td>";
                             echo "<td style='text-align: center'>";
-                            echo "<a href='edit_artikel.php?id=" . $row['id'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
+                            echo "<a href='lihat_artikel.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Detail</a>";
                             echo "&nbsp;";
-                            echo "<a href='../hapus_artikel.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Hapus<i class='ml-2 fa-regular fa-trash-can'></i></a>";
+                            echo "<a href='edit_artikel.php?id=" . $row['id'] . "' class='btn btn-warning btn-sm'>Edit</a>";
                             echo "&nbsp;";
-                            echo "<a href='lihat_artikel.php?id=" . $row['id'] . "' class='btn btn-success btn-sm'>Lihat<i class='ml-2 fa-regular fa-eye'></i></a>";
+                            echo "<a href='../hapus_artikel.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Delete</a>";
                             echo "</td>";
                             echo "</tr>";
                             $counter++; // Tingkatkan counter setelah setiap baris

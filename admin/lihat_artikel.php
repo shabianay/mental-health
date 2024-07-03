@@ -75,6 +75,7 @@ mysqli_close($koneksi);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
     <title>Dashboard Admin</title>
 
@@ -100,16 +101,34 @@ mysqli_close($koneksi);
                 <?php
                 require_once('../include/topbar_admin.php')
                 ?>
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <div class="card shadow mb-4">
-                        <div class="card-body">
-                            <h1><?php echo $article['title']; ?></h1>
-                            <img src="<?php echo $article['image_path']; ?>" alt="Article Image" style="max-width: 100%;">
-                            <p><?php echo $article['content']; ?></p>
-                            <a href="artikel.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
+                    <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Artikel Kesehatan Mental</h2>
+                    <a href="artikel.php" class="btn btn-primary mb-3">
+                        <i class="fa-solid fa-angle-left"></i> Kembali
+                    </a>
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12">
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <?php if ($article && isset($article['category'])) : ?>
+                                        <p class="h5 text-white badge bg-primary"><?php echo $article['category']; ?></p>
+                                    <?php endif; ?>
+                                    <?php if ($article && isset($article['title'])) : ?>
+                                        <h2 class="article-title font-weight-bold text-dark"><?php echo $article['title']; ?></h2>
+                                    <?php endif; ?>
+                                    <?php if ($article && isset($article['updated_at'])) : ?>
+                                        <small class='card-text text-dark' style='font-size:15px;'>Diperbarui pada <?php echo date('d M Y', strtotime($article['updated_at'])); ?> oleh Admin</small>
+                                    <?php endif; ?>
+                                    <?php if ($article && isset($article['image_path'])) : ?>
+                                        <img class="card-img-top mt-2" src="<?php echo $article['image_path']; ?>" alt="">
+                                    <?php endif; ?>
+
+                                    <?php if ($article && isset($article['content'])) : ?>
+                                        <p><?php echo $article['content']; ?></p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         </div>
-                        <!-- /.container-fluid -->
                     </div>
                 </div>
             </div>

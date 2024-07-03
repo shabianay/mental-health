@@ -56,17 +56,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $uploadFile = $uploadDir . basename($_FILES['profileImage']['name']);
 
         // Check file size
-        if ($_FILES['profileImage']['size'] > $maxFileSize) {
+        if (
+            $_FILES['profileImage']['size'] > $maxFileSize
+        ) {
+            // File size exceeds the limit, show an error message
             $pesan = "Ukuran file terlalu besar. Maksimum 2MB.";
         } else {
             // Move the uploaded file to the uploads directory
             if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $uploadFile)) {
                 // File uploaded successfully, update the profile image path in the database
                 $updateQuery = "UPDATE users SET profile_image = '$uploadFile' WHERE id = $user_id";
-                $updateResult = mysqli_query(
-                    $koneksi,
-                    $updateQuery
-                );
+                $updateResult = mysqli_query($koneksi, $updateQuery);
                 if (!$updateResult) {
                     // Error updating the profile image path in the database
                     die("Update error: " . mysqli_error($koneksi));
@@ -122,6 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
     <title>Dashboard Admin</title>
 
@@ -164,28 +165,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div id="content">
                 <?php require_once('../include/topbar_admin.php') ?>
                 <div class="container-fluid">
-                    <h1 class="h3 mb-4 text-gray-800">Perbarui Profil</h1>
+                    <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Profil Saya</h2>
+                    <?php if (isset($_GET['success'])) : ?>
+                        <div class="alert alert-success" role="alert">
+                            Profil berhasil diperbarui.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <?php endif; ?>
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                            <?php if (isset($_GET['success'])) : ?>
-                                <div class="alert alert-success" role="alert">
-                                    Profile updated successfully!
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            <?php endif; ?>
                             <form method="post" action="admin_profile.php" enctype="multipart/form-data">
                                 <div class="text-center">
                                     <div class="form-group">
-                                        <small class="form-text text-white badge bg-primary mb-3">Klik foto untuk mengganti foto profil.</small>
-                                        <br>
                                         <label for="profileImage" class="profile-image-container mb-3">
                                             <img id="preview" src="<?php echo !empty($user['profile_image']) ? $user['profile_image'] : '#'; ?>" class="rounded-circle" alt="Current Profile Image" />
                                             <input type="file" name="profileImage" id="profileImage" accept="image/*" class="d-none" onchange="previewImage(event)">
                                         </label>
-                                        <br>
-                                        <label for="image">Gambar (maksimal 2MB)</label>
+                                        <p class="form-text text-dark">Klik foto untuk mengganti foto profil.</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -211,8 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10,}" value="<?php echo $user['phoneNumber']; ?>" required />
                                     <small class="form-text text-muted">Nomor HP harus terdiri dari minimal 10 angka.</small>
                                 </div>
-                                <button type="submit" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-rotate mr-2"></i>Perbarui Profil</button>
-                                <a href="admin_dashboard.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
+                                <button type="submit" class="btn btn-primary mt-3 mb-4">Simpan</button>
                             </form>
                         </div>
                     </div>

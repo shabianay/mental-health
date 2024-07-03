@@ -114,7 +114,7 @@ define('PDF_HEADER_TITLE', 'Laporan Skrining');
 /**
  * Header description string.
  */
-define('PDF_HEADER_STRING', "by MINDFUL");
+define('PDF_HEADER_STRING', "by Serenity");
 
 /**
  * Document unit of measure [pt=point, mm=millimeter, cm=centimeter, in=inch].

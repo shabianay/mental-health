@@ -57,6 +57,7 @@ $user = mysqli_fetch_assoc($result);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
     <title>Dashboard User</title>
 
@@ -71,32 +72,38 @@ $user = mysqli_fetch_assoc($result);
     <style>
         .artikel-card {
             display: flex;
+            flex-direction: row;
+            /* height: 100%; */
+        }
+
+        .artikel-card img {
+            width: 25%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .artikel-card .card-body {
+            display: flex;
             flex-direction: column;
-            height: 100%;
+            justify-content: center;
+            width: 60%;
+            padding-left: 20px;
         }
     </style>
 </head>
 
 <body id="page-top">
-    <!-- Page Wrapper -->
     <div id="wrapper">
         <?php
         require_once('../include/navbar_user.php')
         ?>
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-            <!-- Main Content -->
             <div id="content">
-                <!-- Topbar -->
                 <?php
                 require_once('../include/topbar_user.php')
                 ?>
-                <!-- End of Topbar -->
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <!-- Page Heading -->
-                    <h1 style="text-align: center" class="h2 mb-2 text-gray-800">Artikel</h1>
-                    <p style="text-align: center" class="h5 mb-3 text-gray-800">Baca artikel kita yuk, biar lebih mengenal diri kita</p>
+                    <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Artikel Kesehatan Mental</h2>
                     <div class="row" id="artikelList">
                         <?php
                         require_once "../include/koneksi.php";
@@ -107,12 +114,14 @@ $user = mysqli_fetch_assoc($result);
                         if ($result) {
                             // Tampilkan data artikel dalam bentuk card
                             while ($row = mysqli_fetch_assoc($result)) {
-                                echo "<div class='col-xl-4 col-md-6 mb-4'>";
+                                echo "<div class='col-xl-12 col-md-12 mb-4'>";
                                 echo "<div class='card card artikel-card'>";
                                 echo "<img src='" . $row['image_path'] . "' class='card-img-top' alt='Gambar artikel'>";
                                 echo "<div class='card-body'>";
-                                echo "<small class='card-text'><i class='fas fa-clock mr-2 mb-3'></i>" . date('d M Y', strtotime($row['updated_at'])) . "</small>";
-                                echo "<h5 class='card-title mb-2 text-primary font-weight-bold'>" . substr($row['title'], 0, 200) . "</h5>";
+                                // echo "<small class='card-text'><i class='fas fa-clock mr-2 mb-2'></i>" . date('d M Y', strtotime($row['updated_at'])) . "</small>";
+                                // echo "<br>";
+                                echo "<p class='card-text mb-2 text-white badge bg-primary'>" . $row['category'] . "</p>";
+                                echo "<h5 class='card-title mb-2 text-dark font-weight-bold'>" . substr($row['title'], 0, 100) . "</h5>";
                                 echo "<p class='card-text'>" . substr($row['content'], 0, 180) . "....." . "</p>";
                                 echo "<a href='article_detail.php?id=" . $row['id'] . "'>Baca Selengkapnya</a>";
                                 echo "</div>";
@@ -128,18 +137,12 @@ $user = mysqli_fetch_assoc($result);
                         ?>
                     </div>
                 </div>
-                <!-- /.container-fluid -->
             </div>
-            <!-- End of Main Content -->
-            <!-- Footer -->
             <?php
             require_once('../include/footer.php')
             ?>
-            <!-- End of Footer -->
         </div>
-        <!-- End of Content Wrapper -->
     </div>
-    <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -162,6 +165,24 @@ $user = mysqli_fetch_assoc($result);
     <!-- Page level custom scripts -->
     <script src="../js/demo/chart-area-demo.js"></script>
     <script src="../js/demo/chart-pie-demo.js"></script>
+
+    <!-- <script>
+        document.getElementById('categoryFilter').addEventListener('change', function() {
+            var filterValue = this.value;
+            var articles = document.querySelectorAll('#artikelList .col-xl-4');
+
+            articles.forEach(function(article) {
+                var category = article.querySelector('.badge').textContent.trim().toLowerCase();
+
+                if (filterValue === 'all' || category === filterValue) {
+                    article.style.display = 'block';
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+        });
+    </script> -->
+
 </body>
 
 </html>

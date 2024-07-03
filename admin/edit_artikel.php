@@ -59,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ambil data yang dikirimkan dari formulir
     $title = $_POST['title'];
     $content = $_POST['content'];
+    $category = $_POST['category'];
 
     // Periksa apakah file gambar baru diunggah
     if ($_FILES['image']['size'] > 0 && $_FILES['image']['size'] <= 2097152) { // 2MB = 2 * 1024 * 1024 bytes
@@ -70,14 +71,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($image_temp, $image_path);
 
         // Update artikel beserta gambar baru
-        $updateQuery = "UPDATE articles SET title = ?, content = ?, image_path = ? WHERE id = ?";
+        $updateQuery = "UPDATE articles SET title = ?, category = ?, content = ?, image_path = ? WHERE id = ?";
         $stmt = mysqli_prepare($koneksi, $updateQuery);
-        mysqli_stmt_bind_param($stmt, "sssi", $title, $content, $image_path, $article_id);
+        mysqli_stmt_bind_param($stmt, "ssssi", $title, $category, $content, $image_path, $article_id);
     } else {
         // Jika tidak ada gambar baru diunggah, update artikel tanpa mengubah gambar
-        $updateQuery = "UPDATE articles SET title = ?, content = ? WHERE id = ?";
+        $updateQuery = "UPDATE articles SET title = ?, category = ?, content = ? WHERE id = ?";
         $stmt = mysqli_prepare($koneksi, $updateQuery);
-        mysqli_stmt_bind_param($stmt, "ssi", $title, $content, $article_id);
+        mysqli_stmt_bind_param($stmt, "sssi", $title, $category, $content, $article_id);
     }
 
     // Eksekusi query untuk memperbarui artikel dalam database
@@ -92,7 +93,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Jika query gagal, tampilkan pesan error
         echo "Error updating record: " . mysqli_error($koneksi);
     }
-
     mysqli_stmt_close($stmt);
 }
 
@@ -117,6 +117,7 @@ mysqli_close($koneksi);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
     <title>Dashboard Admin</title>
 
@@ -136,13 +137,21 @@ mysqli_close($koneksi);
             <div id="content">
                 <?php require_once('../include/topbar_admin.php') ?>
                 <div class="container-fluid">
-                    <h1 class="h3 mb-4 text-gray-800">Edit Artikel</h1>
+                    <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Edit Artikel</h2>
+                    <a href="artikel.php" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <form method="post" action="edit_artikel.php?id=<?php echo $article_id; ?>" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="title">Judul</label>
                                     <input type="text" class="form-control" id="title" name="title" value="<?php echo $article['title']; ?>" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="category">Kategori</label>
+                                    <select class="form-control" id="category" name="category" required>
+                                        <option value="Gangguan Kecemasan" <?php if ($article['category'] == 'Gangguan Kecemasan') echo 'selected'; ?>>Gangguan Kecemasan</option>
+                                        <option value="Gangguan Kecemasan Umum" <?php if ($article['category'] == 'Gangguan Kecemasan Umum') echo 'selected'; ?>>Gangguan Kecemasan Umum</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="content">Isi</label>
@@ -159,7 +168,7 @@ mysqli_close($koneksi);
                                     <label style="cursor: pointer;" for="image">Perbarui gambar (maksimal 2MB)</label>
                                     <input style="cursor: pointer;" type="file" class="form-control-file mb-3" id="image" name="image" accept="image/*" maxlength="2097152" />
                                 </div>
-                                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                <!-- <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -177,9 +186,8 @@ mysqli_close($koneksi);
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-rotate mr-2"></i>Perbarui Artikel</button>
-                                <a href="artikel.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
+                                </div> -->
+                                <button type="submit" name="submit" class="btn btn-primary">Simpan Perubahan</button>
                             </form>
                         </div>
                     </div>
@@ -216,7 +224,7 @@ mysqli_close($koneksi);
         // Inisialisasi CKEditor pada textarea dengan id "content"
         CKEDITOR.replace('isiberita');
     </script>
-    <script>
+    <!-- <script>
         // Function to handle form submission confirmation
         function confirmSubmission(event) {
             event.preventDefault(); // Prevent the default form submission
@@ -231,7 +239,8 @@ mysqli_close($koneksi);
             // If the user confirms, submit the form
             document.querySelector('form').submit();
         });
-    </script>
+    </script> -->
+
 </body>
 
 </html>

@@ -10,11 +10,13 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     $deleteResult = mysqli_query($koneksi, $deleteQuery);
 
     // Periksa apakah pengguna berhasil dihapus
-    if ($deleteResult) {
+    if (mysqli_query($koneksi, $deleteQuery)) {
+        // Redirect ke halaman pengguna.php dengan pesan sukses hapus
         header("Location: ./admin/pengguna.php?success=delete");
         exit();
     } else {
-        echo "Error: " . $deleteQuery . "<br>" . mysqli_error($koneksi);
+        // Handle the delete failure
+        echo "Error deleting record: " . mysqli_error($koneksi);
     }
 } else {
     header("Location: ./admin/pengguna.php");

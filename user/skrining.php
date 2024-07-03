@@ -59,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['agree'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
     <title>Dashboard User</title>
 
@@ -107,6 +108,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['agree'])) {
                                     </form>
                                 </div>
                             </ol>
+                        </div>
+                    </div>
+                    <div class="card shadow mb-4">
+                        <div class="card-header text-center py-3">
+                            <h1 class="h3 text-gray-800 font-weight-bold">Penjelasan</h1>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="text-gray-800">Gejala Kognitif</h5>
+                            <p class="card-text">Kesulitan fokus, lupa, kebingungan, dan masalah dalam pengambilan keputusan.</p>
+                            <h5 class="text-gray-800">Gejala Depresi</h5>
+                            <p class="card-text">Perasaan sedih, kehilangan minat, perubahan nafsu makan, gangguan tidur, dan kelelahan.</p>
+                            <h5 class="text-gray-800">Gejala Somatik</h5>
+                            <p class="card-text">Keluhan fisik tanpa sebab medis jelas seperti sakit kepala, nyeri, dan gangguan pencernaan.</p>
+                            <h5 class="text-gray-800">Gejala Penurunan Energi</h5>
+                            <p class="card-text">Kelelahan berlebihan dan kurangnya energi untuk aktivitas sehari-hari.</p>
                         </div>
                     </div>
                 </div>

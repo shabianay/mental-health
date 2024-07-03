@@ -2,76 +2,44 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="admin_dashboard.php">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fa-solid fa-spa"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">MIndful</div>
+        <img src="../img/Logo.png" alt="Logo" style="width: 100px; height: auto;">
     </a>
 
     <hr class="sidebar-divider my-0" />
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_dashboard.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="admin_dashboard.php">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
         </a>
     </li>
 
-    <hr class="sidebar-divider my-0" />
-    <li class="nav-item collapsed <?php echo basename($_SERVER['PHP_SELF']) === 'soal.php' || basename($_SERVER['PHP_SELF']) === 'soal_group.php' || basename($_SERVER['PHP_SELF']) === 'sub_soal_group.php' || basename($_SERVER['PHP_SELF']) === 'alternatif.php' ? 'active' : ''; ?>">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSoal" aria-expanded="true" aria-controls="collapseSoal">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Kelola Soal</span>
-        </a>
-        <div id="collapseSoal" class="collapse" aria-labelledby="headingSoal" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="soal.php">Butir Soal</a>
-                <a class="collapse-item" href="soal_group.php">Grup Soal</a>
-                <a class="collapse-item" href="sub_soal_group.php">Sub-Grup Soal</a>
-                <a class="collapse-item" href="alternatif.php">Alternatif</a>
-            </div>
-        </div>
-    </li>
-
-    <hr class="sidebar-divider my-0" />
-    <li class="nav-item collapsed <?php echo basename($_SERVER['PHP_SELF']) === 'kriteria.php' || basename($_SERVER['PHP_SELF']) === 'subkriteria.php' || basename($_SERVER['PHP_SELF']) === 'alternatif_ahp.php' ? 'active' : ''; ?>">
+    <li class="nav-item collapsed <?php echo basename($_SERVER['PHP_SELF']) === 'soal_kecemasan.php' || basename($_SERVER['PHP_SELF']) === 'soal_depresi.php' || basename($_SERVER['PHP_SELF']) === 'soal_stres.php' ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAHP" aria-expanded="true" aria-controls="collapseAHP">
-            <i class="fa-solid fa-network-wired"></i>
-            <span>Perhitungan AHP</span>
+            <span>Data Gejala</span>
         </a>
         <div id="collapseAHP" class="collapse" aria-labelledby="headingAHP" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="kriteria.php">Kriteria</a>
-                <a class="collapse-item" href="subkriteria.php">Sub-Kriteria</a>
-                <a class="collapse-item" href="alternatif_ahp.php">Alternatif</a>
+                <a class="collapse-item" href="soal_kecemasan.php">Soal Kecemasan (A)</a>
+                <a class="collapse-item" href="soal_depresi.php">Soal Depresi (D)</a>
+                <a class="collapse-item" href="soal_stres.php">Soal Stres (S)</a>
             </div>
         </div>
     </li>
 
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'artikel.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="artikel.php">
-            <i class="fas fa-fw fa-newspaper"></i>
-            <span>Artikel</span>
-        </a>
-    </li>
-
-    <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'rumahsakit.php' ? 'active' : ''; ?>">
-        <a class="nav-link" href="rumahsakit.php">
-            <i class="fas fa-fw fa-hospital"></i>
-            <span>Rumah Sakit</span>
-        </a>
-    </li>
-
-    <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'pengguna.php' ? 'active' : ''; ?>">
-        <a class="nav-link" href="pengguna.php">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Data Pengguna</span>
+            <span>Artikel Kesehatan Mental</span>
         </a>
     </li>
 
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'laporan.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="laporan.php">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Laporan</span>
+            <span>Riwayat Konsultasi Pengguna</span>
+        </a>
+    </li>
+
+    <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'pengguna.php' ? 'active' : ''; ?>">
+        <a class="nav-link" href="pengguna.php">
+            <span>Data Pengguna</span>
         </a>
     </li>
 
@@ -79,14 +47,16 @@
 
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_profile.php' ? 'active' : ''; ?>">
         <a class="nav-link" href="admin_profile.php">
-            <i class="fas fa-user fa-sm fa-fw"></i>
-            <span>Profil</span></a>
+            <span>Profil Saya</span></a>
     </li>
 
-    <hr class="sidebar-divider my-0" />
+    <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'tentang.php' ? 'active' : ''; ?>">
+        <a class="nav-link" href="tentang.php">
+            <span>Tentang Serenity</span></a>
+    </li>
+
     <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == '../include/logout.php' ? 'active' : ''; ?>">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#logoutConfirmationModal">
-            <i class="fas fa-sign-out-alt fa-sm fa-fw"></i>
             <span>Keluar</span>
         </a>
     </li>
@@ -104,14 +74,12 @@
                     Apakah Anda yakin ingin keluar?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa-regular fa-face-smile mr-2"></i>Batal</button>
-                    <a href="../include/logout.php" class="btn btn-primary"><i class="fa-regular fa-face-frown mr-2"></i>Yakin dong</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <a href="../include/logout.php" class="btn btn-primary">Keluar</a>
                 </div>
             </div>
         </div>
     </div>
-
-    <hr class="sidebar-divider d-none d-md-block" />
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

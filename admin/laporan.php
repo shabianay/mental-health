@@ -50,33 +50,32 @@ if (isset($_POST['export'])) {
   header("Content-Disposition: attachment; filename=\"$filename\"");
   header("Content-Type: application/vnd.ms-excel");
 
-  // Query untuk mengambil data pengguna dari database
-  $query = "SELECT * FROM skrining";
-  $result = mysqli_query($koneksi, $query);
+  // // Query untuk mengambil data pengguna dari database
+  // $query = "SELECT * FROM consultation_results WHERE user_id = $user_id ORDER BY timestamp DESC";
+  // $result = mysqli_query($koneksi, $query);
 
-  // Mulai output buffer agar hasil query tidak langsung ditampilkan
-  ob_start();
+  // // Mulai output buffer agar hasil query tidak langsung ditampilkan
+  // ob_start();
 
-  // Mulai tabel Excel
-  echo "<table border='1'>";
-  echo "<tr><th>No</th><th>Hasil</th><th>Nilai</th><th>Tanggal Tes</th><th>Waktu Tes</th></tr>";
+  // // Mulai tabel Excel
+  // echo "<table border='1'>";
+  // echo "<tr><th>Nama</th><th>Hasil</th><th>Tanggal Tes</th></tr>";
 
-  $counter = 1; // Inisialisasi counter
-  // Tampilkan data pengguna ke dalam tabel Excel
-  while ($row = mysqli_fetch_assoc($result)) {
-    echo "<tr>";
-    echo "<td>" . $counter . "</td>";
-    echo "<td>" . $row['hasil'] . "</td>";
-    echo "<td>" . $row['nilai'] . "</td>";
-    echo "<td>" . $row['waktu'] . "</td>";
-    echo "<td>" . $row['timer'] . "</td>";
-    echo "</tr>";
-    $counter++; // Tingkatkan counter setelah setiap baris
-  }
-  echo "</table>";
-  // Flush output buffer agar hasil query ditampilkan dalam file Excel
-  ob_end_flush();
-  exit;
+  // $counter = 1; // Inisialisasi counter
+  // // Tampilkan data pengguna ke dalam tabel Excel
+  // while ($row = mysqli_fetch_assoc($result)) {
+  //   echo "<tr>";
+  //   echo "<td>" . $counter . "</td>";
+  //   echo "<td>" . $row['Namalengkap'] . "</td>";
+  //   echo "<td>" . $row['hasil'] . "</td>";
+  //   echo "<td>" . $row['nilai'] . "</td>";
+  //   echo "</tr>";
+  //   $counter++; // Tingkatkan counter setelah setiap baris
+  // }
+  // echo "</table>";
+  // // Flush output buffer agar hasil query ditampilkan dalam file Excel
+  // ob_end_flush();
+  // exit;
 }
 
 ?>
@@ -89,6 +88,7 @@ if (isset($_POST['export'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
   <title>Dashboard Admin</title>
 
@@ -114,14 +114,28 @@ if (isset($_POST['export'])) {
         require_once('../include/topbar_admin.php')
         ?>
         <div class="container-fluid">
-          <h1 class="h3 mb-2 text-gray-800">Halaman Laporan</h1>
-          <form method="post" action="laporan.php">
+          <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Riwayat Konsultasi Pengguna</h2>
+          <?php
+          // Check if the 'success' parameter exists in the URL
+          if (isset($_GET['success'])) {
+            // Check the value of the 'success' parameter
+            if ($_GET['success'] === 'delete') {
+              // If the value is 'delete', display a success message
+              echo '<div class="alert alert-success" role="alert">Riwayat berhasil dihapus.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>';
+            }
+          }
+          ?>
+          <!-- <form method="post" action="laporan.php">
             <button type="submit" name="export" class="btn btn-success mb-3"><i class="fa-regular fa-file-excel mr-3"></i>Cetak Data Excel</button>
-          </form>
+          </form> -->
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Data Laporan</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Riwayat Konsultasi Pengguna</h6>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -129,13 +143,8 @@ if (isset($_POST['export'])) {
                   <thead>
                     <tr>
                       <th>No</th>
-                      <th>Nama</th>
-                      <th>Gender</th>
-                      <th>Angkatan</th>
                       <th>Hasil</th>
-                      <th>Nilai</th>
                       <th>Tanggal Tes</th>
-                      <th>Waktu Tes</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
@@ -143,27 +152,22 @@ if (isset($_POST['export'])) {
                     <?php
                     require_once "../include/koneksi.php";
                     // Query untuk mengambil data pengguna dari database
-                    $query = "SELECT skrining.*, users.Namalengkap, users.gender, users.angkatan FROM skrining JOIN users ON skrining.user_id = users.id";
+                    $query = "SELECT * FROM consultation_results ORDER BY timestamp DESC";
                     $result = mysqli_query($koneksi, $query);
-                    // Jika query berhasil dijalankan
+
                     if ($result) {
                       $counter = 1; // Inisialisasi counter
-                      // Tampilkan data pengguna ke dalam tabel HTML
                       while ($row = mysqli_fetch_assoc($result)) {
-                        // Output data from each row into table cells
+                        $formatted_timestamp = date('d F Y', strtotime($row['timestamp']));
+
                         echo "<tr>";
                         echo "<td>" . $counter . "</td>";
-                        echo "<td>" . $row['Namalengkap'] . "</td>";
-                        echo "<td>" . $row['gender'] . "</td>";
-                        echo "<td>" . $row['angkatan'] . "</td>";
-                        echo "<td>" . $row['hasil'] . "</td>";
-                        echo "<td>" . $row['nilai'] . "</td>";
-                        echo "<td>" . $row['waktu'] . "</td>";
-                        echo "<td>" . $row['timer'] . "</td>";
+                        echo "<td>" . $row['result_category'] . "</td>";
+                        echo "<td>" . $formatted_timestamp . "</td>";
                         echo "<td style='text-align: center;'>";
-                        echo "<a href='cetaklaporan.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Download Laporan<i class='ml-2 fa-solid fa-download'></i></a>";
+                        echo "<a href='perhitungan.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Detail</a>";
                         echo "&nbsp;";
-                        echo "<a href='perhitungan.php?id=" . $row['id'] . "' class='btn btn-success btn-sm'>Detail Perhitungan<i class='ml-2 fa-regular fa-eye'></i></a>";
+                        echo "<a href='../hapus_laporan.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Delete</a>";
                         echo "</td>";
                         echo "</tr>";
                         $counter++; // Tingkatkan counter setelah setiap baris

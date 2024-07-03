@@ -58,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 
   <title>Masuk</title>
 
@@ -66,71 +67,109 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/unicons.css">
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+
+  <link rel="stylesheet" href="css/tooplate-style.css">
+
   <!-- Custom styles for this template-->
-  <link href="css/sb-admin-2.css" rel="stylesheet" />
   <style>
     body {
-      height: 100vh;
-      display: flex;
-      align-items: center;
+      background: linear-gradient(to right, #FFFFFF 0%, #69BE9D 100%);
     }
   </style>
 </head>
 
-<body class="bg-gradient-primary">
-  <div class="container">
-    <div class="row d-flex align-items-center" style="min-height: 100vh;">
-      <div class="col-lg-12">
-        <div class="card o-hidden border-0 shadow-lg my-5 mx-auto" style="max-width: 500px;">
-          <div class="card-body p-0">
-            <div class="p-5">
-              <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Hai, Silakan Masuk!</h1>
-              </div>
-              <?php
-              // Check if error message is set and not empty
-              if (isset($error_message) && !empty($error_message)) {
-                echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
-              }
-              ?>
-              <form class="user" method="post" action="">
-                <div class="form-group">
-                  <input type="email" class="form-control form-control-user" name="email" id="email" placeholder="Email" required />
-                </div>
-                <div class="form-group">
-                  <div class="input-group">
-                    <input type="password" class="form-control form-control-user" name="password" id="password" placeholder="Password" required />
-                    <div class="input-group-append">
-                      <span class="input-group-text" style="cursor: pointer;" onclick="togglePasswordVisibility()">
-                        <i id="password-icon" class="fas fa-eye-slash"></i>
-                      </span>
-                    </div>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="index.php">
+        <img src="img/Logo.png" alt="Logo" style="width: 150px; height: auto;">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.php">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="login.php">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="register.php">Register</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="about full-screen d-lg-flex justify-content-center align-items-center" id="about" style="min-height: 100vh;">
+    <div class="container">
+      <div class="row">
+        <div class="row d-flex align-items-center" style="min-height: 100vh;">
+          <div class="col-lg-6 col-md-12">
+            <div class="card o-hidden border-0 shadow-lg my-5 mx-auto" style="max-width: 500px;">
+              <div class="card-body p-0">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h1 class="h2 mb-4">Silakan Masuk!</h1>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col text-right">
+                  <?php
+                  // Check if error message is set and not empty
+                  if (isset($error_message) && !empty($error_message)) {
+                    echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
+                  }
+                  ?>
+                  <form class="user" method="post" action="">
                     <div class="form-group">
-                      <a class="small" href="forget_password.php">Lupa Password?</a>
+                      <input type="email" class="form-control form-control-user" name="email" id="email" placeholder="Email" required />
                     </div>
+                    <div class="form-group">
+                      <div class="input-group">
+                        <input type="password" class="form-control form-control-user" name="password" id="password" placeholder="Password" required />
+                        <div class="input-group-append">
+                          <span class="input-group-text" style="cursor: pointer;" onclick="togglePasswordVisibility()">
+                            <i id="password-icon" class="fas fa-eye-slash"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col text-right">
+                        <div class="form-group">
+                          <a class="small" href="forget_password.php">Lupa Password?</a>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn custom-btn custom-btn-bg1 custom-btn-link btn-block">
+                      Login
+                    </button>
+                  </form>
+                  <br>
+                  <div class="text-center">
+                    <a class="small">Belum punya akun?</a>
+                  </div>
+                  <div class="text-center">
+                    <a class="small" href="register.php">Buat akun sekarang!</a>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-user btn-block">
-                  Masuk
-                </button>
-              </form>
-              <hr />
-              <div class="text-center">
-                <a class="small" href="register.php">Belum punya akun? Buat akun sekarang</a>
               </div>
-              <div class="text-center mt-2">
-                <a class="small" style="color:black" href="index.php">Beranda</a>
-              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12 col-12">
+            <div class="about-image svg text-center">
+              <img src="img/Serenity.png" class="img-fluid" alt="svg image">
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>

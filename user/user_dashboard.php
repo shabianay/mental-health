@@ -31,48 +31,6 @@ if ($_SESSION['role'] == 'admin') {
 // Lakukan koneksi ke database
 require_once '../include/koneksi.php';
 
-// Query untuk mengambil jumlah soal dari database 
-$query = "SELECT COUNT(*) AS total_soal FROM questions";
-$result = mysqli_query($koneksi, $query);
-
-if ($result) {
-  // Jika query berhasil, ambil hasilnya
-  $row = mysqli_fetch_assoc($result);
-  $total_soal = $row['total_soal'];
-} else {
-  // Jika query gagal, atur jumlah soal menjadi 0 atau tampilkan pesan kesalahan
-  $total_soal = 0;
-  echo "Error: " . mysqli_error($koneksi);
-}
-
-// Query untuk mengambil jumlah artikel dari database 
-$query = "SELECT COUNT(*) AS total_artikel FROM articles";
-$result = mysqli_query($koneksi, $query);
-
-if ($result) {
-  // Jika query berhasil, ambil hasilnya
-  $row = mysqli_fetch_assoc($result);
-  $total_artikel = $row['total_artikel'];
-} else {
-  // Jika query gagal, atur jumlah artikel menjadi 0 atau tampilkan pesan kesalahan
-  $total_artikel = 0;
-  echo "Error: " . mysqli_error($koneksi);
-}
-
-// Query untuk mengambil jumlah rs dari database 
-$query = "SELECT COUNT(*) AS total_rs FROM hospitals";
-$result = mysqli_query($koneksi, $query);
-
-if ($result) {
-  // Jika query berhasil, ambil hasilnya
-  $row = mysqli_fetch_assoc($result);
-  $total_rs = $row['total_rs'];
-} else {
-  // Jika query gagal, atur jumlah rs menjadi 0 atau tampilkan pesan kesalahan
-  $total_rs = 0;
-  echo "Error: " . mysqli_error($koneksi);
-}
-
 // Ambil informasi pengguna dari database
 $user_id = $_SESSION['user_id'];
 $query = "SELECT * FROM users WHERE id = $user_id";
@@ -93,6 +51,7 @@ $user = mysqli_fetch_assoc($result);
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
   <title>Dashboard User</title>
 
@@ -123,90 +82,82 @@ $user = mysqli_fetch_assoc($result);
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
-          <div class="row">
-            <!-- Soal -->
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                        Jumlah Soal
-                      </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <?php echo number_format($total_soal); ?> <!-- Tampilkan jumlah soal dengan format ribuan -->
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-tasks fa-2x text-gray-300"></i> <!-- Ganti ikon dengan ikon yang sesuai -->
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Dashboard</h2>
+          <div class="button-nearby">
+            <a href="https://www.google.com/maps/search/?api=1&query=psikolog+terdekat&query_place_id=current+location" class="btn btn-primary mb-3"><i class="mr-3 fa-solid fa-magnifying-glass"></i>Cari psikolog disekitarmu</a>
+          </div>
+          <!-- Content Row -->
+          <div class="card shadow mb-4">
+            <div class="information" style="text-align:center">
+              <h1 class="mt-4 h4 text-gray-800 font-weight-bold">Selamat Datang, <?php echo $user['Namalengkap']; ?></h1>
             </div>
-
-            <!-- Artikel -->
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                        Jumlah Artikel
-                      </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <?php echo number_format($total_artikel); ?> <!-- Tampilkan jumlah soal dengan format ribuan -->
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-newspaper fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="card-body" style="text-align:center">
+              <p>
+                Anda merasa depresi?
+                <br>
+                Anda merasa cemas?
+                <br>
+                Anda merasa stres?
+                <br>
+                Dengan Serenity Anda dapat melakukan deteksi dini mengenai gangguan kesehatan mental yang Anda alami.
+              </p>
             </div>
-
-            <!-- Rumah Sakit -->
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                        Jumlah Rumah Sakit
-                      </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <?php echo number_format($total_rs); ?> <!-- Tampilkan jumlah soal dengan format ribuan -->
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-hospital fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="card-body text-center">
+              <a href="konsul_depresi.php" class="btn btn-primary mb-3 mr-3 mr-md-2">Konsultasi Depresi</a>
+              <a href="konsul_kecemasan.php" class="btn btn-primary mb-3 mr-3 mr-md-2">Konsultasi Kecemasan</a>
+              <a href="konsul_stres.php" class="btn btn-primary mb-3 mr-3 mr-md-2">Konsultasi Stres</a>
             </div>
           </div>
+        </div>
+
+        <div class="container-fluid">
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">
-                <i class="mr-2 fas fa-info fa-1x text-gray-500"></i>
-                Informasi
-              </h6>
-            </div>
-            <div class="information" style="text-align:center">
-              <h1 class="mt-4 h4 text-gray-800 font-weight-bold">Selamat Datang</h1>
-              <h1 class="h5 mb-4 text-white badge bg-success">
-                <?php echo $user['Namalengkap']; ?>
-              </h1> Sebagai
-              <h1 class="h5 mb-4 text-white badge bg-success">
-                <?php echo $user['role']; ?>
-              </h1>
+              <h6 class="m-0 font-weight-bold text-primary">Data Riwayat</h6>
             </div>
             <div class="card-body">
-              <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="../img/undraw_posting_photo.svg" alt="...">
-              <p>
-                Aplikasi MINDFUL ini adalah aplikasi yang dapat membantu kamu untuk skrining (Tahap Awal) mengetahui kesehatan mental. Jika ingin mendalami lebih lanjut tentang kesehatan mental kamu dapat menghubungi psikolog/psikiater atau juga dapat menghubungi SMCC UNESA, & kamu bisa membaca artikel yang telah kami sediakan. Selain itu, kamu juga bisa mencari rumah sakit terdekat yang bisa membantu kamu dalam menangani masalah kesehatan mental. Selamat menggunakan aplikasi MINDFUL! </p>
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Hasil</th>
+                      <th>Tanggal Tes</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                    require_once "../include/koneksi.php";
+                    // Query untuk mengambil data pengguna dari database sesuai dengan user_id
+                    $query = "SELECT * FROM consultation_results WHERE user_id = $user_id ORDER BY timestamp DESC";
+                    $result = mysqli_query($koneksi, $query);
+
+                    if ($result) {
+                      $counter = 1; // Inisialisasi counter
+                      while ($row = mysqli_fetch_assoc($result)) {
+                        $formatted_timestamp = date('d F Y', strtotime($row['timestamp']));
+
+                        echo "<tr>";
+                        echo "<td>" . $counter . "</td>";
+                        echo "<td>" . $row['result_category'] . "</td>";
+                        echo "<td>" . $formatted_timestamp . "</td>";
+                        echo "<td style='text-align: center;'>";
+                        echo "<a href='perhitungan.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Detail</a>";
+                        echo "&nbsp;";
+                        echo "</td>";
+                        echo "</tr>";
+                        $counter++; // Tingkatkan counter setelah setiap baris
+                      }
+                    } else {
+                      echo "Error: " . mysqli_error($koneksi);
+                    }
+
+                    mysqli_close($koneksi);
+                    ?>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -234,9 +185,110 @@ $user = mysqli_fetch_assoc($result);
   <!-- Page level plugins -->
   <script src="../vendor/chart.js/Chart.min.js"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="../js/demo/chart-area-demo.js"></script>
-  <script src="../js/demo/chart-pie-demo.js"></script>
+  <!-- <script>
+    $(document).ready(function() {
+      // Fetch data from database for the Area Chart
+      $.ajax({
+        url: 'fetch_area_data.php',
+        type: 'POST',
+        dataType: 'json',
+        success: function(data) {
+          var labels = [];
+          var stresData = [];
+          var kecemasanData = [];
+          var depresiData = [];
+
+          // Extract data from the response
+          data.forEach(function(item) {
+            labels.push(item.bulan);
+            stresData.push(item.stres);
+            kecemasanData.push(item.kecemasan);
+            depresiData.push(item.depresi);
+          });
+
+          // Create the Area Chart
+          var ctx = document.getElementById('myAreaChart').getContext('2d');
+          var myAreaChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [{
+                  label: 'Stres',
+                  data: stresData,
+                  backgroundColor: 'rgba(78, 115, 223, 0.1)',
+                  borderColor: 'rgba(78, 115, 223, 1)',
+                  pointRadius: 3,
+                  pointBackgroundColor: 'rgba(78, 115, 223, 1)',
+                  pointBorderColor: 'rgba(78, 115, 223, 1)',
+                  pointHoverRadius: 3,
+                  pointHoverBackgroundColor: 'rgba(78, 115, 223, 1)',
+                  pointHoverBorderColor: 'rgba(78, 115, 223, 1)',
+                  fill: 'origin',
+                },
+                {
+                  label: 'Kecemasan',
+                  data: kecemasanData,
+                  backgroundColor: 'rgba(28, 200, 138, 0.1)',
+                  borderColor: 'rgba(28, 200, 138, 1)',
+                  pointRadius: 3,
+                  pointBackgroundColor: 'rgba(28, 200, 138, 1)',
+                  pointBorderColor: 'rgba(28, 200, 138, 1)',
+                  pointHoverRadius: 3,
+                  pointHoverBackgroundColor: 'rgba(28, 200, 138, 1)',
+                  pointHoverBorderColor: 'rgba(28, 200, 138, 1)',
+                  fill: 'origin',
+                },
+                {
+                  label: 'Depresi',
+                  data: depresiData,
+                  backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                  borderColor: 'rgba(255, 193, 7, 1)',
+                  pointRadius: 3,
+                  pointBackgroundColor: 'rgba(255, 193, 7, 1)',
+                  pointBorderColor: 'rgba(255, 193, 7, 1)',
+                  pointHoverRadius: 3,
+                  pointHoverBackgroundColor: 'rgba(255, 193, 7, 1)',
+                  pointHoverBorderColor: 'rgba(255, 193, 7, 1)',
+                  fill: 'origin',
+                },
+              ],
+            },
+            options: {
+              maintainAspectRatio: false,
+              tooltips: {
+                mode: 'index',
+                intersect: false,
+              },
+              hover: {
+                mode: 'nearest',
+                intersect: true,
+              },
+              scales: {
+                xAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Bulan'
+                  }
+                }],
+                yAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Jumlah'
+                  }
+                }]
+              },
+              legend: {
+                display: true,
+                position: 'bottom',
+              },
+            }
+          });
+        }
+      });
+    });
+  </script> -->
 </body>
 
 </html>

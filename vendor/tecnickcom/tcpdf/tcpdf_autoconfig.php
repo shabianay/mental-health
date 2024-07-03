@@ -149,7 +149,7 @@ if (!defined('PDF_HEADER_TITLE')) {
 }
 
 if (!defined('PDF_HEADER_STRING')) {
-	define('PDF_HEADER_STRING', "by MINDFUL");
+	define('PDF_HEADER_STRING', "by Serenity");
 }
 
 if (!defined('PDF_UNIT')) {

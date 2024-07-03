@@ -61,21 +61,21 @@ if (isset($_POST['lupa_password'])) {
                     $mail->Port       = 587; // TCP port to connect to
 
                     //Recipients
-                    $mail->setFrom('shabianarsyly@gmail.com', 'MINDFUL');
+                    $mail->setFrom('shabianarsyly@gmail.com', 'Serenity');
                     $mail->addAddress($email); // Add a recipient
 
                     // Content
                     $mail->isHTML(true); // Set email format to HTML
-                    $mail->Subject = 'Reset Password Akun MINDFUL';
+                    $mail->Subject = 'Reset Password Akun Serenity';
                     $mail->Body = '
                     <div style="text-align: center;">
                         <p>Hi ' . $nama . ',</p>
-                        <p>We received a request to reset your MINDFUL Account password.</p>
+                        <p>We received a request to reset your Serenity Account password.</p>
                         <p>To reset your password, click the button below:</p>
-                        <p><a href="http://localhost/tugasakhir/reset_password.php?email=' . $email . '&token=' . $token . '" target="_blank" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">Reset Password</a></p>
+                        <p><a href="http://localhost/jokiannovi/reset_password.php?email=' . $email . '&token=' . $token . '" target="_blank" style="padding: 10px 20px; background-color: #69BE9D; color: white; text-decoration: none; border-radius: 5px;">Reset Password</a></p>
                         <p>If you did not request a password reset, please ignore this email. Your password will remain unchanged.</p>
                         <p>Thank you for using our services.</p>
-                        <p>Best regards,<br>MINDFUL Admin</p>
+                        <p>Best regards,<br>Serenity Admin</p>
                     </div>
                     ';
                     $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
@@ -103,6 +103,7 @@ if (isset($_POST['lupa_password'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <title>Lupa Password</title>
 
@@ -119,10 +120,14 @@ if (isset($_POST['lupa_password'])) {
             max-width: 500px;
             margin: 0 auto;
         }
+
+        body {
+            background: linear-gradient(to right, #FFFFFF 0%, #69BE9D 100%);
+        }
     </style>
 </head>
 
-<body class="bg-gradient-primary">
+<body>
     <div class="container">
         <div class="row d-flex align-items-center" style="min-height: 100vh;">
             <div class="col-lg-12">

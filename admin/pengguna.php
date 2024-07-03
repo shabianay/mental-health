@@ -38,12 +38,12 @@ if (isset($_POST['submit'])) {
   $email = $_POST['email'];
   $password = $_POST['password'];
   $phoneNumber = $_POST['phoneNumber'];
-  $angkatan = $_POST['angkatan'];
+  $prodi = $_POST['prodi'];
   $gender = $_POST['gender'];
   $confirmPassword = $_POST['confirmPassword'];
 
   // Inside the submit block, after the validation check
-  if (empty($namaLengkap) || empty($email) || empty($password) || empty($phoneNumber) || empty($angkatan) || empty($gender) || $password !== $confirmPassword) {
+  if (empty($namaLengkap) || empty($email) || empty($password) || empty($phoneNumber) || empty($prodi) || empty($gender) || $password !== $confirmPassword) {
     $pesan = "Harap isi semua kolom dengan benar atau pastikan password dan konfirmasi password sama.";
   } else {
     // Query untuk memeriksa apakah email sudah ada di database
@@ -62,7 +62,7 @@ if (isset($_POST['submit'])) {
       $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
       // Query untuk menyimpan data ke dalam database, termasuk role dan gender
-      $query = "INSERT INTO users (Namalengkap, email, password, phoneNumber, angkatan, role, gender) VALUES ('$namaLengkap', '$email', '$hashedPassword', '$phoneNumber', '$angkatan', '$role', '$gender')";
+      $query = "INSERT INTO users (Namalengkap, email, password, phoneNumber, prodi, role, gender) VALUES ('$namaLengkap', '$email', '$hashedPassword', '$phoneNumber', '$prodi', '$role', '$gender')";
 
       if (mysqli_query($koneksi, $query)) {
         // Redirect ke halaman pengguna.php dengan pesan sukses
@@ -92,6 +92,22 @@ if (isset($_SESSION['user_id'])) {
   die("User ID not found in session.");
 }
 
+// Cek jika parameter 'success' ada dalam URL
+if (isset($_GET['success'])) {
+  $success = $_GET['success'];
+  // Tampilkan alert berdasarkan nilai 'success'
+  if ($success === 'register') {
+    $alertMessage = "Pengguna berhasil ditambahkan.";
+    $alertClass = "alert-success";
+  } elseif ($success === 'edit') {
+    $alertMessage = "Pengguna berhasil diedit.";
+    $alertClass = "alert-success";
+  } elseif ($success === 'delete') {
+    $alertMessage = "Pengguna berhasil dihapus.";
+    $alertClass = "alert-success";
+  }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,6 +118,7 @@ if (isset($_SESSION['user_id'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
   <title>Dashboard Admin</title>
 
@@ -132,21 +149,20 @@ if (isset($_SESSION['user_id'])) {
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Halaman Pengguna</h1>
-          <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#tambahPenggunaModal"><i class="fa-solid fa-plus mr-2"></i>
-            Tambah Pengguna
-          </button>
-          <?php
-          // Tambahkan kode untuk menampilkan pesan jika pengguna berhasil ditambahkan
-          if (isset($_GET['success']) && $_GET['success'] === 'register') {
-            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                  Pengguna berhasil ditambahkan.
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>';
-          }
-          ?>
+          <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Data Pengguna</h2>
+          <div class="d-flex justify-content-end mb-3">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tambahPenggunaModal">
+              <i class="fa-solid fa-plus mr-2"></i> Tambah Data
+            </button>
+          </div>
+          <?php if (isset($alertMessage)) : ?>
+            <div class="alert <?php echo $alertClass; ?> alert-dismissible fade show" role="alert">
+              <?php echo $alertMessage; ?>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          <?php endif; ?>
           <div class="modal fade" id="tambahPenggunaModal" tabindex="-1" role="dialog" aria-labelledby="tambahPenggunaModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -160,11 +176,11 @@ if (isset($_SESSION['user_id'])) {
                   <form method="post" action="pengguna.php" enctype="multipart/form-data">
                     <div class="form-group">
                       <label for="Namalengkap">Nama Lengkap</label>
-                      <input type="text" class="form-control" id="Namalengkap" name="Namalengkap" placeholder="Nama Lengkap" />
+                      <input type="text" class="form-control" id="Namalengkap" name="Namalengkap" placeholder="Nama Lengkap" required />
                     </div>
                     <div class="form-group">
                       <label for="email">Email</label>
-                      <input type="email" class="form-control" id="email" name="email" placeholder="Email" />
+                      <input type="email" class="form-control" id="email" name="email" placeholder="Email" required />
                     </div>
                     <div class="form-group">
                       <label for="password">Password</label>
@@ -179,13 +195,19 @@ if (isset($_SESSION['user_id'])) {
                       <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Nomor HP" pattern="[0-9]{10,}" title="Nomor HP harus terdiri dari minimal 10 angka" required />
                     </div>
                     <div class="form-group">
-                      <label for="angkatan">Angkatan</label>
-                      <select class="form-control" id="angkatan" name="angkatan">
-                        <option value="" selected disabled hidden>Pilih Angkatan</option>
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
+                      <label for="prodi">Prodi</label>
+                      <select class="form-control" id="prodi" name="prodi" required>
+                        <option value="" selected disabled hidden>Program Studi</option>
+                        <option value="DG">D4 Desain Grafis</option>
+                        <option value="AN">D4 Administrasi Negara</option>
+                        <option value="MI">D4 Manajemen Informatika</option>
+                        <option value="TBog">D4 Tata Boga</option>
+                        <option value="TBus">D4 Tata Busana</option>
+                        <option value="TL">D4 Teknik Listrik</option>
+                        <option value="TM">D4 Teknik Mesin</option>
+                        <option value="TS">D4 Teknik Sipil</option>
+                        <option value="T">D4 Transportasi</option>
+                        <option value="KO">D4 Kepelatihan Olahraga</option>
                       </select>
                     </div>
                     <div class="form-group">
@@ -219,10 +241,8 @@ if (isset($_SESSION['user_id'])) {
                       <th width='10%'>Nama Lengkap</th>
                       <th>Email</th>
                       <th>Telepon</th>
-                      <th>Angkatan</th>
+                      <th>Prodi</th>
                       <th>Foto</th>
-                      <th>Gender</th>
-                      <th>Role</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
@@ -241,35 +261,16 @@ if (isset($_SESSION['user_id'])) {
                         echo "<td>" . $row['Namalengkap'] . "</td>";
                         echo "<td>" . $row['email'] . "</td>";
                         echo "<td>" . $row['phoneNumber'] . "</td>";
-                        echo "<td>" . $row['angkatan'] . "</td>";
+                        echo "<td>" . $row['prodi'] . "</td>";
                         if (!empty($row['profile_image'])) {
                           echo "<td><img src='" . $row['profile_image'] . "' alt='Profil Image' width='50'></td>";
                         } else {
                           echo "<td>No Image</td>";
                         }
-                        // Display badge based on user's gender
-                        if ($row['gender'] == 'Laki-Laki') {
-                          echo '<td><span class="badge badge-info">' . $row['gender'] . '</span></a>';
-                        } elseif ($row['gender'] == 'Perempuan') {
-                          echo '<td><span class="badge badge-danger">' . $row['gender'] . '</span></a>';
-                        } else {
-                          echo $row['gender'];
-                        }
-                        echo "</td>";
                         echo "<td>";
-                        // Display badge based on user's role
-                        if ($row['role'] == "admin") {
-                          echo "<span class='badge badge-primary'>" . $row['role'] . "</span>";
-                        } else if ($row['role'] == "user") {
-                          echo "<span class='badge badge-success'>" . $row['role'] . "</span>";
-                        } else {
-                          echo $row['role'];
-                        }
-                        echo "</td>";
-                        echo "<td>";
-                        echo "<a href='edit_user.php?id=" . $row['id'] . "' class='btn btn-warning btn-sm'>Edit<i class='ml-2 far fa-pen-to-square'></i></a>";
+                        echo "<a href='edit_user.php?id=" . $row['id'] . "' class='btn btn-warning btn-sm'>Edit</a>";
                         echo "&nbsp;"; // Add a non-breaking space here for spacing
-                        echo "<a href='../hapus_user.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Hapus<i class='ml-2 fa-regular fa-trash-can'></i></a>";
+                        echo "<a href='../hapus_user.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Delete</a>";
                         echo "</td>";
                         echo "</tr>";
                         $counter++; // Increment counter after each row

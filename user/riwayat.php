@@ -41,47 +41,6 @@ if (!$result) {
 }
 $user = mysqli_fetch_assoc($result);
 
-// Export to excel
-if (isset($_POST['export'])) {
-    // Nama file Excel yang akan dihasilkan
-    $filename = "data_laporan_" . date('Ymd') . ".xls";
-
-    // Header untuk menghasilkan file Excel
-    header("Content-Disposition: attachment; filename=\"$filename\"");
-    header("Content-Type: application/vnd.ms-excel");
-
-    // Ambil user_id dari session
-    $user_id = $_SESSION['user_id'];
-
-    // Query untuk mengambil data skrining sesuai dengan user_id
-    $query = "SELECT * FROM skrining WHERE user_id = $user_id";
-    $result = mysqli_query($koneksi, $query);
-
-    // Mulai output buffer agar hasil query tidak langsung ditampilkan
-    ob_start();
-
-    // Mulai tabel Excel
-    echo "<table border='1'>";
-    echo "<tr><th>No</th><th>Hasil</th><th>Nilai</th><th>Tanggal Tes</th><th>Waktu Tes</th></tr>";
-
-    $counter = 1; // Inisialisasi counter
-    // Tampilkan data skrining ke dalam tabel Excel
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "<tr>";
-        echo "<td>" . $counter . "</td>";
-        echo "<td>" . $row['hasil'] . "</td>";
-        echo "<td>" . $row['nilai'] . "</td>";
-        echo "<td>" . $row['waktu'] . "</td>";
-        echo "<td>" . $row['timer'] . "</td>";
-        echo "</tr>";
-        $counter++; // Tingkatkan counter setelah setiap baris
-    }
-    echo "</table>";
-    // Flush output buffer agar hasil query ditampilkan dalam file Excel
-    ob_end_flush();
-    exit;
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,6 +51,7 @@ if (isset($_POST['export'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
     <title>Dashboard User</title>
 
@@ -118,14 +78,28 @@ if (isset($_POST['export'])) {
                 ?>
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Halaman Riwayat Skrining</h1>
-                    <form method="post" action="riwayat.php">
+                    <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Riwayat Konsultasi Pengguna</h2>
+                    <?php
+                    // Check if the 'success' parameter exists in the URL
+                    if (isset($_GET['success'])) {
+                        // Check the value of the 'success' parameter
+                        if ($_GET['success'] === 'delete') {
+                            // If the value is 'delete', display a success message
+                            echo '<div class="alert alert-success" role="alert">Riwayat berhasil dihapus.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>';
+                        }
+                    }
+                    ?>
+                    <!-- <form method="post" action="riwayat.php">
                         <button type="submit" name="export" class="btn btn-success mb-3"><i class="fa-regular fa-file-excel mr-3"></i>Cetak Data Excel</button>
-                    </form>
+                    </form> -->
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Data Laporan</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Data Riwayat</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -133,13 +107,8 @@ if (isset($_POST['export'])) {
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Nama</th>
-                                            <th>Gender</th>
-                                            <th>Angkatan</th>
                                             <th>Hasil</th>
-                                            <th>Nilai</th>
                                             <th>Tanggal Tes</th>
-                                            <th>Waktu Tes</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -147,44 +116,30 @@ if (isset($_POST['export'])) {
                                         <?php
                                         require_once "../include/koneksi.php";
                                         // Query untuk mengambil data pengguna dari database sesuai dengan user_id
-                                        $query = "SELECT skrining.*, users.Namalengkap, users.gender, users.angkatan FROM skrining JOIN users ON skrining.user_id = users.id WHERE skrining.user_id = $user_id";
+                                        $query = "SELECT * FROM consultation_results WHERE user_id = $user_id ORDER BY timestamp DESC";
                                         $result = mysqli_query($koneksi, $query);
-                                        // Jika query berhasil dijalankan
+
                                         if ($result) {
                                             $counter = 1; // Inisialisasi counter
-                                            // Tampilkan data pengguna ke dalam tabel HTML
                                             while ($row = mysqli_fetch_assoc($result)) {
-                                                // Output data from each row into table cells
+                                                $formatted_timestamp = date('d F Y', strtotime($row['timestamp']));
+
                                                 echo "<tr>";
                                                 echo "<td>" . $counter . "</td>";
-                                                echo "<td>" . $row['Namalengkap'] . "</td>";
-                                                echo "<td>" . $row['gender'] . "</td>";
-                                                echo "<td>" . $row['angkatan'] . "</td>";
-                                                echo "<td>" . $row['hasil'] . "</td>";
-                                                echo "<td>" . $row['nilai'] . "</td>";
-                                                echo "<td>" . $row['waktu'] . "</td>";
-                                                $timer = $row['timer'];
-                                                $cleanTimer = str_replace(
-                                                    '.',
-                                                    '',
-                                                    $timer
-                                                );
-                                                echo "<td>" . $cleanTimer . "</td>";
+                                                echo "<td>" . $row['result_category'] . "</td>";
+                                                echo "<td>" . $formatted_timestamp . "</td>";
                                                 echo "<td style='text-align: center;'>";
-                                                echo "<a href='cetaklaporan.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Download Laporan<i class='ml-2 fa-solid fa-download'></i></a>";
-                                                // echo "&nbsp;";
-                                                // echo "<a href='perhitungan.php?id=" . $row['id'] . "' class='btn btn-success btn-sm'>Detail Perhitungan<i class='ml-2 fa-regular fa-eye'></i></a>";
+                                                echo "<a href='perhitungan.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Detail</a>";
+                                                echo "&nbsp;";
+                                                echo "<a href='../hapus_laporan_user.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Delete</a>";
                                                 echo "</td>";
                                                 echo "</tr>";
                                                 $counter++; // Tingkatkan counter setelah setiap baris
                                             }
-                                            // Free result set
-                                            mysqli_free_result($result);
                                         } else {
-                                            // Jika query gagal dijalankan
-                                            echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
+                                            echo "Error: " . mysqli_error($koneksi);
                                         }
-                                        // Tutup koneksi ke database
+
                                         mysqli_close($koneksi);
                                         ?>
                                     </tbody>
@@ -199,13 +154,7 @@ if (isset($_POST['export'])) {
             ?>
         </div>
     </div>
-    <!-- End of Main Content -->
-    </div>
-    <!-- End of Content Wrapper -->
-    </div>
-    <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
@@ -226,6 +175,114 @@ if (isset($_POST['export'])) {
 
     <!-- Page level custom scripts -->
     <script src="../js/demo/datatables-demo.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="../vendor/chart.js/Chart.min.js"></script>
+
+    <!-- <script>
+        $(document).ready(function() {
+            // Fetch data from database for the Area Chart
+            $.ajax({
+                url: 'fetch_area_data.php',
+                type: 'POST',
+                dataType: 'json',
+                success: function(data) {
+                    var labels = [];
+                    var stresData = [];
+                    var kecemasanData = [];
+                    var depresiData = [];
+
+                    // Extract data from the response
+                    data.forEach(function(item) {
+                        labels.push(item.bulan);
+                        stresData.push(item.stres);
+                        kecemasanData.push(item.kecemasan);
+                        depresiData.push(item.depresi);
+                    });
+
+                    // Create the Area Chart
+                    var ctx = document.getElementById('myAreaChart').getContext('2d');
+                    var myAreaChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                    label: 'Stres',
+                                    data: stresData,
+                                    backgroundColor: 'rgba(78, 115, 223, 0.1)',
+                                    borderColor: 'rgba(78, 115, 223, 1)',
+                                    pointRadius: 3,
+                                    pointBackgroundColor: 'rgba(78, 115, 223, 1)',
+                                    pointBorderColor: 'rgba(78, 115, 223, 1)',
+                                    pointHoverRadius: 3,
+                                    pointHoverBackgroundColor: 'rgba(78, 115, 223, 1)',
+                                    pointHoverBorderColor: 'rgba(78, 115, 223, 1)',
+                                    fill: 'origin',
+                                },
+                                {
+                                    label: 'Kecemasan',
+                                    data: kecemasanData,
+                                    backgroundColor: 'rgba(28, 200, 138, 0.1)',
+                                    borderColor: 'rgba(28, 200, 138, 1)',
+                                    pointRadius: 3,
+                                    pointBackgroundColor: 'rgba(28, 200, 138, 1)',
+                                    pointBorderColor: 'rgba(28, 200, 138, 1)',
+                                    pointHoverRadius: 3,
+                                    pointHoverBackgroundColor: 'rgba(28, 200, 138, 1)',
+                                    pointHoverBorderColor: 'rgba(28, 200, 138, 1)',
+                                    fill: 'origin',
+                                },
+                                {
+                                    label: 'Depresi',
+                                    data: depresiData,
+                                    backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                                    borderColor: 'rgba(255, 193, 7, 1)',
+                                    pointRadius: 3,
+                                    pointBackgroundColor: 'rgba(255, 193, 7, 1)',
+                                    pointBorderColor: 'rgba(255, 193, 7, 1)',
+                                    pointHoverRadius: 3,
+                                    pointHoverBackgroundColor: 'rgba(255, 193, 7, 1)',
+                                    pointHoverBorderColor: 'rgba(255, 193, 7, 1)',
+                                    fill: 'origin',
+                                },
+                            ],
+                        },
+                        options: {
+                            maintainAspectRatio: false,
+                            tooltips: {
+                                mode: 'index',
+                                intersect: false,
+                            },
+                            hover: {
+                                mode: 'nearest',
+                                intersect: true,
+                            },
+                            scales: {
+                                xAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Bulan'
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Jumlah'
+                                    }
+                                }]
+                            },
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                            },
+                        }
+                    });
+                }
+            });
+        });
+    </script> -->
 </body>
 
 </html>

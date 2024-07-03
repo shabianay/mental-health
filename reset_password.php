@@ -59,6 +59,7 @@ if (isset($_GET['email']) && isset($_GET['token'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <title>Reset Password</title>
 
@@ -75,10 +76,14 @@ if (isset($_GET['email']) && isset($_GET['token'])) {
             max-width: 500px;
             margin: 0 auto;
         }
+
+        body {
+            background: linear-gradient(to right, #FFFFFF 0%, #69BE9D 100%);
+        }
     </style>
 </head>
 
-<body class="bg-gradient-primary">
+<body>
     <div class="container">
         <div class="row d-flex align-items-center" style="min-height: 100vh;">
             <div class="col-lg-12">

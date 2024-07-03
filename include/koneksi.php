@@ -2,7 +2,7 @@
 
 // Database configuration
 $databaseHost = 'localhost'; // or your database host
-$databaseName = 'tugasakhir'; // your database name
+$databaseName = 'jokiannovi'; // your database name
 $databaseUsername = 'root'; // your database username
 $databasePassword = ''; // your database password
 

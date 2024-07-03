@@ -6,7 +6,7 @@ $id = $_GET['id'];
 
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor('MINDFUL');
+$pdf->SetAuthor('Serenity');
 $pdf->SetTitle('Data Laporan');
 $pdf->SetSubject('Data Laporan');
 $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
@@ -30,11 +30,11 @@ $pdf->SetFont('helvetica', '', 10);
 
 $pdf->AddPage();
 
-$html = '<h1 style="margin-left: 20px;">Data Laporan Skrining Kesehatan Mental - MINDFUL</h1>';
+$html = '<h1 style="margin-left: 20px;">Data Laporan Skrining Kesehatan Mental - Serenity</h1>';
 $html .= '<table border="1" style="margin-left: 20px;">';
-$html .= '<tr><th>Nama</th><th>Gender</th><th>Angkatan</th><th>Hasil</th><th>Nilai</th><th>Tanggal Tes</th><th>Waktu Tes</th></tr>';
+$html .= '<tr><th>Nama</th><th>Gender</th><th>Angkatan</th><th>Hasil</th><th>Nilai</th><th>Tanggal Tes</th><th>Waktu Tes</th><th>Gejala</th></tr>';
 
-$query = "SELECT users.Namalengkap, users.gender, users.angkatan, skrining.hasil, skrining.nilai, skrining.waktu, skrining.timer FROM skrining JOIN users ON skrining.user_id = users.id WHERE skrining.id = $id";
+$query = "SELECT users.Namalengkap, users.gender, users.angkatan, skrining.hasil, skrining.nilai, skrining.waktu, skrining.timer, skrining.gejala FROM skrining JOIN users ON skrining.user_id = users.id WHERE skrining.id = $id";
 $result = mysqli_query($koneksi, $query);
 
 if ($row = mysqli_fetch_assoc($result)) {
@@ -46,6 +46,7 @@ if ($row = mysqli_fetch_assoc($result)) {
     $html .= '<td>' . $row['nilai'] . '</td>';
     $html .= '<td>' . $row['waktu'] . '</td>';
     $html .= '<td>' . $row['timer'] . '</td>';
+    $html .= '<td>' . $row['gejala'] . '</td>';
     $html .= '</tr>';
 }
 

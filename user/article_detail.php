@@ -70,6 +70,7 @@ mysqli_close($koneksi);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
     <title>Dashboard User</title>
 
@@ -90,10 +91,11 @@ mysqli_close($koneksi);
             margin-top: 20px;
         }
 
+        /* 
         .article-title {
             margin-top: 20px;
             margin-bottom: 10px;
-        }
+        } */
     </style>
 </head>
 
@@ -109,29 +111,30 @@ mysqli_close($koneksi);
                 require_once('../include/topbar_user.php')
                 ?>
                 <div class="container-fluid">
-                    <div class="row-artikel-detail">
-                        <div class="col-lg-12">
+                    <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Artikel Kesehatan Mental</h2>
+                    <a href="baca_artikel.php" class="btn btn-primary mb-3">
+                        <i class="fa-solid fa-angle-left"></i> Kembali
+                    </a>
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12">
                             <div class="card shadow mb-4">
                                 <div class="card-body">
+                                    <?php if ($article && isset($article['category'])) : ?>
+                                        <p class="h5 text-white badge bg-primary"><?php echo $article['category']; ?></p>
+                                    <?php endif; ?>
                                     <?php if ($article && isset($article['title'])) : ?>
-                                        <h2 class="article-title font-weight-bold text-primary"><?php echo $article['title']; ?></h2>
+                                        <h2 class="article-title font-weight-bold text-dark"><?php echo $article['title']; ?></h2>
                                     <?php endif; ?>
-
                                     <?php if ($article && isset($article['updated_at'])) : ?>
-                                        <small class='card-text'><i class='fas fa-clock mr-2 mb-3'></i><?php echo date('d M Y', strtotime($article['updated_at'])); ?></small>
+                                        <small class='card-text text-dark' style='font-size:15px;'>Diperbarui pada <?php echo date('d M Y', strtotime($article['updated_at'])); ?> oleh Admin</small>
                                     <?php endif; ?>
-
                                     <?php if ($article && isset($article['image_path'])) : ?>
-                                        <img class="card-img-top" src="<?php echo $article['image_path']; ?>" alt="">
+                                        <img class="card-img-top mt-2" src="<?php echo $article['image_path']; ?>" alt="">
                                     <?php endif; ?>
 
                                     <?php if ($article && isset($article['content'])) : ?>
                                         <p><?php echo $article['content']; ?></p>
                                     <?php endif; ?>
-
-                                    <a href="baca_artikel.php" class="btn btn-primary mb-3">
-                                        <i class="fa-solid fa-angle-left"></i> Kembali
-                                    </a>
                                 </div>
                             </div>
                         </div>

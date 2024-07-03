@@ -51,11 +51,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $email = mysqli_real_escape_string($koneksi, $_POST['email']);
     $newPassword = mysqli_real_escape_string($koneksi, $_POST['newPassword']);
     $phoneNumber = mysqli_real_escape_string($koneksi, $_POST['phoneNumber']);
-    $angkatan = mysqli_real_escape_string($koneksi, $_POST['angkatan']);
+    $prodi = mysqli_real_escape_string($koneksi, $_POST['prodi']);
     $gender = mysqli_real_escape_string($koneksi, $_POST['gender']);
 
     // Update user data in the database
-    $updateQuery = "UPDATE users SET Namalengkap='$namaLengkap', email='$email', phoneNumber='$phoneNumber', angkatan='$angkatan', gender='$gender'";
+    $updateQuery = "UPDATE users SET Namalengkap='$namaLengkap', email='$email', phoneNumber='$phoneNumber', prodi='$prodi', gender='$gender'";
 
     // Check if a new password is provided and update it if necessary
     if (!empty($newPassword)) {
@@ -67,8 +67,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $updateQuery .= " WHERE id=$user_id";
 
     if (mysqli_query($koneksi, $updateQuery)) {
-        // Redirect to the user list with a success message
-        header("Location: pengguna.php?success=1");
+        // Redirect ke halaman pengguna.php dengan pesan sukses edit
+        header("Location: pengguna.php?success=edit");
         exit();
     } else {
         // Handle the update failure
@@ -88,6 +88,7 @@ mysqli_close($koneksi);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
     <title>Dashboard Admin</title>
 
@@ -112,7 +113,8 @@ mysqli_close($koneksi);
                             Profile updated successfully!
                         </div>
                     <?php endif; ?>
-                    <h1 class="h3 mb-4 text-gray-800">Edit Pengguna</h1>
+                    <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Edit Pengguna</h2>
+                    <a href="pengguna.php" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <form method="post" action="edit_user.php?id=<?php echo $user_id; ?>" enctype="multipart/form-data">
@@ -140,12 +142,18 @@ mysqli_close($koneksi);
                                     <span class="text-muted">Nomor HP harus terdiri dari minimal 10 angka.</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="angkatan">Angkatan</label>
-                                    <select class="form-control" id="angkatan" name="angkatan">
-                                        <option value="2020" <?php if ($user['angkatan'] == '2020') echo 'selected'; ?>>2020</option>
-                                        <option value="2021" <?php if ($user['angkatan'] == '2021') echo 'selected'; ?>>2021</option>
-                                        <option value="2022" <?php if ($user['angkatan'] == '2022') echo 'selected'; ?>>2022</option>
-                                        <option value="2023" <?php if ($user['angkatan'] == '2023') echo 'selected'; ?>>2023</option>
+                                    <label for="prodi">Prodi</label>
+                                    <select class="form-control" id="prodi" name="prodi">
+                                        <option value="DG" <?php if ($user['prodi'] == 'DG') echo 'selected'; ?>>D4 Desain Grafis</option>
+                                        <option value="AN" <?php if ($user['prodi'] == 'AN') echo 'selected'; ?>>D4 Administrasi Negara</option>
+                                        <option value="MI" <?php if ($user['prodi'] == 'MI') echo 'selected'; ?>>D4 Manajemen Informatika</option>
+                                        <option value="TBog" <?php if ($user['prodi'] == 'Tbog') echo 'selected'; ?>>D4 Tata Boga</option>
+                                        <option value="TBus" <?php if ($user['prodi'] == 'TBus') echo 'selected'; ?>>D4 Tata Busana</option>
+                                        <option value="TL" <?php if ($user['prodi'] == 'TL') echo 'selected'; ?>>D4 Teknik Listrik</option>
+                                        <option value="TM" <?php if ($user['prodi'] == 'TM') echo 'selected'; ?>>D4 Teknik Mesin</option>
+                                        <option value="TS" <?php if ($user['prodi'] == 'TS') echo 'selected'; ?>>D4 Teknik Sipil</option>
+                                        <option value="T" <?php if ($user['prodi'] == 'T') echo 'selected'; ?>>D4 Transportasi</option>
+                                        <option value="KO" <?php if ($user['prodi'] == 'KO') echo 'selected'; ?>>D4 Kepelatihan Olahraga</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -155,8 +163,7 @@ mysqli_close($koneksi);
                                         <option value="Perempuan" <?php if ($user['gender'] == 'Perempuan') echo 'selected'; ?>>Perempuan</option>
                                     </select>
                                 </div>
-                                <button type="submit" name="submit" class="btn btn-primary"><i class="fa-solid fa-rotate mr-2"></i>Simpan Perubahan</button>
-                                <a href="pengguna.php" class="btn btn-secondary"><i class="fa-solid fa-angle-left mr-2"></i>Kembali</a>
+                                <button type="submit" name="submit" class="btn btn-primary">Simpan Perubahan</button>
                             </form>
                         </div>
                     </div>

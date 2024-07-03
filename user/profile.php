@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newPassword = $_POST['newPassword'];
     $password = $_POST['password'];
     $phoneNumber = $_POST['phoneNumber'];
-    $angkatan = $_POST['angkatan'];
+    $prodi = $_POST['prodi'];
     $gender = $_POST['gender'];
 
     // Handle profile image upload
@@ -96,10 +96,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Perbarui informasi pengguna dalam database
         if (!empty($newPassword)) {
             // Jika newPassword diisi, update password
-            $updateQuery = "UPDATE users SET Namalengkap = '$namaLengkap', email = '$newEmail', password = '$newPassword', phoneNumber = '$phoneNumber', gender = '$gender', angkatan = '$angkatan' WHERE id = $user_id";
+            $updateQuery = "UPDATE users SET Namalengkap = '$namaLengkap', email = '$newEmail', password = '$newPassword', phoneNumber = '$phoneNumber', gender = '$gender', prodi = '$prodi' WHERE id = $user_id";
         } else {
             // Jika newPassword tidak diisi, jangan update password
-            $updateQuery = "UPDATE users SET Namalengkap = '$namaLengkap', email = '$newEmail', phoneNumber = '$phoneNumber', gender = '$gender', angkatan = '$angkatan' WHERE id = $user_id";
+            $updateQuery = "UPDATE users SET Namalengkap = '$namaLengkap', email = '$newEmail', phoneNumber = '$phoneNumber', gender = '$gender', prodi = '$prodi' WHERE id = $user_id";
         }
         $updateResult = mysqli_query($koneksi, $updateQuery);
         if (!$updateResult) {
@@ -121,6 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
     <title>Dashboard User</title>
 
@@ -162,28 +163,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div id="content">
                 <?php require_once('../include/topbar_user.php') ?>
                 <div class="container-fluid">
-                    <h1 class="h3 mb-4 text-gray-800">Perbarui Profil</h1>
+                    <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Profil Saya</h2>
+                    <?php if (isset($_GET['success'])) : ?>
+                        <div class="alert alert-success" role="alert">
+                            Profil berhasil diperbarui.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <?php endif; ?>
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                            <?php if (isset($_GET['success'])) : ?>
-                                <div class="alert alert-success" role="alert">
-                                    Profile updated successfully!
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            <?php endif; ?>
                             <form method="post" action="profile.php" enctype="multipart/form-data">
                                 <div class="text-center">
                                     <div class="form-group">
-                                        <small class="form-text text-white badge bg-success mb-3">Klik foto untuk mengganti foto profil.</small>
-                                        <br>
                                         <label for="profileImage" class="profile-image-container mb-3">
                                             <img id="preview" src="<?php echo $profileImage; ?>" class="h3 text-gray-800 rounded-circle" />
                                             <input type="file" name="profileImage" id="profileImage" accept="image/*" class="d-none" onchange="previewImage(event)">
                                         </label>
-                                        <br>
-                                        <label for="image">Gambar (maksimal 2MB)</label>
+                                        <p class="form-text text-dark">Klik foto untuk mengganti foto profil.</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -200,29 +198,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah password.</small>
                                 </div>
                                 <div class="form-group">
-                                    <label for="newPassword">New Password</label>
+                                    <label for="newPassword">Password Baru</label>
                                     <input type="password" class="form-control" id="newPassword" name="newPassword" pattern="(?=.*\d).{8,}" />
-                                    <span class="text-muted">Password harus terdiri dari minimal 8 karakter dan mengandung angka.</span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="phoneNumber">Phone Number</label>
-                                    <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10,}" value="<?php echo $user['phoneNumber']; ?>" required />
-                                    <span class="text-muted">Nomor HP harus terdiri dari minimal 10 angka.</span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="angkatan">Angkatan</label>
-                                    <select class="form-control" id="angkatan" name="angkatan">
-                                        <option value="2020" <?php if ($user['angkatan'] == '2020') echo 'selected'; ?>>2020</option>
-                                        <option value="2021" <?php if ($user['angkatan'] == '2021') echo 'selected'; ?>>2021</option>
-                                        <option value="2022" <?php if ($user['angkatan'] == '2022') echo 'selected'; ?>>2022</option>
-                                        <option value="2023" <?php if ($user['angkatan'] == '2023') echo 'selected'; ?>>2023</option>
-                                    </select>
+                                    <small class="text-muted">Password harus terdiri dari minimal 8 karakter dan mengandung angka.</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="gender">Jenis Kelamin</label>
                                     <select class="form-control" id="gender" name="gender" required>
                                         <option value="Laki-Laki" <?php if ($user['gender'] == 'Laki-Laki') echo 'selected'; ?>>Laki-Laki</option>
                                         <option value="Perempuan" <?php if ($user['gender'] == 'Perempuan') echo 'selected'; ?>>Perempuan</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phoneNumber">No. Handphone</label>
+                                    <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10,}" value="<?php echo $user['phoneNumber']; ?>" required />
+                                    <small class="text-muted">Nomor HP harus terdiri dari minimal 10 angka.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prodi">Program Studi</label>
+                                    <select class="form-control" id="prodi" name="prodi">
+                                        <option value="DG" <?php if ($user['prodi'] == 'DG') echo 'selected'; ?>>D4 Desain Grafis</option>
+                                        <option value="AN" <?php if ($user['prodi'] == 'AN') echo 'selected'; ?>>D4 Administrasi Negara</option>
+                                        <option value="MI" <?php if ($user['prodi'] == 'MI') echo 'selected'; ?>>D4 Manajemen Informatika</option>
+                                        <option value="TBog" <?php if ($user['prodi'] == 'Tbog') echo 'selected'; ?>>D4 Tata Boga</option>
+                                        <option value="TBus" <?php if ($user['prodi'] == 'TBus') echo 'selected'; ?>>D4 Tata Busana</option>
+                                        <option value="TL" <?php if ($user['prodi'] == 'TL') echo 'selected'; ?>>D4 Teknik Listrik</option>
+                                        <option value="TM" <?php if ($user['prodi'] == 'TM') echo 'selected'; ?>>D4 Teknik Mesin</option>
+                                        <option value="TS" <?php if ($user['prodi'] == 'TS') echo 'selected'; ?>>D4 Teknik Sipil</option>
+                                        <option value="T" <?php if ($user['prodi'] == 'T') echo 'selected'; ?>>D4 Transportasi</option>
+                                        <option value="KO" <?php if ($user['prodi'] == 'KO') echo 'selected'; ?>>D4 Kepelatihan Olahraga</option>
                                     </select>
                                 </div>
                                 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
@@ -244,8 +248,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary mt-3 mb-4"><i class="fa-solid fa-rotate mr-2"></i>Perbarui Profil</button>
-                                <a href="user_dashboard.php" class="btn btn-secondary mt-3 mb-4"><i class="fa-solid fa-angle-left mr-2"></i> Kembali </a>
+                                <button type="submit" class="btn btn-primary mt-3 mb-4">Simpan</button>
                             </form>
                         </div>
                     </div>

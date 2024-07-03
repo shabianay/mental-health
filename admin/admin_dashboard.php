@@ -45,19 +45,41 @@ if ($result) {
   echo "Error: " . mysqli_error($koneksi);
 }
 
-// Query untuk mengambil jumlah soal dari database 
-$query = "SELECT COUNT(*) AS total_skrining FROM skrining";
-$result = mysqli_query($koneksi, $query);
-
-if ($result) {
-  // Jika query berhasil, ambil hasilnya
-  $row = mysqli_fetch_assoc($result);
-  $total_skrining = $row['total_skrining'];
+// Query untuk mengambil jumlah soal dari tabel questions_a
+$query_a = "SELECT COUNT(*) AS total_soal_a FROM questions_a";
+$result_a = mysqli_query($koneksi, $query_a);
+if ($result_a) {
+  $row_a = mysqli_fetch_assoc($result_a);
+  $total_soal_a = $row_a['total_soal_a'];
 } else {
-  // Jika query gagal, atur jumlah soal menjadi 0 atau tampilkan pesan kesalahan
-  $total_skrining = 0;
+  $total_soal_a = 0;
   echo "Error: " . mysqli_error($koneksi);
 }
+
+// Query untuk mengambil jumlah soal dari tabel questions_d
+$query_d = "SELECT COUNT(*) AS total_soal_d FROM questions_d";
+$result_d = mysqli_query($koneksi, $query_d);
+if ($result_d) {
+  $row_d = mysqli_fetch_assoc($result_d);
+  $total_soal_d = $row_d['total_soal_d'];
+} else {
+  $total_soal_d = 0;
+  echo "Error: " . mysqli_error($koneksi);
+}
+
+// Query untuk mengambil jumlah soal dari tabel questions_s
+$query_s = "SELECT COUNT(*) AS total_soal_s FROM questions_s";
+$result_s = mysqli_query($koneksi, $query_s);
+if ($result_s) {
+  $row_s = mysqli_fetch_assoc($result_s);
+  $total_soal_s = $row_s['total_soal_s'];
+} else {
+  $total_soal_s = 0;
+  echo "Error: " . mysqli_error($koneksi);
+}
+
+// Jumlah total soal dari semua tabel
+$total_soal = $total_soal_a + $total_soal_d + $total_soal_s;
 
 // Query untuk mengambil jumlah artikel dari database 
 $query = "SELECT COUNT(*) AS total_artikel FROM articles";
@@ -73,19 +95,7 @@ if ($result) {
   echo "Error: " . mysqli_error($koneksi);
 }
 
-// Query untuk mengambil jumlah rs dari database 
-$query = "SELECT COUNT(*) AS total_rs FROM hospitals";
-$result = mysqli_query($koneksi, $query);
 
-if ($result) {
-  // Jika query berhasil, ambil hasilnya
-  $row = mysqli_fetch_assoc($result);
-  $total_rs = $row['total_rs'];
-} else {
-  // Jika query gagal, atur jumlah rs menjadi 0 atau tampilkan pesan kesalahan
-  $total_rs = 0;
-  echo "Error: " . mysqli_error($koneksi);
-}
 // Ambil informasi pengguna dari database
 $user_id = $_SESSION['user_id'];
 $query = "SELECT * FROM users WHERE id = $user_id";
@@ -105,6 +115,7 @@ $user = mysqli_fetch_assoc($result);
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
   <title>Dashboard Admin</title>
 
@@ -129,14 +140,36 @@ $user = mysqli_fetch_assoc($result);
         require_once('../include/topbar_admin.php')
         ?>
         <div class="container-fluid">
+          <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Dashboard</h2>
           <div class="row">
-            <!-- Pengguna -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
+            <!-- Gejala -->
+            <div class="col-xl-6 col-md-6 mb-4 mt-2">
+              <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        Jumlah Gejala
+                      </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <?php echo number_format($total_soal); ?>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-fw fa-chart-area fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pengguna -->
+            <div class="col-xl-6 col-md-6 mb-4 mt-2">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                         Jumlah Pengguna
                       </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -150,341 +183,235 @@ $user = mysqli_fetch_assoc($result);
                 </div>
               </div>
             </div>
-
-            <!-- Skrining -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                        Jumlah Skrining
-                      </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <?php echo number_format($total_skrining); ?>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-fw fa-chart-area fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Artikel -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                        Jumlah Artikel
-                      </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <?php echo number_format($total_artikel); ?> <!-- Tampilkan jumlah soal dengan format ribuan -->
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-newspaper fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Rumah Sakit -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                        Jumlah Rumah Sakit
-                      </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <?php echo number_format($total_rs); ?> <!-- Tampilkan jumlah soal dengan format ribuan -->
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-hospital fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
-          <div class="row">
-            <div class="col-xl-8 col-md-12">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">
-                    <i class="mr-2 fas fa-info fa-1x text-gray-500"></i>
-                    Informasi
-                  </h6>
-                </div>
-                <div class="information" style="text-align:center">
-                  <h1 class="mt-4 h4 text-gray-800 font-weight-bold">Selamat Datang</h1>
-                  <h1 class="h5 mb-4 text-white badge bg-primary">
-                    <?php echo $user['Namalengkap']; ?>
-                  </h1> Sebagai
-                  <h1 class="h5 mb-4 text-white badge bg-primary">
-                    <?php echo $user['role']; ?>
-                  </h1>
-                </div>
-                <div class="card-body">
-                  <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="../img/undraw_posting_photo.svg" alt="...">
-                  <p>
-                    Aplikasi MINDFUL ini adalah aplikasi yang dapat membantu kamu untuk skrining (Tahap Awal) mengetahui kesehatan mental. Jika ingin mendalami lebih lanjut tentang kesehatan mental kamu dapat menghubungi psikolog/psikiater atau juga dapat menghubungi SMCC UNESA, & kamu bisa membaca artikel yang telah kami sediakan. Selain itu, kamu juga bisa mencari rumah sakit terdekat yang bisa membantu kamu dalam menangani masalah kesehatan mental. Selamat menggunakan aplikasi MINDFUL!
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xl-4 col-lg-12">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Data Pengguna</h6>
-                </div>
-                <div class="card-body">
-                  <div class="chart-pie pt-4">
-                    <canvas id="myPieChart"></canvas>
-                  </div>
-                  <hr>
-                  <div class="mt-4 text-center small">
-                    <h6 class="m-4 font-weight-bold text-primary">Angkatan</h6>
-                    <span class="mr-2">
-                      <i class="fas fa-circle" style="color: #4e73df;"></i> 2020
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle" style="color: #1cc88a;"></i> 2021
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle" style="color: #36b9cc;"></i> 2022
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle" style="color: #f6c23e;"></i> 2023
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Data Soal Kecemasan</h2>
+          <div class="d-flex justify-content-end mb-3">
+            <a type="button" class="btn btn-primary" href="soal_kecemasan.php">Lihat lebih detail
+            </a>
           </div>
+          <!-- Display existing questions -->
+          <?php
+          $query = "SELECT questions_a.id_soal, questions_a.kode, questions_a.question_text, questions_a.nilai_a, questions_a.nilai_b, questions_a.nilai_c, questions_a.nilai_d FROM questions_a";
+          $result = mysqli_query($koneksi, $query);
+          // Check if the query was successful
+          if ($result) {
+            // Display the table headers
+            echo "<div class='card shadow mb-4'>";
+            echo "<div class='card-header py-3'>";
+            echo "<h6 class='m-0 font-weight-bold text-primary'>";
+            echo "Data Gejala";
+            echo "</h6>";
+            echo "</div>";
+            echo "<div class='card-body'>";
+            echo "<div class='table-responsive'>";
+            echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>Kode</th>";
+            echo "<th>Nama Gejala</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
 
-          <!-- Area Chart -->
-          <div class="row">
-            <div class="col-xl-12 col-lg-12">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Data Skrining</h6>
-                </div>
-                <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
-                  </div>
-                  <hr>
-                </div>
-              </div>
-            </div>
+            // Loop through the result set and display each row
+            while ($row = mysqli_fetch_assoc($result)) {
+              echo "<tr>";
+              echo "<td>" . $row['kode'] . "</td>";
+              echo "<td>" . $row['question_text'] . "</td>";
+              echo "</tr>";
+            }
+
+            echo "</tbody>";
+            echo "</table>";
+            echo "</div>";
+            echo "</div>";
+            echo "</div>";
+          } else {
+            // Error saat mengambil data dari database
+            die("Query error: " . mysqli_error($koneksi));
+          }
+          ?>
+
+          <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Data Soal Depresi</h2>
+          <div class="d-flex justify-content-end mb-3">
+            <a type="button" class="btn btn-primary" href="soal_depresi.php">Lihat lebih detail
+            </a>
           </div>
+          <!-- Display existing questions -->
+          <?php
+          $query = "SELECT questions_d.id_soal, questions_d.kode, questions_d.question_text, questions_d.nilai_a, questions_d.nilai_b, questions_d.nilai_c, questions_d.nilai_d FROM questions_d";
+          $result = mysqli_query($koneksi, $query);
+          // Check if the query was successful
+          if ($result) {
+            // Display the table headers
+            echo "<div class='card shadow mb-4'>";
+            echo "<div class='card-header py-3'>";
+            echo "<h6 class='m-0 font-weight-bold text-primary'>";
+            echo "Data Gejala";
+            echo "</h6>";
+            echo "</div>";
+            echo "<div class='card-body'>";
+            echo "<div class='table-responsive'>";
+            echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>Kode</th>";
+            echo "<th>Nama Gejala</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+
+            // Loop through the result set and display each row
+            while ($row = mysqli_fetch_assoc($result)) {
+              echo "<tr>";
+              echo "<td>" . $row['kode'] . "</td>";
+              echo "<td>" . $row['question_text'] . "</td>";
+              echo "</tr>";
+            }
+
+            echo "</tbody>";
+            echo "</table>";
+            echo "</div>";
+            echo "</div>";
+            echo "</div>";
+          } else {
+            // Error saat mengambil data dari database
+            die("Query error: " . mysqli_error($koneksi));
+          }
+          ?>
+
+          <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Data Soal Stres</h2>
+          <div class="d-flex justify-content-end mb-3">
+            <a type="button" class="btn btn-primary" href="soal_stres.php">Lihat lebih detail
+            </a>
+          </div>
+          <!-- Display existing questions -->
+          <?php
+          $query = "SELECT questions_s.id_soal, questions_s.kode, questions_s.question_text, questions_s.nilai_a, questions_s.nilai_b, questions_s.nilai_c, questions_s.nilai_d FROM questions_s";
+          $result = mysqli_query($koneksi, $query);
+          // Check if the query was successful
+          if ($result) {
+            // Display the table headers
+            echo "<div class='card shadow mb-4'>";
+            echo "<div class='card-header py-3'>";
+            echo "<h6 class='m-0 font-weight-bold text-primary'>";
+            echo "Data Gejala";
+            echo "</h6>";
+            echo "</div>";
+            echo "<div class='card-body'>";
+            echo "<div class='table-responsive'>";
+            echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>Kode</th>";
+            echo "<th>Nama Gejala</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+
+            // Loop through the result set and display each row
+            while ($row = mysqli_fetch_assoc($result)) {
+              echo "<tr>";
+              echo "<td>" . $row['kode'] . "</td>";
+              echo "<td>" . $row['question_text'] . "</td>";
+              echo "</tr>";
+            }
+
+            echo "</tbody>";
+            echo "</table>";
+            echo "</div>";
+            echo "</div>";
+            echo "</div>";
+          } else {
+            // Error saat mengambil data dari database
+            die("Query error: " . mysqli_error($koneksi));
+          }
+          ?>
+
+          <h2 class="card" style="background-color: #69BE9D; color: white; padding: 25px 50px;">Data Artikel</h2>
+          <div class="d-flex justify-content-end mb-3">
+            <a type="button" class="btn btn-primary" href="artikel.php">Lihat lebih detail
+            </a>
+          </div>
+          <!-- Display existing articles -->
+          <?php
+          $query = "SELECT id, title, content FROM articles";
+          $result = mysqli_query($koneksi, $query);
+
+          // Query to retrieve articles from the database
+          $query = "SELECT * FROM articles";
+          $result = mysqli_query($koneksi, $query);
+          // Check if the query was successful
+          if ($result) {
+            // Display the table headers
+            echo "<div class='card shadow mb-4'>";
+            echo "<div class='card-header py-3'>";
+            echo "<h6 class='m-0 font-weight-bold text-primary'>";
+            echo "Data Artikel";
+            echo "</h6>";
+            echo "</div>";
+            echo "<div class='card-body'>";
+            echo "<div class='table-responsive'>";
+            echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>No</th>";
+            echo "<th>Diperbarui</th>";
+            echo "<th width='10%'>Judul</th>";
+            echo "<th>Gambar</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+            $counter = 1; // Inisialisasi counter
+            // Loop through the result set and display the articles
+            while ($row = mysqli_fetch_assoc($result)) {
+              echo "<tr>";
+              echo "<td>" . $counter . "</td>";
+              echo "<td>" . $row['updated_at'] . "</td>";
+              echo "<td>" . $row['title'] . "</td>";
+              echo "<td><img src='" . $row['image_path'] . "' alt='Article Image' style='max-width: 100px; max-height: 100px;'></td>";
+              echo "</tr>";
+              $counter++; // Tingkatkan counter setelah setiap baris
+            }
+            echo "</tbody>";
+            echo "</table>";
+            echo "</div>";
+            echo "</div>";
+            echo "</div>";
+            echo "</div>"; // This closes the div for the DataTables Example
+
+          } else {
+            die("Query error: " . mysqli_error($koneksi));
+          }
+          ?>
         </div>
       </div>
-      <?php
-      require_once('../include/footer.php')
-      ?>
     </div>
-  </div>
+    <?php
+    require_once('../include/footer.php')
+    ?>
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Core plugin JavaScript-->
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-  <!-- Custom scripts for all pages-->
-  <script src="../js/sb-admin-2.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="../js/sb-admin-2.min.js"></script>
 
-  <!-- Page level plugins -->
-  <script src="../vendor/chart.js/Chart.min.js"></script>
+    <!-- Page level plugins -->
+    <script src="../vendor/chart.js/Chart.min.js"></script>
 
-  <!-- Page level custom scripts -->
-  <!-- <script src="../js/demo/chart-area-demo.js"></script> -->
-  <!-- <script src="../js/demo/chart-pie-demo.js"></script> -->
-  <script>
-    $(document).ready(function() {
-      // Fetch data angkatan from database
-      $.ajax({
-        url: 'fetch_data.php',
-        type: 'POST',
-        dataType: 'json',
-        success: function(data) {
-          var angkatanData = data;
-          var angkatan = [];
-          var jumlah = [];
-          var warna = ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e'];
-
-          // Extract angkatan and jumlah from data
-          angkatanData.forEach(function(item, index) {
-            angkatan.push(item.angkatan);
-            jumlah.push(item.jumlah);
-            if (item.angkatan === '2020') {
-              warna[index] = '#4e73df'; // Blue
-            } else if (item.angkatan === '2021') {
-              warna[index] = '#1cc88a'; // Green
-            } else if (item.angkatan === '2022') {
-              warna[index] = '#36b9cc'; // Light Blue
-            } else if (item.angkatan === '2023') {
-              warna[index] = '#f6c23e'; // Yellow
-            }
-          });
-
-          // Create pie chart
-          var ctx = document.getElementById('myPieChart').getContext('2d');
-          var myPieChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-              labels: angkatan,
-              datasets: [{
-                data: jumlah,
-                backgroundColor: warna,
-                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#f6c23e'],
-                hoverBorderColor: "rgba(234, 236, 244, 1)",
-              }],
-            },
-            options: {
-              maintainAspectRatio: false,
-              tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                caretPadding: 10,
-              },
-              legend: {
-                display: false
-              },
-              cutoutPercentage: 80,
-            },
-          });
-        }
-      });
-    });
-  </script>
-
-  <script>
-    $(document).ready(function() {
-      // Fetch data from database for the Area Chart
-      $.ajax({
-        url: 'fetch_area_data.php',
-        type: 'POST',
-        dataType: 'json',
-        success: function(data) {
-          var labels = [];
-          var sehatData = [];
-          var butuhPenangananData = [];
-          var perluPerhatianData = [];
-
-          // Extract data from the response
-          data.forEach(function(item) {
-            labels.push(item.bulan);
-            sehatData.push(item.sehat);
-            butuhPenangananData.push(item.butuh_penanganan);
-            perluPerhatianData.push(item.perlu_perhatian);
-          });
-
-          // Create the Area Chart
-          var ctx = document.getElementById('myAreaChart').getContext('2d');
-          var myAreaChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: labels,
-              datasets: [{
-                  label: 'Sehat',
-                  data: sehatData,
-                  backgroundColor: 'rgba(78, 115, 223, 0.1)',
-                  borderColor: 'rgba(78, 115, 223, 1)',
-                  pointRadius: 3,
-                  pointBackgroundColor: 'rgba(78, 115, 223, 1)',
-                  pointBorderColor: 'rgba(78, 115, 223, 1)',
-                  pointHoverRadius: 3,
-                  pointHoverBackgroundColor: 'rgba(78, 115, 223, 1)',
-                  pointHoverBorderColor: 'rgba(78, 115, 223, 1)',
-                  fill: 'origin',
-                },
-                {
-                  label: 'Butuh Penanganan',
-                  data: butuhPenangananData,
-                  backgroundColor: 'rgba(28, 200, 138, 0.1)',
-                  borderColor: 'rgba(28, 200, 138, 1)',
-                  pointRadius: 3,
-                  pointBackgroundColor: 'rgba(28, 200, 138, 1)',
-                  pointBorderColor: 'rgba(28, 200, 138, 1)',
-                  pointHoverRadius: 3,
-                  pointHoverBackgroundColor: 'rgba(28, 200, 138, 1)',
-                  pointHoverBorderColor: 'rgba(28, 200, 138, 1)',
-                  fill: 'origin',
-                },
-                {
-                  label: 'Perlu Perhatian',
-                  data: perluPerhatianData,
-                  backgroundColor: 'rgba(255, 193, 7, 0.1)',
-                  borderColor: 'rgba(255, 193, 7, 1)',
-                  pointRadius: 3,
-                  pointBackgroundColor: 'rgba(255, 193, 7, 1)',
-                  pointBorderColor: 'rgba(255, 193, 7, 1)',
-                  pointHoverRadius: 3,
-                  pointHoverBackgroundColor: 'rgba(255, 193, 7, 1)',
-                  pointHoverBorderColor: 'rgba(255, 193, 7, 1)',
-                  fill: 'origin',
-                },
-              ],
-            },
-            options: {
-              maintainAspectRatio: false,
-              tooltips: {
-                mode: 'index',
-                intersect: false,
-              },
-              hover: {
-                mode: 'nearest',
-                intersect: true,
-              },
-              scales: {
-                xAxes: [{
-                  display: true,
-                  scaleLabel: {
-                    display: true,
-                    labelString: 'Bulan'
-                  }
-                }],
-                yAxes: [{
-                  display: true,
-                  scaleLabel: {
-                    display: true,
-                    labelString: 'Jumlah'
-                  }
-                }]
-              },
-              legend: {
-                display: true,
-                position: 'bottom',
-              },
-            }
-          });
-        }
-      });
-    });
-  </script>
+    <!-- Page level custom scripts -->
+    <!-- <script src="../js/demo/chart-area-demo.js"></script> -->
 
 </body>
 
